@@ -1,0 +1,269 @@
+---
+name: writing-prose
+description: Writing standards for prose and internal documents, covering any writing that is not code. Voice, sentence construction, punctuation, rhythm, openings, paragraph leads, comparison closures, headings, and GFM markdown, plus document structure for PRDs and for internal product and business docs. Use when the user asks to write, draft, or revise any prose, document, PRD, proposal, or analysis.
+---
+
+# Writing prose
+
+Sentence-level and paragraph-level rules that apply to any writing, plus document structure loaded on demand for the doc type in hand. The rules below always apply. Read the matching reference file when the task has a document shape.
+
+## Reference files
+
+| File                          | Use when                                                                                                                                                               |
+| :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `references/prd.md`           | Writing or revising a PRD: executive summary, customer problem, numbered user stories with acceptance criteria, behavioral clarifications, open decisions              |
+| `references/business-doc.md`  | Writing or revising an internal product or business doc: proposals, analyses, strategy memos, options-and-tenets templates                                             |
+| `references/anti-patterns.md` | Pre-write tripwire scan and post-write self-check for the most common prose failures (phrase patterns, em-dash use, banned words, comparison closures, heading shapes) |
+| `references/markdown-gfm.md`  | Formatting markdown: fences, lists, headings, tables, emphasis, blockquotes                                                                                            |
+
+## Sweeping and restructuring
+
+Every anti-pattern in this skill is a _tell_, a construction that reads as AI-generated. Knowing the rules doesn't defend against producing them.
+
+Sweep the tripwires before publishing. Every tell fired must be resolved (rewritten, or accepted with a documented reason), and a final read-through must fire no new tells. Between revisions the sweep is optional; before publishing it isn't. Sweeping mid-draft distracts from substance and produces mechanical, over-corrected prose.
+
+When a tell fires, restructure the sentence or section rather than swapping one banned pattern for another. An em dash traded for a punchy colon, or a triad traded for an anaphora chain, is not a fix.
+
+### Review pass
+
+After drafting or revising a document, run a self-review pass (or delegate a review to a subagent). The review checks for structural issues, redundancy, and tone, not content accuracy. Only the author knows if the content is correct.
+
+Review for:
+
+1. **Redundancy between sections.** Flag any paragraph that restates earlier content without adding new information.
+2. **Structural flow.** Does each section advance the argument, or just repeat the thesis?
+3. **Tone.** Flag marketing language, hedging, or filler.
+4. **Style compliance.** Run the anti-pattern tripwire scan from `references/anti-patterns.md`.
+
+Skip the review for minor edits (typo fixes, date updates) and for changes the user has already reviewed and approved.
+
+## Voice and stance
+
+- Active voice. Never passive. "The CLI creates the resource" not "the resource is created by the CLI."
+- Present tense throughout. "The command exits with code 1" not "the command will exit with code 1."
+- Second person ("you") for reader-facing content. Third person for describing system behavior.
+- State positions directly. No hedging ("we believe", "it seems", "arguably", "it could be said").
+- No apologies or softeners ("unfortunately", "please note that", "it should be noted").
+- Frame product or platform work in audience-experience terms, not implementation terms. The reader doesn't see internal layers; they see what they ship and what they get. If a sentence describes the product's job in terms of the internal component it runs on, rewrite to describe what the audience experiences. Implementation context belongs in implementation sections.
+  - Avoid: "The product's job is to make streaming straightforward to ship on the internal compute layer."
+  - Prefer: "The product's job is to make streaming work by default for customers."
+
+## Rhetorical patterns to avoid
+
+These constructions read as polished prose but function as AI-generated tells. Rewrite them as direct claims.
+
+### "Not X, it's Y" and its variants
+
+The pattern sets up a contradiction the reader did not raise, then pivots to the writer's preferred framing. It sounds assertive but substitutes rhetorical contrast for evidence. Disguised forms include "X does not eliminate Y — it shifts Y's shape" and "closed source doesn't reduce cost, it just changes where the cost lands." Any construction that negates a claim no one made and pivots to an alternative belongs in this category.
+
+State the positive claim on its own terms. If the contrast is load-bearing, build it into a sentence that stands up without the pivot, or move the comparison into the section where it is genuinely being argued rather than pre-empting it in a definition or principle.
+
+- Avoid: "It's not about speed — it's about correctness."
+- Prefer: "Correctness matters more than speed."
+- Avoid: "Closed source does not eliminate security work; it shifts its shape."
+- Prefer: "Closed source still requires disclosure handling, vulnerability scanning, and patch cadence."
+
+### "The X is real, [here's why]"
+
+The construction claims credibility for X before establishing it, then lists supporting points. Drop the preamble. State the reason directly and let the evidence do the work of making the claim credible.
+
+- Avoid: "The risk is real: agentic PR volume is growing."
+- Prefer: "Agentic PR volume on comparable repositories grew from X to Y over the last two years."
+
+## Openings
+
+Say what the thing is before what it does. State the category in the first sentence and the practical job in the second. Applies to documents, section leads, and product intros.
+
+- Avoid: "The product hosts frontend and fullstack projects with preview environments per branch."
+- Prefer: "The product is a hosting platform for frontend and fullstack projects. Each branch gets a preview environment."
+
+Forms that don't count as identity sentences: headless fragments ("A hosting platform for..."), buried identity (opening with an imperative benefit and stating the category three screens down), and pseudo-identity ("is designed to be the layer between X and Y" states purpose, not category).
+
+## Sentence construction
+
+### Product documents
+
+Product docs use short, declarative sentences. Each sentence states one fact or one behavior. This makes specs scannable and unambiguous.
+
+Good:
+
+> The CLI prints the deployment URL and exits. The build continues service-side.
+
+Bad:
+
+> The CLI prints the deployment URL and exits, and then the build continues service-side in the background.
+
+### Business documents
+
+Business docs use longer, flowing sentences that connect related ideas with commas and subordinate clauses. Avoid choppy construction where every sentence is the same length and structure. Blend related ideas into compound sentences so the prose reads as an argument, not a list of facts.
+
+Good:
+
+> The product competes with three incumbents, each of which treats documentation as a product surface rather than a support artifact.
+
+Bad:
+
+> The product competes with the first incumbent. It also competes with the second. It also competes with the third. Each of these treats documentation as a product surface.
+
+### Rhythm
+
+Vary sentence length. A paragraph of identically-structured sentences reads like a bulleted list without bullets. Follow a long sentence with a short one. Use a short sentence for emphasis after building context.
+
+Good:
+
+> The cold start adds ~362ms of startup latency for every command. This is the bar the tool must clear.
+
+## Punctuation
+
+Em dashes and semicolons are tells when they appear more than occasionally. Both have legitimate uses. Use them sparingly, with intent, and only when necessary. See `references/anti-patterns.md` for concrete Avoid/Prefer rewrites.
+
+- **Em dashes.** Most uses can be rewritten as a comma, parenthesis, sentence break, or "such as" phrase. If you reach for one, ask whether the sentence works without it. When removing an em dash leaves a choppy fragment, fix the rhythm rather than accept the fragment (blend the clauses with a conjunction or relative clause, or keep the em dash if the alternative is genuinely worse).
+  - Avoid: "The decision shapes the timeline. Resolution before the deadline."
+  - Prefer: "The decision shapes the timeline, and must be resolved before the deadline."
+- **Em-dash-wrapped lists.** Don't use em dashes to wrap a list inserted into a sentence. Blend with "such as" or "including" instead. The wrapper is one of the strongest tells.
+  - Avoid: "Every library — the first, the second, the third — publishes its source."
+  - Prefer: "Libraries such as the first, second, and third publish their source."
+- **Em-dash carve-outs.** Em dashes are acceptable in definition-style list items in appendices (e.g., "**Closed-source safe** — whether shipping this as closed source is technically and practically viable"). They are not acceptable in narrative paragraphs. Write the character itself (`—`) where one is warranted. Do not substitute a double hyphen (`--`), which GFM renders literally as two hyphens.
+- **Semicolons.** Work when joining two closely related independent clauses where the second elaborates, contrasts, or completes the first, and the prose flows better than with a sentence break. Prefer separate sentences when the ideas could stand alone.
+  - Acceptable: "The choice does not change whether developers can deploy; it shapes the perception developers have of the provider before they try."
+  - Avoid: "The build is fast; cold starts are rare." (two unrelated facts; use separate sentences)
+- Oxford comma always.
+- Periods inside quotation marks only when quoting a complete sentence. Otherwise outside.
+- When listing reasons or rationales, use a numbered list (`1.`, `2.`, `3.`) rather than unordered bullets. Reasons have an implicit order of presentation that bullets obscure, and numbering lets later text refer to "reason 2" or "the third reason" without ambiguity.
+- Avoid back-to-back colon-introduced lists. After a sentence ending in a colon followed by a list, the next sentence or paragraph should not also use the same construction. The cumulative effect reads as choppy enumeration rather than prose.
+
+## Word choice
+
+- Concrete over abstract. Specific numbers, specific commands, specific examples.
+- Plain words over inflated ones: "use" not "utilize", "show" not "demonstrate", "start" not "commence".
+- State claims directly. Each intensifier or filler word must earn its slot.
+- See the Banned words section of `references/anti-patterns.md` for the marketing-language, filler-word, empty-intensifier, and inflated-vocabulary scan lists.
+
+## Terminology
+
+- Use consistent terms throughout a document (pick one and stick with it).
+- Prefer specific product or service names over generic descriptions when the specificity is load-bearing.
+- Pick one term for the audience (for example, "developer" or "customer") and use it consistently. Do not alternate between "user", "developer", and "customer" for the same group.
+
+## Introducing specialized terms
+
+When introducing a non-obvious term in prose, anchor it with an inline definition or comparison the reader recognizes. The reader shouldn't have to wait for a later section or click a cross-reference to know what the term refers to.
+
+The definition is short: a parenthetical, a "such as" phrase, or a brief comparison to a familiar reference point. It does not replace deeper coverage later in the doc; it just gives the first-use reader enough to keep going.
+
+- Avoid: "Customers expect a managed primitive for live data and 1:M fan-out."
+- Prefer: "Customers expect a managed primitive (a single hosted building block, like Cloudflare Durable Objects or Firebase Realtime) for live data and 1:M fan-out."
+
+Once a concept has a name, refer to it by that name, not by the section that defines it. Phrasings like "the §4.3 primitive" or "the section 6 commitment" treat a section number as the concept's identifier, which reads as shorthand and couples the prose to the document structure. Use the concept's name; put the cross-reference in parens or alongside.
+
+- Avoid: "The §4.3 primitive serves bidirectional gRPC..."
+- Prefer: "The managed real-time primitive (proposed in §4.3) serves bidirectional gRPC..."
+
+## Evidence and claims
+
+- Quantitative claims require a specific source. "55% work primarily in AI-enabled IDEs (see [Survey](url))" not "most developers use AI tools."
+- Cite inline with parenthetical format: `(see [Source Name](url))`.
+- When referencing internal documents, use the document title as link text.
+- Do not round numbers to sound impressive. Use the actual figure.
+- If a claim cannot be sourced, rewrite it as an observation or remove it.
+
+## Paragraphs
+
+- Each paragraph advances one idea. If you're making two points, use two paragraphs.
+- Opening sentence states the point. Remaining sentences support it with evidence or specifics.
+- No paragraph should restate the thesis of the document. State it once in the intro, then move forward.
+- Transitions between paragraphs should be implicit in the logical flow, not explicit connectors ("Furthermore", "Additionally", "Moreover", "In addition").
+
+## Paragraph leads
+
+The first sentence of each paragraph should carry the point through prose, not through a bolded label above it. A reader who skims should understand what the paragraph argues from the first sentence alone.
+
+Bolded labels are appropriate for:
+
+1. Tenet headings — the tenet itself is a labeled principle, and the bold marks it as such.
+2. Named callouts in business documents — single-line asides like **Staffing.** above an otherwise unrelated paragraph.
+3. Definition-style list items in appendices — for example, **Closed-source safe** — whether...
+
+Bolded labels are not appropriate for pros and cons paragraphs in proposal sections, or for argumentative paragraphs in any narrative section. If a paragraph is leaning on a label to convey what it argues, rewrite the opening sentence to carry the topic explicitly.
+
+- Avoid: "**Trust.** The plugin runs inside every user's process..."
+- Prefer: "Open source builds trust because users can audit what runs inside their process. The plugin loads in-process on every invocation..."
+- Avoid: "**Bounded maintenance.** Inbound issues arrive only through internal channels..."
+- Prefer: "Closed source bounds the code-contribution surface. External code review, community PR review, and agentic PR volume do not arise..."
+
+A useful test: read only the first sentence of each pros/cons paragraph in sequence. If you cannot tell which option each is about and what each is arguing, the leads are still label-led.
+
+## Cut content, not just words
+
+A paragraph can pass every sentence-level rule and still read as generated when it fills every argumentative slot (limitation, objection, fix, result, caveat, confidence) with one sentence per slot. The fix is deletion. Merge points, drop the weakest one, and leave an inferential step for the reader. A detail that appears elsewhere in the document doesn't need to appear again.
+
+## Comparison closures
+
+When closing a paragraph that contrasts two options, the closure must be defensible on its own terms. A common failure mode is overclaim — closing with "X has no equivalent path", "Y is unavailable", or any sentence that asserts an absolute absence the writer cannot fully defend.
+
+Test each comparison closure against this question: would the writer defend it under cross-examination? If the answer involves "well, it's harder, not impossible" or "in practice, but technically not always," the closure is overclaiming. Rewrite as a softer claim ("limited", "harder", "no comparable") or drop the closure and let the prior sentences carry the contrast on their own.
+
+- Avoid: "Closed source has no equivalent path."
+- Avoid: "The alternative approaches have no handoff path under closed source."
+- Prefer: "Closed source has no comparable visibility in those surfaces."
+- Prefer: (drop the closure entirely; the paragraph's earlier sentences already make the comparison)
+
+## Headings
+
+Headings are noun-phrase labels, not sentences. Use sentence case: capitalize the first word, proper nouns, and coined terms; lowercase the rest. Drop reflexive "The" prefixes on labels. See the heading tripwires in `references/anti-patterns.md` for the banned shapes (slogans, comma couplets, imperative frames, rhetorical-frame chains, manual numbering) with rewrites.
+
+Exception: a heading may be a full sentence when the sentence is a load-bearing claim the section exists to defend. Use rarely; two in a row almost never earn it.
+
+After drafting, read the section headings as a flat list. If some are labels and some are slogans, rewrite the outliers.
+
+## Lists vs prose
+
+- Use numbered lists for sequential steps or ranked items.
+- Use bullet lists for unordered options or properties.
+- Do not use bullet lists as a substitute for writing prose. If the items form an argument, write them as a paragraph. If they're discrete facts, a list is fine.
+- List items should be parallel in grammatical structure.
+
+When a paragraph is prefaced with a count (`three concrete workflows`, `two features`), prefix each item's opening sentence with `N/` so the reader can track the enumeration. Continuation sentences within a single item stay unprefixed. This grounds the count from the preface in the body and marks the boundary between items so the reader can scan them.
+
+- Avoid: `The absence hits three concrete workflows. A developer who... A production team... A developer who...`
+- Prefer: `The absence hits three concrete workflows. 1/ A developer who... 2/ A production team... 3/ A developer who...`
+
+## Code references in prose
+
+- Use inline code for commands, flags, file names, environment variables, and values: `deploy`, `--env`, `config.jsonc`, `CI=true`.
+- Do not use inline code for concepts or product names: write the product name in plain text, "preview environment" not "`preview` environment" (unless referring to the literal string value).
+
+## Changelogs
+
+Some documents are published as versioned files, meaning stakeholders have them open and reference specific content. For these documents, maintain a `## Changelog` section at the bottom (after References, if present) so readers can see what changed between versions.
+
+Add a changelog when the document has already been shared with stakeholders **and** the user requests it or the revision is substantive enough that someone reading the previous version would need to know what changed. Do not add a changelog to documents that haven't been shared yet. It's noise until someone else is reading the doc.
+
+```markdown
+## Changelog
+
+### YYYY-MM-DD
+
+#### Added
+
+- New section, user story, command, or concept
+
+#### Changed
+
+- Modified behavior, updated wording, revised priority
+
+#### Removed
+
+- Deleted section, deprecated flag, removed option
+```
+
+Group entries under Added/Changed/Removed (omit empty groups). Reference the specific section or story number when possible.
+
+Entry style:
+
+- One line per change. No multi-sentence entries. Enough for a reader to decide whether to re-read the section.
+- Start with the entity or scope: "`integration create`: clarified two-path behavior"
+- Use past tense in changelogs (exception to the present-tense rule): "Added", "Changed", "Removed".
+- No periods at the end of changelog entries.
+
+When revising a document that already has a changelog, append a new date heading for the current session's changes and leave previous entries alone. If multiple revisions happen on the same date, combine them under one heading.
