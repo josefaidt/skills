@@ -1,6 +1,13 @@
+---
+role: doc-type (substrate)
+composes: [tenets, faqs]
+extended-by: proposal
+description: Structure for internal product and business documents — requirements, analyses, and strategy memos for stakeholders and decision-makers. The substrate doc type: holds the base narrative structure and the executive-summary substance. Proposals that evaluate options extend it (see proposal.md).
+---
+
 # Internal product and business documents
 
-Structure for internal documents: requirements, proposals, and analyses written for stakeholders and decision-makers, not for customers.
+Structure for internal documents: requirements, proposals, and analyses written for stakeholders and decision-makers, not for customers. This is the substrate doc type. A proposal that evaluates multiple options extends this structure with tenets and options; read `proposal.md` for that layer.
 
 The prose rules in `SKILL.md` are already in force. This file adds document shape only.
 
@@ -48,7 +55,7 @@ For full PRD structure (acceptance criteria, behavioral clarifications, open dec
 
 ## Executive summary
 
-(2-3 paragraphs: what, why, recommendation)
+(one paragraph: core problem, then recommendation)
 
 ## Background
 
@@ -73,112 +80,46 @@ For full PRD structure (acceptance criteria, behavioral clarifications, open dec
 
 Business docs are narrative-driven. They build an argument: context → analysis → recommendation. Every section should advance the argument, not restate it.
 
-#### Opening pattern (Executive summary first paragraph)
+When the document evaluates multiple options and makes a recommendation, extend this template with the tenets-and-options structure in `proposal.md`. When a decision doc has settled its recommendation but left specific boundaries open, an FAQ section frames those edges better than a plain open-questions list (see `faqs.md`).
+
+## Executive summary
+
+The executive summary is the paragraph a reader who reads nothing else should be able to leave with the full working position. The substance below governs business docs and proposals alike. (PRDs use a different executive-summary shape; see `prd.md`.)
+
+### Opening pattern (first paragraph)
 
 Business documents and strategy memos open with explicit context, not with examples or scenarios. The first paragraph establishes three things, in this order:
 
 1. **What the product/effort is.** Name it, say what it does, name when it launches if relevant.
-2. **Who the customer is.** The target audience and what they bring with them.
+2. **Who the audience is.** The target audience and what they bring with them.
 3. **What this document is for.** State the purpose and scope explicitly, often with the phrase "This document...", "We are meeting today to...", or "In this document, we describe...".
 
-Customer scenarios, vivid examples, and storytelling are appropriate but come _after_ the context-setting paragraph. Use a transition like "Concretely:" or "A typical example:" to lead into them.
+Scenarios, vivid examples, and storytelling are appropriate but belong later in the document, in Background or the problem section, not in the one-paragraph executive summary.
 
 Reference opening shapes:
 
-- _Vision framing:_ "Some of the largest customers in the segment have adopted [the operational model] and prefer to build new applications using [the approach]. Our vision is to make [the product] the fastest way for customers to turn code into a production application... In this document, we describe the significance of a delightful outer-loop experience..."
-- _Competitive analysis:_ "Over the past decade, [the category] has evolved to serve two distinct categories of workloads... This document analyzes [the competitor]'s growing success in capturing developer mindshare, particularly among startups, and introduces [the response]..."
-- _Working-group update:_ "Customers who build interactive and personalized end-user applications require cost-efficient and low-latency solutions... To address this challenge we formed a working group with a goal to align on a strategy for addressing customer needs. We are meeting today to provide an update on our progress and next steps."
+- _Vision framing:_ "Some of the largest customers in the segment have adopted [the operational model] and prefer to build new applications using [the approach]. Our vision is to make [the effort] the fastest way for them to turn intent into a production result... In this document, we describe the significance of a first-class end-to-end experience..."
+- _Competitive analysis:_ "Over the past decade, [the category] has evolved to serve two distinct categories of workloads... This document analyzes [the competitor]'s growing success in capturing mindshare, particularly among [the segment], and introduces [the response]..."
+- _Working-group update:_ "[The audience] who build [the workload] require [the constraint]... To address this challenge we formed a working group with a goal to align on a strategy for addressing their needs. We are meeting today to provide an update on our progress and next steps."
 
 Every example explicitly states the document's purpose. Without that explicit statement, readers infer the doc's intent from the substance, which is harder and less effective.
 
-### Proposals with options
+### What doesn't belong in an executive summary
 
-When a business document evaluates multiple options and makes a recommendation, extend the business template with a tenets-and-options structure:
+The executive summary carries substance: the context the reader needs, the working position or recommendation, and the load-bearing reasons for it. A reader who reads only this paragraph should get the full working position. Anything else dilutes the paragraph's job.
 
-```markdown
-# Document Title
+- **Doc-structure roadmaps.** "§1 sets up X, §2 covers Y, §3 concludes with Z." A table of contents already does this. Prose attention on the executive summary should land on the argument, not on the doc's shape. If the reader needs a specific reading order, put it in a separate one-line note (or omit it; most docs read top-to-bottom).
+- **Tactical detail.** Executive summaries state positions and load-bearing rationale. Implementation specifics, feature-level detail, API shapes, per-item pricing, and section-level walkthroughs belong in the body. If a claim needs a paragraph of qualifying detail, cite it and let the section that owns the claim carry the detail.
+- **Meta-commentary about method.** "This document uses a working-backwards approach to..." Reserve method notes for the section where the method matters, or drop them if the method is standard for the doc type.
+- **Feature-level specifics.** Names of specific commands, message shapes, internal system diagrams, or per-tier pricing. Substitute the higher-level abstraction that carries the reader through the argument. Save specifics for the section (problem or experience) where they earn their place.
 
-## Executive summary
+Test: read the executive summary out loud. Every sentence should either establish context (subject, audience, purpose), state a position, or carry a load-bearing reason. If a sentence describes what the doc will do rather than what the doc argues, it's structural meta-commentary and should be cut. If a sentence names specific features or implementation details, it's tactical and belongs in the body.
 
-## Background
+### Length and shape
 
-## Tenets
+The executive summary is exactly one paragraph. It states the core problem in plain terms and then the recommendation, at the altitude of the document's intent. Anything longer stops being a summary: a second paragraph almost always means context-setting or tactical detail crept in, and that detail belongs in Background or the body.
 
-(principles that adjudicate between options)
-
-## Proposal
-
-### Option 1: [Name] (Recommended)
-
-#### What it looks like
-
-#### Who maintains it
-
-#### Cost shape
-
-#### Pros
-
-#### Cons
-
-### Option 2: [Name]
-
-#### What it looks like
-
-#### Who maintains it
-
-#### Cost shape
-
-#### Pros
-
-#### Cons
-
-## Recommendation (optional)
-
-## Next steps (optional)
-
-## Appendix (optional)
-```
-
-**Option headings stay short.** Use a terse label plus the `(Recommended)` marker where applicable. Do not load the heading with qualifiers.
-
-- Good: `### Option 1: Open Source (Recommended)`
-- Good: `### Option 2: Closed Source`
-- Avoid: `### Option 1: Open source under our ownership (Recommended)`
-
-**Tenets.** Principles the document commits to for the purpose of this decision. Three to five tenets is typical. Each tenet is a full-sentence statement followed by a short rationale paragraph. Phrase tenets as principles the document adopts for this decision, in the same voice you would use for a product tenet. Each tenet should discriminate between the options in scope. If every option scores the same on a tenet, the tenet is not doing work in the decision and should be dropped.
-
-**Tenets must also distinguish from each other.** A tenet that overlaps in scope or argument with another tenet does not double the discrimination, it duplicates it. Read the tenet titles side by side: if a reader could conflate them, sharpen the framing so each covers a distinct dimension. Useful axes to split on include present versus future (one tenet about today's location, another about long-term ownership), location versus engagement (where the artifact lives versus how the team participates), or scope (qualifiers like "established" or "long-term" can pin a tenet to a specific category). If two tenets still read as the same argument after sharpening, drop one.
-
-**Options as parallel prose.** Each option gets the same set of subsections in the same order. Use `#### What it looks like`, `#### Who maintains it`, `#### Cost shape`, `#### Pros`, and `#### Cons`. Add a tenet-specific subsection (such as `#### Convergence with ecosystem norms`) when one tenet is doing substantial work for one option and the discussion does not fit inside Pros or Cons. Parallel structure lets readers compare options directly.
-
-**Mechanics versus consequences.** Each option section has a division of labor:
-
-- `What it looks like` describes mechanics: the structure, behavior, and operational model of the option.
-- `Cons` describes consequences: the costs incurred by choosing this option.
-
-Keep them separate. A consequence argument in the mechanics section (for example, "this breaks zero-config and forces users to configure manually") gets restated in Cons and reads as redundancy. State the mechanic cleanly in `What it looks like` and let `Cons` carry the consequence argument. The same division applies to `Pros`: affirmative benefits only, without restating what the option looks like.
-
-Pros and Cons should stand on their own merits for each option. Do not write Option 2's cons as inverses of Option 1's pros, or vice versa. If an option's con is only interesting because another option avoids it, reframe the point in terms of what the option actually costs.
-
-**Cons that restate the same substance should be merged or dropped.** If two cons argue the same underlying gap with different framings (for example, "the developer can't fix it themselves" and "the developer must wait for our release cycle"), the second is duplicating effort. Merge into a single con paragraph that names the underlying cost once, or drop the weaker framing. The same applies to pros.
-
-**Pros and cons paragraph leads use prose, not bolded labels.** The first sentence of each pros or cons paragraph carries the topic explicitly so the reader understands the claim without depending on a label above it. See the "Paragraph leads" section of `SKILL.md` for the pattern. The Tenets section retains its bolded labels (the principle itself is labeled), as do single-line callouts within an option section (such as **Staffing.** above the Pros).
-
-**Tenets live in the option prose, not in a separate evaluation section.** Each option's subsections should address how that option fares against each tenet. A reader moving through the option's mechanics, cost, pros, cons, and any tenet-specific subsections should be able to see the tenet-level analysis emerge without flipping to a dedicated evaluation section. Adding a separate "Evaluation against tenets" section duplicates content from the options and weakens the narrative.
-
-**Drop `Recommendation` and `Next steps` when they would only restate the option headings.** The `(Recommended)` marker on the option heading plus the option's prose often communicate the recommendation completely. Include a separate `Recommendation` section only when the recommendation involves synthesis beyond "pick option X", for example when the recommendation is staged, conditional, or depends on external factors that deserve explicit callout. Apply the same test to `Next steps`: include it only when concrete assignments, timelines, or prerequisites need to be surfaced outside the option prose.
-
-### Marking recommended options
-
-When a business document evaluates multiple options and commits to one, mark the recommendation directly in its heading with `(Recommended)` in parentheses. This surfaces the chosen path in the table of contents and in any heading-level skim, so readers know which option to weight as they read the comparison.
-
-- Good: `### Option 1: Open Source (Recommended)`
-- Good: `### Option 2: Closed Source`
-
-Rules:
-
-- Place the marker at the end of the heading, after the option's descriptive title.
-- Use title case (`Recommended`) to match heading conventions.
-- Apply the marker to exactly one option. Marking multiple options defeats the purpose.
-- Do not use "(Preferred)", "(Leading)", or other soft variants. The convention is `(Recommended)` or nothing.
-- If the document evaluates options but does not make a recommendation, leave all headings unmarked and state the decision (or non-decision) in the Recommendation section.
+- **Word target.** Around 100-150 words. If the draft approaches 250, body-level detail or "here's what the doc will do" meta-commentary crept in.
+- **No numbered or bulleted lists inside the executive summary.** Lists inflate the summary into a mini-body-section and dilute the "reader gets the full working position" rule. If several claims carry the argument, weave them into prose and let the body sections expand each.
+- **Problem, then recommendation.** Lead with the core problem in simple terms, then the recommendation. Keep both at the doc's intent level; leave mechanisms, feature names, and per-option detail to the body.
+- **Name the root problem, not a symptom.** State the underlying cause, not the surface annoyance it produces. If the problem as written could be resolved by a cosmetic change while the real constraint remained, it is naming a symptom. Use the framing the person who would resolve it would recognize as the actual constraint.

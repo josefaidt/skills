@@ -9,10 +9,27 @@ Sentence-level and paragraph-level rules that apply to any writing, plus documen
 
 ## Reference files
 
+Reference files fall into three kinds. **Document structures** are whole doc types you compose top-to-bottom. **Components** are reusable structural pieces that more than one doc type pulls in. **Prose mechanics** are the always-relevant sentence- and markdown-level rules. A document structure names which components it composes; load the components it points to.
+
+Document structures:
+
+| File                         | Use when                                                                                                                                          |
+| :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `references/prd.md`          | Writing or revising a PRD (independent doc type): its own executive summary, customer problem, numbered user stories with acceptance criteria, behavioral clarifications, open decisions and/or FAQ |
+| `references/business-doc.md` | Writing or revising an internal product or business doc (the substrate): base narrative structure and the executive-summary substance             |
+| `references/proposal.md`     | Writing a doc that evaluates multiple options and recommends one: extends `business-doc.md` with the tenets-and-options structure and marking      |
+
+Components (composed by the doc structures above):
+
+| File                 | Use when                                                                                                            |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| `references/tenets.md` | Writing the decision tenets that adjudicate a decision: definition, impostor taxonomy, discrimination test, format |
+| `references/faqs.md`   | Writing an FAQ or open-questions section that frames the boundaries of a decision: question-led entries, answer discipline, ordering |
+
+Prose mechanics:
+
 | File                          | Use when                                                                                                                                                               |
 | :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `references/prd.md`           | Writing or revising a PRD: executive summary, customer problem, numbered user stories with acceptance criteria, behavioral clarifications, open decisions              |
-| `references/business-doc.md`  | Writing or revising an internal product or business doc: proposals, analyses, strategy memos, options-and-tenets templates                                             |
 | `references/anti-patterns.md` | Pre-write tripwire scan and post-write self-check for the most common prose failures (phrase patterns, em-dash use, banned words, comparison closures, heading shapes) |
 | `references/markdown-gfm.md`  | Formatting markdown: fences, lists, headings, tables, emphasis, blockquotes                                                                                            |
 
