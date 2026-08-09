@@ -1,6 +1,6 @@
 ---
 name: writing-typescript
-description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline, import ordering and import type, the no-any rule and unknown at trust boundaries, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, or restructuring a package's layout.
+description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline and explicit ambient types, import ordering and import type, the no-any rule and unknown at trust boundaries, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, or restructuring a package's layout.
 user-invocable: false
 ---
 
@@ -11,7 +11,8 @@ Rules that apply to every TypeScript file and to the shape of a package's direct
 ## Configuration
 
 - A repo-wide `tsconfig.base.json` holds the shared compiler options: strict, `moduleResolution: "bundler"`, `verbatimModuleSyntax`. Each package extends it.
-- `"types": []` is set explicitly in the base config. Add type packages per package as needed, such as `"types": ["bun"]`.
+- TypeScript 7 does not implicitly load ambient type packages. Keep `"types": []` in the base config and list each package's ambient types explicitly in its own `tsconfig.json`, such as `"types": ["bun", "node"]`.
+- Declaring an ambient type package means adding the matching `@types/*` package to that workspace's dependencies.
 - Bun executes raw TypeScript, so development needs no build or transpile step. A package only gains a bundler config when it ships a compiled artifact.
 
 ## Import style
