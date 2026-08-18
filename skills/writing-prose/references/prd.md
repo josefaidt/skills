@@ -43,6 +43,10 @@ Three to five sentences. State:
 
 End with a short list of requirement directions, the top-level decisions already made that constrain the design space. Format as a bullet list.
 
+**Length budget (hard rule).** Exactly one paragraph, three to five sentences, roughly 120 words. The requirement-directions bullets follow that paragraph and are the only list in the section. Do not add a second paragraph. Fold scope and out-of-scope callouts into one sentence inside the paragraph rather than giving each its own paragraph. A draft with two or more paragraphs before the bullets is over budget, so cut rather than reword. (The business-doc executive summary governs by word count instead; see `business-doc.md`. A PRD counts sentences.)
+
+**Verify after every edit, not just first draft.** Re-read the executive summary and count its sentences whenever you touch it, including edits made in later turns. The most common way this section bloats is appended content: a first draft that fits the budget, then a sentence or paragraph added in a later revision that pushes it past the limit without a re-count. Content added in later turns almost always belongs in the body (customer problem, behavioral clarifications, or open decisions), not the summary. Editing the executive summary is not done until you have re-counted against the budget above.
+
 Example shape:
 
 > This document defines the product requirements for [feature]: [one-sentence behavior]. [Scope boundary]. Note: [out-of-scope callout].

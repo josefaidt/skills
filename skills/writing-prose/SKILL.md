@@ -51,8 +51,18 @@ Review for:
 2. **Structural flow.** Does each section advance the argument, or just repeat the thesis?
 3. **Tone.** Flag marketing language, hedging, or filler.
 4. **Style compliance.** Run the anti-pattern tripwire scan from `references/anti-patterns.md`.
+5. **Executive summary length.** Verify the executive summary meets the budget for the doc type and flag it if it does not. A PRD executive summary is one paragraph of three to five sentences (around 120 words) followed by requirement-direction bullets, with no second paragraph (see `prd.md`). A business or proposal executive summary is one paragraph of roughly 100-150 words with no lists (see `business-doc.md`). Report the sentence count (PRD) or word count (business) so the author can confirm.
+6. **Revision coherence.** Flag information that one section presents without related sections accounting for it: a concept or term introduced in one place that the sections meant to develop or reference it do not, a detail that another section's logic should reflect but does not, or a claim that a preceding section contradicts or fails to set up. These indicate content added in isolation during a revision rather than integrated across the document.
 
 Skip the review for minor edits (typo fixes, date updates) and for changes the user has already reviewed and approved.
+
+## Revising a document
+
+When new information comes to light during a revision (a decision, a reframing, a fact), integrate it across the whole document, not into one section in isolation. Adding a claim to one section while the sections that should set it up, reference it, or follow from it stay unchanged leaves the document internally inconsistent, and the new content reads as an orphan the surrounding prose does not account for.
+
+Before finalizing a revision, trace the new information through the document. Does an earlier section need to introduce it? Does a later section need to reflect it? Does any existing claim now contradict it? Put each piece at the altitude its section calls for, with a high-level framing in the summary, the mechanism in the body, and the open question in the open-decisions or FAQ section, rather than stacking every facet into the section you happened to be editing. Revising the surrounding content to account for new information is part of the edit, not optional cleanup.
+
+This is the authoring habit. The revision-coherence check in the review pass is the backstop.
 
 ## Voice and stance
 
