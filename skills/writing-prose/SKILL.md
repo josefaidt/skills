@@ -239,6 +239,8 @@ Test each comparison closure against this question: would the writer defend it u
 
 Headings are noun-phrase labels, not sentences. Use sentence case: capitalize the first word, proper nouns, and coined terms; lowercase the rest. Drop reflexive "The" prefixes on labels. See the heading tripwires in `references/anti-patterns.md` for the banned shapes (slogans, comma couplets, imperative frames, rhetorical-frame chains, manual numbering) with rewrites.
 
+Document titles are the exception. A document's H1 and its frontmatter `title` may use Title Case, and a document's proper title keeps that capitalization wherever it is cited (for example, a PRD titled "Deployment Safety PRD" keeps its Title Case name in references and links). The sentence-case rule governs section headings, H2 and below.
+
 Exception: a heading may be a full sentence when the sentence is a load-bearing claim the section exists to defend. Use rarely; two in a row almost never earn it.
 
 After drafting, read the section headings as a flat list. If some are labels and some are slogans, rewrite the outliers.
