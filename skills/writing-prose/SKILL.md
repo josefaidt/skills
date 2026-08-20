@@ -64,6 +64,32 @@ Before finalizing a revision, trace the new information through the document. Do
 
 This is the authoring habit. The revision-coherence check in the review pass is the backstop.
 
+## Version supersession
+
+When creating a superseding revision of a document (v2 revising v1, v3 revising v2), treat the prior version as source material to bring forward, not as an authoritative companion doc.
+
+- **Do not cite prior versions in body prose.** Body prose is the current position. Phrases like "as v2 described," "v2 covered this," or "the pattern captured in v2" treat the prior version as an external authority. It is not, because the current version supersedes it. Adopt the claim as the current version's own, or update it, or drop it. Do not attribute it to v2.
+- **Cite prior versions only in frontmatter references and the reference-documents appendix.** The frontmatter `references` block and any bibliography-style appendix are the correct place to name prior versions, typically alongside a brief note on what content those versions carry (often detail cut from the current version).
+
+Common failure modes:
+
+- **v2 as a source of authority.** "The proposed answer is the primitive that v2 described in §4.3" — the current version is now the authoritative source for that proposal.
+- **v2 as a source of detail.** "As v2 covered..." followed by a summary of the v2 content. If the detail matters, include it in the current version. If it doesn't, drop the reference.
+- **v2 as a source of evidence.** "The signal captured in v2..." — the underlying evidence (interviews, support tickets, GitHub issues) is the actual source. Cite it directly rather than routing through v2.
+
+## Verify inherited claims
+
+Before finalizing any document that pulls forward content from a prior source (a prior version, another team's memo, an earlier draft), re-verify each factual claim against current context. Claims that were accurate when originally written can go stale between revisions.
+
+Four categories to check every time:
+
+1. **Time references.** Compare inherited dates, quarters, and launch windows against the current calendar. A "launching Q2 2026" claim carried forward when the current date is already in Q3 2026 is either stale or refers to something that has already happened.
+2. **Audience and persona.** Compare inherited audience or persona definitions against the project's current persona or spec sources. Phrasings that narrow the audience to a specific list, or that add or drop specific competitors or tools, are often stale.
+3. **Product scope.** Compare inherited product or scope claims against the current spec and any customer-facing docs. Capabilities, supported integrations, feature lists, and roadmap positions all shift over time.
+4. **Roadmap and delivery.** Compare inherited roadmap and delivery-ownership claims against the current planning source (a roadmap, a status review, or updated planning docs).
+
+Do not treat inherited claims as verified simply because they appeared in a prior source. The prior source was correct at its own writing; the current context may have moved. Verifying is a pre-finalize step, not an "if time permits" step.
+
 ## Voice and stance
 
 - Active voice. Never passive. "The CLI creates the resource" not "the resource is created by the CLI."

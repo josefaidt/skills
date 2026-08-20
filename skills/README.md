@@ -5,6 +5,7 @@ Reusable skill definitions for agents. Each skill lives in its own directory wit
 | Skill                                                 | Group      | Covers                                      |
 | :---------------------------------------------------- | :--------- | :------------------------------------------ |
 | [`writing-prose`](./writing-prose/)                   | Writing    | Prose rules, PRDs, and internal documents   |
+| [`answering-with-sources`](./answering-with-sources/) | Answering  | Sourced answers with confidence levels      |
 | [`writing-typescript`](./writing-typescript/)         | TypeScript | File-level conventions, typing, and layout  |
 | [`new-typescript-package`](./new-typescript-package/) | TypeScript | Scaffolding a workspace package or app      |
 | [`monorepo`](./monorepo/)                             | TypeScript | Workspace structure and dependency installs |
@@ -28,6 +29,10 @@ The anti-pattern catalog draws on two open-source skills that document AI writin
 
 - [kill-ai-smell](https://github.com/osolmaz/tools/blob/main/agents/skills/kill-ai-smell/SKILL.md) by osolmaz — strips recognizable markers of machine-generated writing across punctuation, sentence patterns, paragraph shape, headings, and page layout.
 - [avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing) by Conor Bronsdon — audits and rewrites content to remove AI-isms, with a deterministic detection engine and a word-replacement table.
+
+## Answering skills
+
+[`answering-with-sources`](./answering-with-sources/) applies when an answer depends on documents, specs, code, or other sources rather than general knowledge. It prefixes substantive answers with a "Sources consulted" list, each source with its location and a High/Medium/Low confidence level, and prefers citing a specific source over answering from memory. It is model-invoked, so an agent reaches for it on its own when accuracy and provenance matter.
 
 ## TypeScript skills
 
