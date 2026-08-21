@@ -35,15 +35,17 @@ Prose mechanics:
 
 ## Sweeping and restructuring
 
-Every anti-pattern in this skill is a _tell_, a construction that reads as AI-generated. Knowing the rules doesn't defend against producing them.
+Every anti-pattern in this skill is a _tell_, a construction that reads as AI-generated. Knowing the rules from memory doesn't defend against producing them, and this SKILL body is not the full catalog. `references/anti-patterns.md` holds the complete list, including tells the body only gestures at: topic-sentence rhythm across paragraphs, unbolded claim sentences standing in for labels, and colon-introduced elaboration used as a default. Reading the body is not a substitute for opening that file.
 
-Sweep the tripwires before publishing. Every tell fired must be resolved (rewritten, or accepted with a documented reason), and a final read-through must fire no new tells. Between revisions the sweep is optional; before publishing it isn't. Sweeping mid-draft distracts from substance and produces mechanical, over-corrected prose.
+Sweep the tripwires before publishing, with `references/anti-patterns.md` open. Scan the draft against it section by section, resolve every tell fired (rewritten, or accepted with a documented reason), and confirm a final read-through fires no new tells. Between revisions the sweep is optional; before publishing it isn't. Sweeping mid-draft distracts from substance and produces mechanical, over-corrected prose.
+
+The sweep is the author's own step, and delegating a review does not satisfy it. Run your own sweep first; the review pass below is the backstop. When you delegate that review to a subagent, name the tell classes in the prompt (paragraph rhythm and label-led leads, punctuation tells, banned words, comparison closures, headings), because a reviewer catches only what its instructions name.
 
 When a tell fires, restructure the sentence or section rather than swapping one banned pattern for another. An em dash traded for a punchy colon, or a triad traded for an anaphora chain, is not a fix.
 
 ### Review pass
 
-After drafting or revising a document, run a self-review pass (or delegate a review to a subagent). The review checks for structural issues, redundancy, and tone, not content accuracy. Only the author knows if the content is correct.
+After running the sweep above, run a review pass (self-review, and optionally a delegated subagent review as a backstop). The review checks for structural issues, redundancy, and tone, not content accuracy. Only the author knows if the content is correct.
 
 Review for:
 
@@ -53,6 +55,7 @@ Review for:
 4. **Style compliance.** Run the anti-pattern tripwire scan from `references/anti-patterns.md`.
 5. **Executive summary length.** Verify the executive summary meets the budget for the doc type and flag it if it does not. A PRD executive summary is one paragraph of three to five sentences (around 120 words) followed by requirement-direction bullets, with no second paragraph (see `prd.md`). A business or proposal executive summary is one paragraph of roughly 100-150 words with no lists (see `business-doc.md`). Report the sentence count (PRD) or word count (business) so the author can confirm.
 6. **Revision coherence.** Flag information that one section presents without related sections accounting for it: a concept or term introduced in one place that the sections meant to develop or reference it do not, a detail that another section's logic should reflect but does not, or a claim that a preceding section contradicts or fails to set up. These indicate content added in isolation during a revision rather than integrated across the document.
+7. **Paragraph rhythm and leads.** Flag any run of three or more paragraphs that open with a short claim sentence followed by supporting detail (the topic-sentence metronome), and any paragraph whose first sentence functions as an unbolded label. Rewrite to weave claim and evidence into one thought, or vary the opening. Pros and cons paragraphs are the exception, since their leads are intentionally topic-first.
 
 Skip the review for minor edits (typo fixes, date updates) and for changes the user has already reviewed and approved.
 
