@@ -8,6 +8,10 @@ user-invocable: false
 
 Rules that apply to every TypeScript file and to the shape of a package's directory. Apply them when creating or restructuring a package, not only when asked. For scaffolding a package from scratch, load `new-typescript-package`. For workspace structure and dependency installs, load `monorepo`.
 
+## Repository standards take precedence
+
+Before applying this skill, check the repository root for `CODING_STANDARDS.md`. When it exists, read it and treat it as the source of truth: its rules override this skill wherever they differ, and a review cites its rule IDs. This skill remains the baseline for anything that file does not cover, and for repositories without one.
+
 ## Configuration
 
 - A repo-wide `tsconfig.base.json` holds the shared compiler options: strict, `moduleResolution: "bundler"`, `verbatimModuleSyntax`. Each package extends it.
