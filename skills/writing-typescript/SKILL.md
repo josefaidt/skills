@@ -1,6 +1,6 @@
 ---
 name: writing-typescript
-description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline and explicit ambient types, import ordering and import type, the no-any rule and unknown at trust boundaries, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, or restructuring a package's layout.
+description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline and explicit ambient types, import ordering and import type, the no-any rule and unknown at trust boundaries, JSDoc on exported types, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, or restructuring a package's layout.
 user-invocable: false
 ---
 
@@ -61,6 +61,36 @@ try {
   await run()
 } catch (error: unknown) {
   const message = error instanceof Error ? error.message : String(error)
+}
+```
+
+## Documenting exported types
+
+Every exported `interface`, `type`, and `enum` gets a `/** */` block saying what it represents and who produces or consumes it, and every property gets one too, so an editor hover explains the field without a trip to the source.
+
+- Say what the type cannot: units, formats, defaults for optional fields, and invariants such as which values a field may hold or how two fields relate.
+- Use `@default`, `@example`, and `@see` where they help.
+- Skip restating the name. A comment that says `userId` is "the user ID" adds nothing.
+- Always write the multiline form, with `/**` and `*/` on their own lines, even for one sentence. Never the single-line `/** ... */`.
+
+```typescript
+/**
+ * Input to `createTenant`, which creates a customer's production and development instances together.
+ */
+export interface CreateTenantInput {
+  /**
+   * Display name for the customer, shown in the admin dashboard.
+   */
+  name: string
+  /**
+   * Billing and administrative contact for the tenant. Not an end-user identifier.
+   */
+  owner_email: string
+  /**
+   * Exact HTTPS origins the production instance accepts, such as `https://app.example.com`.
+   * @default []
+   */
+  allowed_origins?: string[]
 }
 ```
 
