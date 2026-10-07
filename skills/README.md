@@ -38,11 +38,11 @@ The anti-pattern catalog draws on two open-source skills that document AI writin
 
 Three skills cover working in a TypeScript workspace, layered by scope: source files, one package, the whole repo.
 
-| Skill                                                 | Covers                                                                                                                            |
-| :---------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
-| [`writing-typescript`](./writing-typescript/)         | Source files: imports, no `any`, Zod validation, `as const`, class modifiers, kebab-case names, no barrels, `scripts/` placement. |
-| [`new-typescript-package`](./new-typescript-package/) | A new package: scaffolding `package.json`, `tsconfig.json`, the entrypoint, and an optional rolldown build.                       |
-| [`monorepo`](./monorepo/)                             | The repo: the `apps` and `packages` split, shared version pinning, and isolated `node_modules`.                                   |
+| Skill                                                 | Covers                                                                                                                                                           |
+| :---------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`writing-typescript`](./writing-typescript/)         | Source files: imports, no `any`, Zod validation, `as const`, class modifiers, kebab-case names, no barrels, one export per scoped package, `scripts/` placement. |
+| [`new-typescript-package`](./new-typescript-package/) | A new package: scaffolding `package.json`, `tsconfig.json`, the entrypoint, and an optional rolldown build.                                                      |
+| [`monorepo`](./monorepo/)                             | The repo: the `apps` and `packages` split, shared version pinning, and isolated `node_modules`.                                                                  |
 
 `writing-typescript` sets `user-invocable: false`, so an agent loads it on its own when writing or reviewing TypeScript. `new-typescript-package` takes arguments, `<name>` and an optional `apps` or `packages` target directory that defaults to `packages`.
 
