@@ -1,6 +1,6 @@
 ---
 name: writing-typescript
-description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline and explicit ambient types, import ordering and import type, the no-any rule and unknown at trust boundaries, JSDoc on exported types, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, or restructuring a package's layout.
+description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline and explicit ambient types, import ordering and import type, the no-any rule and unknown at trust boundaries, JSDoc on exported types, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, the single-entrypoint rule for scoped packages' exports, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, editing a package.json exports map, or restructuring a package's layout.
 user-invocable: false
 ---
 
@@ -186,6 +186,19 @@ Mark a member `private` unless something outside the class calls it. `#` fields 
 - The package entrypoint is `<package-name>.ts` at the package root. A package named `template` has `template.ts`, not `src/index.ts`.
 - **NEVER use barrel files.** Import directly from the file that defines the symbol.
 - **NEVER include file extensions** in import statements.
+
+## Scoped packages export one entrypoint
+
+A scoped package (`@<scope>/<name>`) has exactly one entry in its `package.json` `exports` map, `"."`, pointing at the entrypoint. **NEVER add a subpath export** such as `"./server"`, `"./lib/allowed-origin"`, or `"./theme.css"` to one, whether the package lives in `packages/` or `apps/`.
+
+Scoped packages are internal building blocks that roll up into the unscoped package customers install. The consumer's bundler tree-shakes whatever it does not import, so splitting a scoped package's surface into subpaths buys nothing for bundle size and leaves the package with several public faces to keep stable.
+
+Reaching for a subpath export means the package's boundary is in question. Settle it one of two ways:
+
+1. The code belongs to the package's domain. Export it from the entrypoint alongside everything else.
+2. The code is its own domain. Extract it into a new scoped package with its own single `"."` export.
+
+An unscoped package, the one customers install, may expose subpaths such as `<name>/server` when each one is a deliberate part of its public API.
 
 ## Scripts go in `scripts/`
 

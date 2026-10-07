@@ -42,6 +42,8 @@ The first argument is the package name, such as `utils`. The second optional arg
 
 Include `rolldown` and the `build` script only when the package ships a compiled artifact. A package consumed only inside the workspace exports raw `.ts` and needs neither.
 
+A scoped package keeps `"."` as its only export. Never add a subpath export to one; if the new code seems to need a second entrypoint, export it from `<name>.ts` or give it its own package.
+
 ### `tsconfig.json`
 
 ```json
