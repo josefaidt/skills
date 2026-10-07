@@ -13,17 +13,17 @@ Reference files fall into three kinds. **Document structures** are whole doc typ
 
 Document structures:
 
-| File                         | Use when                                                                                                                                          |
-| :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| File                         | Use when                                                                                                                                                                                            |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `references/prd.md`          | Writing or revising a PRD (independent doc type): its own executive summary, customer problem, numbered user stories with acceptance criteria, behavioral clarifications, open decisions and/or FAQ |
-| `references/business-doc.md` | Writing or revising an internal product or business doc (the substrate): base narrative structure and the executive-summary substance             |
-| `references/proposal.md`     | Writing a doc that evaluates multiple options and recommends one: extends `business-doc.md` with the tenets-and-options structure and marking      |
+| `references/business-doc.md` | Writing or revising an internal product or business doc (the substrate): base narrative structure and the executive-summary substance                                                               |
+| `references/proposal.md`     | Writing a doc that evaluates multiple options and recommends one: extends `business-doc.md` with the tenets-and-options structure and marking                                                       |
 
 Components (composed by the doc structures above):
 
-| File                 | Use when                                                                                                            |
-| :------------------- | :------------------------------------------------------------------------------------------------------------------ |
-| `references/tenets.md` | Writing the decision tenets that adjudicate a decision: definition, impostor taxonomy, discrimination test, format |
+| File                   | Use when                                                                                                                             |
+| :--------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| `references/tenets.md` | Writing the decision tenets that adjudicate a decision: definition, impostor taxonomy, discrimination test, format                   |
 | `references/faqs.md`   | Writing an FAQ or open-questions section that frames the boundaries of a decision: question-led entries, answer discipline, ordering |
 
 Prose mechanics:
@@ -281,10 +281,15 @@ After drafting, read the section headings as a flat list. If some are labels and
 - Do not use bullet lists as a substitute for writing prose. If the items form an argument, write them as a paragraph. If they're discrete facts, a list is fine.
 - List items should be parallel in grammatical structure.
 
-When a paragraph is prefaced with a count (`three concrete workflows`, `two features`), prefix each item's opening sentence with `N/` so the reader can track the enumeration. Continuation sentences within a single item stay unprefixed. This grounds the count from the preface in the body and marks the boundary between items so the reader can scan them.
+When a single paragraph is prefaced with a count (`three concrete workflows`, `two features`) and its items run inline as sentences within that paragraph, prefix each item's opening sentence with `N/` so the reader can track the enumeration. Continuation sentences within a single item stay unprefixed. This grounds the count from the preface in the body and marks the boundary between items so the reader can scan them.
 
 - Avoid: `The absence hits three concrete workflows. A developer who... A production team... A developer who...`
 - Prefer: `The absence hits three concrete workflows. 1/ A developer who... 2/ A production team... 3/ A developer who...`
+
+`N/` is an inline device only and never stands in for a markdown list. When items sit on their own lines or in their own paragraphs, they are a list: use a GFM ordered list (`1.`, `2.`, `3.`) when order or reference matters, and a bulleted list (`-`) otherwise. Never begin a line or paragraph with `N/`.
+
+- Avoid: a `## Changes` section of separate paragraphs that open `1/ ...`, `2/ ...`, `3/ ...`
+- Prefer: the same items as a GFM ordered list, `1. ...`, `2. ...`, `3. ...`
 
 ## Code references in prose
 
