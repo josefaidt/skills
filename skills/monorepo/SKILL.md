@@ -1,13 +1,13 @@
 ---
 name: monorepo
-description: Structure and maintain a JavaScript or TypeScript monorepo. Covers the apps and packages split and when code belongs in each, promoting shared code to a package, pinning shared dependency versions in one place, and isolated node_modules to prevent phantom dependencies. Load the matching reference file for package-manager syntax. Use when setting up a monorepo, deciding where new code belongs, adding or upgrading a dependency across packages, or debugging a resolution failure.
+description: Structure and maintain a JavaScript or TypeScript monorepo. Covers the apps and packages split and when code belongs in each, promoting shared code to a package, pinning shared dependency versions in one place, and isolated node_modules to prevent phantom dependencies. Load the matching reference file for package-manager syntax. Use when structuring a monorepo, deciding where new code belongs, adding or upgrading a dependency across packages, or debugging a resolution failure.
 ---
 
 # Monorepo
 
 Structure for a workspace repo: what lives where, how packages depend on each other, and how installs resolve. The rules here hold across package managers. Syntax lives in the reference files.
 
-For scaffolding an individual package, load `new-typescript-package`. For file-level TypeScript rules, load `writing-typescript`.
+For setting up a repository with this structure and its tooling, load `new-monorepo`. For scaffolding an individual package, load `new-typescript-package`. For file-level TypeScript rules, load `writing-typescript`.
 
 ## Reference files
 
