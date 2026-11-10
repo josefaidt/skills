@@ -21,6 +21,11 @@ skills/
     SKILL.md
     references/
       bun.md
+  new-monorepo/             monorepo setup walkthrough: tooling, hooks, CI, and skills
+    SKILL.md
+    references/
+  domain-modeling/          glossary and ADRs
+  retro/                    session retrospectives that codify lessons
 ```
 
 See [`skills/README.md`](./skills/README.md) for what each skill covers.

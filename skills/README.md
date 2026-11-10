@@ -2,17 +2,20 @@
 
 Reusable skill definitions for agents. Each skill lives in its own directory with a `SKILL.md` and any supporting reference files.
 
-| Skill                                                 | Group      | Covers                                      |
-| :---------------------------------------------------- | :--------- | :------------------------------------------ |
-| [`writing-prose`](./writing-prose/)                   | Writing    | Prose rules, PRDs, and internal documents   |
-| [`answering-with-sources`](./answering-with-sources/) | Answering  | Sourced answers with confidence levels      |
-| [`writing-typescript`](./writing-typescript/)         | TypeScript | File-level conventions, typing, and layout  |
-| [`new-typescript-package`](./new-typescript-package/) | TypeScript | Scaffolding a workspace package or app      |
-| [`monorepo`](./monorepo/)                             | TypeScript | Workspace structure and dependency installs |
+| Skill                                                 | Group      | Covers                                                       |
+| :---------------------------------------------------- | :--------- | :----------------------------------------------------------- |
+| [`writing-prose`](./writing-prose/)                   | Writing    | Prose rules, PRDs, and internal documents                    |
+| [`answering-with-sources`](./answering-with-sources/) | Answering  | Sourced answers with confidence levels                       |
+| [`writing-typescript`](./writing-typescript/)         | TypeScript | File-level conventions, typing, and layout                   |
+| [`new-typescript-package`](./new-typescript-package/) | TypeScript | Scaffolding a workspace package or app                       |
+| [`monorepo`](./monorepo/)                             | TypeScript | Workspace structure and dependency installs                  |
+| [`new-monorepo`](./new-monorepo/)                     | TypeScript | Walking through a Bun monorepo's tooling and agent hooks     |
+| [`domain-modeling`](./domain-modeling/)               | Design     | The glossary and ADRs a project's code and docs share        |
+| [`retro`](./retro/)                                   | Agents     | Codifying what a session taught into the agent's environment |
 
 ## Writing skills
 
-One skill covers writing. [`writing-prose`](./writing-prose/) holds the rules that apply to anything you write that is not code: voice, sentence construction, punctuation, rhythm, openings, paragraph leads, comparison closures, headings, terminology, and changelogs. Those rules load with the skill and always apply. The name pairs with `writing-typescript` on the axis that separates them, prose against code.
+One skill covers writing. [`writing-prose`](./writing-prose/) holds the rules that apply to anything you write that is not code: voice, sentence construction, punctuation, rhythm, openings, paragraph leads, comparison closures, headings, terminology, identifiers the reader has not seen, stating the current position, and changelogs. Those rules load with the skill and always apply. The name pairs with `writing-typescript` on the axis that separates them, prose against code.
 
 Document structure lives in reference files, so a task only pays for the shape it needs. Asking for a PRD loads the PRD structure; asking for a proposal loads the business-doc structure; neither loads the other.
 
@@ -36,24 +39,35 @@ The anti-pattern catalog draws on two open-source skills that document AI writin
 
 ## TypeScript skills
 
-Three skills cover working in a TypeScript workspace, layered by scope: source files, one package, the whole repo.
+Four skills cover working in a TypeScript workspace, layered by scope: source files, one package, the whole repo, and the tooling a repo starts with.
 
 | Skill                                                 | Covers                                                                                                                                                           |
 | :---------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`writing-typescript`](./writing-typescript/)         | Source files: imports, no `any`, Zod validation, `as const`, class modifiers, kebab-case names, no barrels, one export per scoped package, `scripts/` placement. |
 | [`new-typescript-package`](./new-typescript-package/) | A new package: scaffolding `package.json`, `tsconfig.json`, the entrypoint, and an optional rolldown build.                                                      |
 | [`monorepo`](./monorepo/)                             | The repo: the `apps` and `packages` split, shared version pinning, and isolated `node_modules`.                                                                  |
+| [`new-monorepo`](./new-monorepo/)                     | A new repo: Bun, TypeScript 7, oxfmt, type-aware oxlint, Vitest, commitlint, git hooks, Claude Code hooks, CI, `AGENTS.md`, and the skills it vendors.           |
 
-`writing-typescript` sets `user-invocable: false`, so an agent loads it on its own when writing or reviewing TypeScript. `new-typescript-package` takes arguments, `<name>` and an optional `apps` or `packages` target directory that defaults to `packages`.
+`writing-typescript` sets `user-invocable: false`, so an agent loads it on its own when writing or reviewing TypeScript. `new-typescript-package` takes arguments, `<name>` and an optional `apps` or `packages` target directory that defaults to `packages`. `new-monorepo` takes an optional target directory and `--scope`.
 
-They cross-reference each other rather than repeating rules, and the scope boundary decides ownership: `writing-typescript` owns what applies to source files and a package's internal layout, `new-typescript-package` owns the file set a new package starts with, and `monorepo` owns everything above the package boundary.
+They cross-reference each other rather than repeating rules, and the scope boundary decides ownership: `writing-typescript` owns what applies to source files and a package's internal layout, `new-typescript-package` owns the file set a new package starts with, `monorepo` owns everything above the package boundary, and `new-monorepo` owns the root files and tooling a repo starts with.
+
+`new-monorepo` walks through the setup one step at a time, and its reference files hold a working example of each root file for the agent to adapt, grouped by step. Change an example when the tooling it sets up changes, and check it by following the skill in an empty directory.
 
 ### References
 
 `monorepo` keeps package-manager syntax out of the skill body. The concepts hold anywhere; each reference file supplies the configuration for one package manager.
 
-| File                                                         | Covers                                                                                      |
-| :----------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
-| [`monorepo/references/bun.md`](./monorepo/references/bun.md) | `workspaces` and catalog config, `workspace:*`, the `bunfig.toml` linker, and filtered runs |
+| File                                                         | Covers                                                                                                           |
+| :----------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| [`monorepo/references/bun.md`](./monorepo/references/bun.md) | `workspaces` and catalog config, `workspace:*`, the `bunfig.toml` linker and install settings, and filtered runs |
 
 Bun is the only one documented so far. Add a sibling file and a row to the skill's reference table to cover another.
+
+## Design skills
+
+[`domain-modeling`](./domain-modeling/) builds and sharpens a project's domain model while you design: it challenges terms against the glossary, tests concepts with edge-case scenarios, keeps a `GLOSSARY.md` at the root of each area, and records hard-to-reverse decisions as ADRs in `docs/adr/`. Its reference files hold the glossary and ADR formats.
+
+## Agent environment skills
+
+[`retro`](./retro/) runs a retrospective at the end of a session and proposes changes to what the next agent reads or runs, such as steering files, skills, standards, the glossary, and automated checks, each tied to a correction or a cost from the session. It runs only when the user invokes it, with optional focus topics to examine in depth.
