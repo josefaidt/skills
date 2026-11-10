@@ -25,6 +25,10 @@ Three skills cover the repo once it exists: `monorepo` decides where code goes a
 | GitHub Actions              | Every check on each pull request, in one job                                                    | `.github/`                                    |
 | skills CLI                  | Agent skills vendored into the repo and pinned                                                  | `.agents/skills/`, `skills-lock.json`         |
 
+## Starting from the template
+
+[josefaidt/bun-oxc-monorepo-template](https://github.com/josefaidt/bun-oxc-monorepo-template) holds the result of these steps, apart from the skills. For a new repository, `bun create josefaidt/bun-oxc-monorepo-template <directory>` copies it without its history, renames the root package to the directory name, and runs `git init` and `bun install`. It also attempts a first commit, which the `commit-msg` hook rejects, so the files stay staged. Then describe the project in `README.md` and `AGENTS.md`, rename the `@workspace` scope in `tsconfig.base.json` and `AGENTS.md` if the user wants another, and continue from step 8.
+
 ## Before you start
 
 - Run `bun --version` and `git --version`. The setup needs Bun 1.4 or later for `bun check`. When Bun is missing or older, ask the user before installing it with `brew install oven-sh/bun/bun` or the installer on bun.sh, or upgrading it with `bun upgrade`.
