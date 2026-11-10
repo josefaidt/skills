@@ -1,6 +1,6 @@
 ---
 name: new-monorepo
-description: Walk through setting up a Bun and TypeScript monorepo with apps/ and packages/, or bringing an existing repository onto the same tooling, one piece at a time with a working example of each file. Covers Bun workspaces and a version catalog, a strict tsconfig, oxfmt, type-aware oxlint on its strict categories, Vitest, commitlint and git hooks, the setup and check-changes scripts, Claude Code hooks that format each edit and check each turn, GitHub Actions, AGENTS.md, and the agent skills the repo works with. Use when asked to create, scaffold, or bootstrap a monorepo, workspace, or TypeScript project, or to add this tooling to an existing one.
+description: Walk through setting up a Bun and TypeScript monorepo with apps/ and packages/, or bringing an existing repository onto the same tooling, one piece at a time with a working example of each file. Covers Bun workspaces and a version catalog, a strict tsconfig, oxfmt, type-aware oxlint on its strict categories, Vitest, commitlint and git hooks, a setup script, Claude Code hooks that format each edit and check each turn, GitHub Actions, AGENTS.md, and the agent skills the repo works with. Use when asked to create, scaffold, or bootstrap a monorepo, workspace, or TypeScript project, or to add this tooling to an existing one.
 argument-hint: "[directory] [--scope <scope>]"
 ---
 
@@ -21,7 +21,7 @@ Three skills cover the repo once it exists: `monorepo` decides where code goes a
 | Vitest                      | Each package's `test` script                                                                    | Each package                                  |
 | commitlint                  | Conventional Commits on every message                                                           | `.commitlintrc.json`, `.git-hooks/commit-msg` |
 | Git hooks                   | Format and lint check on staged files, and a reinstall after a rebase that changes a dependency | `.git-hooks/`                                 |
-| Claude Code hooks           | Setup on session start, format on each edit, `check-changes` before each turn ends              | `.claude/`                                    |
+| Claude Code hooks           | Setup on session start, format on each edit, and every static check before each turn ends       | `.claude/`                                    |
 | GitHub Actions              | Every check on each pull request, in one job                                                    | `.github/`                                    |
 | skills CLI                  | Agent skills vendored into the repo and pinned                                                  | `.agents/skills/`, `skills-lock.json`         |
 
@@ -44,9 +44,9 @@ Run `bun install`. It writes `bun.lock` and runs the `prepare` script, which poi
 
 ### 2. TypeScript
 
-Write `tsconfig.base.json` and `scripts/tsconfig.json` from `references/root-files.md`.
+Write `tsconfig.base.json` from `references/root-files.md`.
 
-The base config is the strict baseline every package extends, and it names no ambient types, so each package lists its own runtime's. Its `customConditions` entry, `@<scope>/source`, lets a package with a build step point the type checker and the tests at its TypeScript source while an app loads `dist/`. `bun check` is the type checker: each package's `typecheck` script runs it, and the root script runs every package's and then checks `scripts/`.
+The base config is the strict baseline every package extends, and it names no ambient types, so each package lists its own runtime's. Its `customConditions` entry, `@<scope>/source`, lets a package with a build step point the type checker and the tests at its TypeScript source while an app loads `dist/`. `bun check` is the type checker: each package's `typecheck` script runs it, and the root script runs every package's.
 
 ### 3. Formatting and lint
 
@@ -71,13 +71,9 @@ Write `.commitlintrc.json` and the three hooks in `.git-hooks/` from `references
 - `commit-msg` runs commitlint, which holds each message to Conventional Commits.
 - `post-rewrite` runs `bun ci` after a rebase that changed `bun.lock` or a `package.json`, since nothing else reinstalls mid-session.
 
-### 5. Setup and the checks on what changed
+### 5. The setup script
 
-Write `scripts/setup.sh`, `scripts/check-changes.sh`, and `scripts/check-catalog.ts` from `references/scripts.md`, and make the shell scripts executable.
-
-- `setup.sh` bootstraps a checkout in one command: dependencies, each missing `.env.local` from its `.env.example`, and the packages with a build step. Every step is idempotent, so the README and the session hook both run it, and re-running it repairs a half-set-up checkout.
-- `check-changes.sh` runs the static checks CI runs on the files changed since a base, which defaults to where the branch left `origin/main`, and prints nothing when they pass. It formats the changed files, lints them, type checks the repo when a TypeScript file or a config the type checker reads changed, and runs each script in its `PATH_CHECKS` list whose paths changed.
-- `check-catalog.ts` fails a package that pins a cataloged dependency by version instead of `catalog:`, and a dependency that two packages pin by version, which belongs in the catalog.
+Write `scripts/setup.sh` from `references/scripts.md`, and make it executable. It bootstraps a checkout in one command: dependencies, each missing `.env.local` from its `.env.example`, and the packages with a build step. Every step is idempotent, so the README and the session hook both run it, and re-running it repairs a half-set-up checkout.
 
 ### 6. Agent configuration
 
@@ -87,12 +83,12 @@ In `AGENTS.md`, describe the project in one paragraph saying what it is and who 
 
 The hooks run the checks so an agent never spends a tool call on them:
 
-| Event                                                | Script                      | Does                                                                                                                                 |
-| :--------------------------------------------------- | :-------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| `SessionStart`, and `PostToolUse` on `EnterWorktree` | `setup-workspace.sh`        | Runs `scripts/setup.sh` in a fresh worktree, and `bun ci` and the build in a warm one                                                |
-| `PostToolUse` on `Edit`, `Write`, and `MultiEdit`    | `format-file.sh`            | Formats the file, so the agent reads formatted code back                                                                             |
-| `UserPromptSubmit`                                   | `check-changes.sh snapshot` | Records the working tree as the turn's base                                                                                          |
-| `Stop`                                               | `check-changes.sh check`    | Runs `scripts/check-changes.sh` on what the turn changed, and on a failure exits 2, which keeps the turn going until the checks pass |
+| Event                                                | Script                    | Does                                                                                                                                                                                      |
+| :--------------------------------------------------- | :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SessionStart`, and `PostToolUse` on `EnterWorktree` | `setup-workspace.sh`      | Runs `scripts/setup.sh` in a fresh worktree, and `bun ci` and the build in a warm one                                                                                                     |
+| `PostToolUse` on `Edit`, `Write`, and `MultiEdit`    | `format-file.sh`          | Formats the file, so the agent reads formatted code back                                                                                                                                  |
+| `UserPromptSubmit`                                   | `turn-checks.sh snapshot` | Records the working tree as the turn's base                                                                                                                                               |
+| `Stop`                                               | `turn-checks.sh check`    | Formats and lints the files the turn changed, type checks the repo when a file the type checker reads changed, and on a failure exits 2, which keeps the turn going until the checks pass |
 
 `session-workspace.sh` is sourced by the other three to find the checkout a forked session works in. `.worktreeinclude` lists the gitignored files Claude Code copies into a new worktree, such as `.env.local`.
 
@@ -124,9 +120,8 @@ bun run setup
 bun run fmt:check
 bun run lint
 bun run typecheck
-bun run check-catalog
 bun run test
-bun run check-changes
+bun run build
 echo "chore: set up the monorepo" | bun x commitlint
 ```
 
@@ -136,7 +131,7 @@ echo "chore: set up the monorepo" | bun x commitlint
 
 Walk the same steps, and merge each example into the file the repository already has rather than replacing it:
 
-- `package.json`: add the catalog entries, scripts, and devDependencies the repo lacks, and keep its own. `bun run check-catalog` then names each dependency two packages pin by version, which moves into the catalog.
+- `package.json`: add the catalog entries, scripts, and devDependencies the repo lacks, and keep its own. Move each dependency that two packages pin by version into the catalog.
 - `tsconfig.base.json`: add the compiler options the repo lacks. A stricter option surfaces type errors across the repo, so land it in its own commit and fix what it reports there.
 - `bunfig.toml`: switching to the isolated linker surfaces every phantom dependency at once, as `monorepo` describes. Give that its own commit too.
 - `.oxlintrc.jsonc`: turning on the categories can report hundreds of errors in code written without them. Turn them on one at a time, and switch off a rule that fires across correct code before fixing what remains.
@@ -148,7 +143,7 @@ Do the adoption apart from feature work, and run the verification step once each
 
 Each piece has one place to change, so the repo stays in step with itself.
 
-- **A new check script**: name it `check-<what>` in the root `package.json`, add a step to `.github/workflows/ci.yml`, and add a line to `PATH_CHECKS` in `scripts/check-changes.sh` with the paths that should run it.
+- **A TypeScript script in `scripts/`**: give `scripts/` a `tsconfig.json` that extends `../tsconfig.base.json` with `"types": ["bun"]`, and add `&& bun check -p scripts` to the root `typecheck` script.
 - **A new setup step**: add it to `scripts/setup.sh`, kept idempotent, and to the warm branch of `.claude/hooks/setup-workspace.sh` when a pull can make it stale, such as generated types.
 - **A rule that fits one package**: add an `overrides` entry to `.oxlintrc.jsonc` with that package's `files` glob, such as a framework's file naming.
 - **A package that builds**: its `exports` map lists the `@<scope>/source` condition first, pointing at the TypeScript entrypoint, so the type checker and the tests read source while an app loads `dist/`. `new-typescript-package` covers it.

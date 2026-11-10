@@ -57,10 +57,6 @@ jobs:
         if: ${{ !cancelled() }}
         run: bun run fmt:check
 
-      - name: Catalog check
-        if: ${{ !cancelled() }}
-        run: bun run check-catalog
-
       - name: Lint
         if: ${{ !cancelled() }}
         run: bun run lint --format github

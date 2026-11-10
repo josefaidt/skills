@@ -6,7 +6,7 @@ Examples for the workspace and TypeScript steps. Replace `<name>` with the root 
 
 The catalog holds the version range of every dependency that more than one package uses, and each package depends on it as `catalog:`. The ranges below were current when this example was written, so raise any that `bun outdated` reports behind once the install finishes.
 
-Some scripts run files that later steps write: `setup`, `check-catalog`, and `check-changes` from the scripts step, and the hooks path that `prepare` sets from the git hooks step. `zod` is a root dependency because `scripts/check-catalog.ts` parses each manifest with it.
+Two scripts point at files that later steps write: `setup` runs `scripts/setup.sh`, and `prepare` points git at the hooks in `.git-hooks/`.
 
 ```json
 {
@@ -34,13 +34,11 @@ Some scripts run files that later steps write: `setup`, `check-catalog`, and `ch
     "prepare": "git config core.hooksPath .git-hooks",
     "build": "bun run --filter './packages/*' --if-present build",
     "test": "bun run --filter '*' --if-present test",
-    "typecheck": "bun run --filter '*' --if-present typecheck && bun check -p scripts",
+    "typecheck": "bun run --filter '*' --if-present typecheck",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint --deny-warnings",
-    "lint:fix": "oxlint --fix",
-    "check-catalog": "bun run scripts/check-catalog.ts",
-    "check-changes": "./scripts/check-changes.sh"
+    "lint:fix": "oxlint --fix"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",
@@ -49,8 +47,7 @@ Some scripts run files that later steps write: `setup`, `check-catalog`, and `ch
     "oxfmt": "catalog:",
     "oxlint": "catalog:",
     "oxlint-tsgolint": "catalog:",
-    "typescript": "catalog:",
-    "zod": "catalog:"
+    "typescript": "catalog:"
   },
   "packageManager": "bun@<bun version>"
 }
@@ -125,20 +122,5 @@ The strict baseline every package extends. It names no ambient types, so each pa
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true
   }
-}
-```
-
-## `scripts/tsconfig.json`
-
-The root scripts sit outside every workspace, so they get a project of their own, which the root `typecheck` script checks with `bun check -p scripts`.
-
-```json
-{
-  "$schema": "https://json.schemastore.org/tsconfig.json",
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "types": ["bun"]
-  },
-  "include": ["./**/*.ts"]
 }
 ```

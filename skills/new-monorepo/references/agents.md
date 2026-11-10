@@ -42,7 +42,7 @@ Skills vendored from other repositories are pinned in `skills-lock.json`. Change
 
 Search the tree with `git grep`, which never opens a gitignored file such as `.env.local`.
 
-Hooks run the static checks, so a Claude Code session never spends a tool call on them. A `PostToolUse` hook formats each file an `Edit` or `Write` changes, and a `Stop` hook runs `bun run check-changes` over everything the turn changed and hands any failure back before the turn can end. Do not run the formatter, the linter, or the type checker to confirm an edit; when the hook blocks, fix what it reports. Tests are not part of it, so run the ones a change needs. An agent without these hooks, such as Codex, runs `bun run check-changes` before it finishes.
+Hooks run the static checks, so a Claude Code session never spends a tool call on them. A `PostToolUse` hook formats each file an `Edit` or `Write` changes, and a `Stop` hook formats, lints, and type checks everything the turn changed and hands any failure back before the turn can end. Do not run the formatter, the linter, or the type checker to confirm an edit; when the hook blocks, fix what it reports. Tests are not part of it, so run the ones a change needs. An agent without these hooks, such as Codex, runs `bun run fmt`, `bun run lint`, and `bun run typecheck` before it finishes.
 
 ## Project structure
 
@@ -57,10 +57,9 @@ This project uses `bun`, never `npm` or `pnpm`, at the version pinned in `.bun-v
 
 - `bun run --filter <package-name> <script>` runs one workspace's script; `--filter '*'` fans out to all.
 - `bun run test` runs each workspace's Vitest `test` script. Never run `bun test`, which starts Bun's own runner.
-- `bun run typecheck` checks every workspace with `bun check`, then the root `scripts/` project.
+- `bun run typecheck` checks every workspace with `bun check`.
 - `bun run build` builds each package with a build step into its `dist/`.
 - `bun run fmt` and `bun run lint` (oxfmt and type-aware oxlint), with `fmt:check` and `lint:fix`.
-- `bun run check-changes [<base>]` runs the static checks CI runs on what changed since `<base>`, which defaults to where the branch left `origin/main`, and prints nothing when all of it passes.
 - One-off `.ts` scripts run directly with `bun run <file>`.
 
 ## Markdown
@@ -90,9 +89,6 @@ The allow list covers the commands an agent runs on every task, and the deny lis
       "Bash(bun run test)",
       "Bash(bun run test *)",
       "Bash(bun run typecheck)",
-      "Bash(bun run check-catalog)",
-      "Bash(bun run check-changes)",
-      "Bash(bun run check-changes *)",
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git fetch origin main)",
@@ -145,7 +141,7 @@ The allow list covers the commands an agent runs on every task, and the deny lis
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-changes.sh snapshot",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/turn-checks.sh snapshot",
             "timeout": 30
           }
         ]
@@ -156,7 +152,7 @@ The allow list covers the commands an agent runs on every task, and the deny lis
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-changes.sh check",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/turn-checks.sh check",
             "timeout": 300
           }
         ]
@@ -239,7 +235,7 @@ echo "[setup-workspace] cold workspace, running scripts/setup.sh" >&2
 ```bash
 #!/usr/bin/env bash
 # Formats the file an Edit or Write just changed, so the agent reads formatted code back and never
-# runs the formatter itself. check-changes.sh formats anything else a turn changes, such as a file
+# runs the formatter itself. turn-checks.sh formats anything else a turn changes, such as a file
 # a shell command wrote, and reports a file the formatter cannot parse.
 set -euo pipefail
 
@@ -256,12 +252,12 @@ cd "$workspace"
 bun run fmt "$file" >/dev/null 2>&1 || true
 ```
 
-## `.claude/hooks/check-changes.sh`
+## `.claude/hooks/turn-checks.sh`
 
 ```bash
 #!/usr/bin/env bash
-# Runs scripts/check-changes.sh over what each turn changed, so the agent never spends a tool call
-# on the formatter, the linter, or the type checker.
+# Formats, lints, and type checks what each turn changed, so the agent never spends a tool call on
+# the formatter, the linter, or the type checker.
 #
 # On UserPromptSubmit (`snapshot`) it records the working tree as the turn's base. On Stop (`check`)
 # it checks every file that differs from that base, whether an Edit, a Write, a shell command, or a
@@ -280,37 +276,100 @@ input="$(cat)"
 workspace="$(resolve_session_workspace "$input")"
 workspace="$(git -C "$workspace" rev-parse --show-toplevel 2>/dev/null)" || exit 0
 cd "$workspace"
-# a worktree cut from a commit before the script landed has nothing to run
-[[ -x scripts/check-changes.sh ]] || exit 0
+
+# The extensions oxfmt formats and oxlint lints, matching .git-hooks/pre-commit
+FORMATTED='\.(ts|tsx|js|jsx|cjs|mjs|cts|mts|json|jsonc|yaml|yml|toml|css|scss|less|md|mdx|graphql|vue|svelte|html)$'
+LINTED='\.(ts|tsx|js|jsx|cjs|mjs|cts|mts|vue|svelte|astro)$'
+# A change to one of these can break a file that did not change, so it runs that check on the repo
+FORMATS_ALL='^\.oxfmtrc\.jsonc?$'
+LINTS_ALL='(^|/)\.oxlintrc\.jsonc?$'
+TYPECHECKS='\.(ts|tsx|cts|mts)$|(^|/)tsconfig[^/]*\.json$|(^|/)package\.json$|^bun\.lock$'
 
 session=default
 if [[ $input =~ \"session_id\":\ *\"([A-Za-z0-9_-]+)\" ]]; then
   session="${BASH_REMATCH[1]}"
 fi
 # inside the git dir, so the state of a worktree goes away with it
-state="$(git rev-parse --path-format=absolute --git-path claude-check-changes)"
+state="$(git rev-parse --path-format=absolute --git-path claude-turn-checks)"
 mkdir -p "$state"
 base="$state/$session.base"
 pending="$state/$session.pending"
 
-snapshot() {
-  ./scripts/check-changes.sh --print-tree >"$base"
+# Hashes the working tree into a tree object by staging everything into a copy of the index. The copy
+# keeps the real index untouched, and starting from it lets git rehash only the files whose stat data
+# changed.
+write_tree() {
+  local dir index
+  dir="$(mktemp -d)"
+  index="$(git rev-parse --git-path index)"
+  if [[ -f $index ]]; then cp "$index" "$dir/index"; fi
+  GIT_INDEX_FILE="$dir/index" git add --all >/dev/null
+  GIT_INDEX_FILE="$dir/index" git write-tree
+  rm -rf "$dir"
+}
+
+changed=""
+failed=0
+
+# Prints the changed paths that match an extended regex.
+matching() {
+  printf '%s\n' "$changed" | grep -E "$1" || true
+}
+
+# Runs a command, and prints its output only when it fails. Output that says every file was ignored
+# counts as a pass.
+run() {
+  local output
+  if output="$("$@" 2>&1)"; then return 0; fi
+  case "$output" in
+  *"Expected at least one target file"* | *"No files found to lint"*) return 0 ;;
+  esac
+  printf '$ %s\n%s\n\n' "$*" "$output"
+  failed=1
+}
+
+# Runs a command with newline-separated paths appended as arguments, keeping any spaces in a path.
+run_on() {
+  local paths="$1"
+  shift
+  run xargs -0 "$@" < <(printf '%s\n' "$paths" | sed 's|^|./|' | tr '\n' '\0')
+}
+
+# Formats and lints the files that changed since a tree, and type checks the repo when a file the
+# type checker reads changed. Prints the output of each check that fails.
+check_since() {
+  changed="$(git diff --name-only --no-renames --diff-filter=d "$1" "$(write_tree)")"
+  [[ -n $changed ]] || return 0
+  if [[ -n "$(matching "$FORMATS_ALL")" ]]; then
+    run bun run fmt
+  elif [[ -n "$(matching "$FORMATTED")" ]]; then
+    run_on "$(matching "$FORMATTED")" bun run fmt
+  fi
+  if [[ -n "$(matching "$LINTS_ALL")" ]]; then
+    run bun run lint
+  elif [[ -n "$(matching "$LINTED")" ]]; then
+    run_on "$(matching "$LINTED")" bun run lint
+  fi
+  if [[ -n "$(matching "$TYPECHECKS")" ]]; then
+    run bun run typecheck
+  fi
+  return "$failed"
 }
 
 case "${1:-}" in
 snapshot)
-  [[ -f $pending ]] || snapshot
+  [[ -f $pending ]] || write_tree >"$base"
   ;;
 check)
   # without a base, such as in the first turn after the hook was installed, there is no telling
   # what this turn changed, so start tracking from here
   if [[ ! -s $base ]] || ! git cat-file -e "$(cat "$base")^{tree}" 2>/dev/null; then
-    snapshot
+    write_tree >"$base"
     exit 0
   fi
-  if output="$(./scripts/check-changes.sh "$(cat "$base")" 2>&1)"; then
+  if output="$(check_since "$(cat "$base")" 2>&1)"; then
     rm -f "$pending"
-    snapshot
+    write_tree >"$base"
     exit 0
   fi
   touch "$pending"
@@ -318,7 +377,7 @@ check)
   exit 2
   ;;
 *)
-  echo "usage: check-changes.sh snapshot|check" >&2
+  echo "usage: turn-checks.sh snapshot|check" >&2
   exit 1
   ;;
 esac
