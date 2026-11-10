@@ -18,7 +18,7 @@ The root is private, holds no source, and declares the workspace globs and the c
       "rolldown": "^1.2.1"
     }
   },
-  "packageManager": "bun@1.3.14"
+  "packageManager": "bun@1.4.3"
 }
 ```
 
@@ -87,12 +87,27 @@ node_modules/
 
 `is-number` is a transitive dependency of `is-odd`, so it lives in the store and is reachable from `is-odd`, but no symlink for it appears in the top-level `node_modules/`. Nothing that failed to declare it can import it.
 
+## Other install settings
+
+Three more `[install]` settings belong beside the linker:
+
+```toml
+[install]
+linker = "isolated"
+exact = true
+minimumReleaseAge = 259200
+```
+
+`exact = true` makes `bun add` write the version it resolved rather than a caret range, so a member's manifest never drifts from the lockfile, and shared ranges live only in the catalog. `minimumReleaseAge` is in seconds, and holds back any version published more recently than that, three days here, so a compromised release has time to be caught and pulled before it reaches the lockfile.
+
+Bun keeps the store outside the repository by default. Set `globalStore = false` when a bundler refuses to read files outside its project root, as Next.js does with Turbopack, so packages install inside the repository.
+
 ## Installing
 
 ```sh
 bun install                      # whole workspace
 bun install --filter './apps/*'  # one subset
-bun install --frozen-lockfile    # CI; fails if the lockfile is stale
+bun ci                           # CI; same as --frozen-lockfile, fails if the lockfile is stale
 ```
 
 Run installs from the repo root and commit `bun.lock`.
@@ -105,7 +120,7 @@ bun run --filter '@workspace/core' test      # by package name
 bun run --filter './packages/*' build        # by path glob
 ```
 
-`--filter` accepts package names and path globs, and `-F` is the short form. Output from parallel runs is elided to 10 lines per script by default; `--elide-lines=0` shows all of it.
+`--filter` accepts package names and path globs, and `-F` is the short form. A filtered run skips a matched member that lacks the script, but fails when no matched member has it, as in a new repository with no packages yet. Add `--if-present` to a root script that fans out, such as `bun run --filter '*' --if-present test`, so it passes in that case too. Output from parallel runs is elided to 10 lines per script by default; `--elide-lines=0` shows all of it.
 
 ## Inspecting the graph
 

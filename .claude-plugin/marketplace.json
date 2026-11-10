@@ -1,0 +1,50 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "josefaidt-skills",
+  "description": "Agent skills for writing, sourced answers, TypeScript monorepos, domain modeling, and session retrospectives",
+  "owner": {
+    "name": "josefaidt"
+  },
+  "plugins": [
+    {
+      "name": "writing",
+      "description": "Writing standards for prose and internal documents: voice, sentence construction, structure, and GFM markdown, with PRD and business-doc structures",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/writing-prose"]
+    },
+    {
+      "name": "answering",
+      "description": "Answers to factual and research questions grounded in cited sources, with a confidence level on each claim",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/answering-with-sources"]
+    },
+    {
+      "name": "typescript",
+      "description": "TypeScript conventions, Bun monorepo structure and setup, and scaffolding for new workspace packages",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/writing-typescript",
+        "./skills/new-typescript-package",
+        "./skills/monorepo",
+        "./skills/new-monorepo"
+      ]
+    },
+    {
+      "name": "design",
+      "description": "A project's domain model: the glossary its code and docs share, and ADRs for hard-to-reverse decisions",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/domain-modeling"]
+    },
+    {
+      "name": "agents",
+      "description": "Session retrospectives that codify what a session taught into the files and checks the next agent reads",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/retro"]
+    }
+  ]
+}

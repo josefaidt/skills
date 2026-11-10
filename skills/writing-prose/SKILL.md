@@ -1,6 +1,6 @@
 ---
 name: writing-prose
-description: Writing standards for prose and internal documents, covering any writing that is not code. Voice, sentence construction, punctuation, rhythm, openings, paragraph leads, comparison closures, headings, and GFM markdown, plus document structure for PRDs and for internal product and business docs. Use when the user asks to write, draft, or revise any prose, document, PRD, proposal, or analysis.
+description: Writing standards for prose and internal documents, covering any writing that is not code. Voice, sentence construction, punctuation, rhythm, openings, paragraph leads, comparison closures, headings, identifiers a reader has not seen, stating the current position, and GFM markdown, plus document structure for PRDs and for internal product and business docs. Use whenever you write or revise prose a person will read, whether the user asked for it or it is part of other work, such as a document, PRD, proposal, analysis, README, issue or pull request body, or the report that ends a task.
 ---
 
 # Writing prose
@@ -39,13 +39,13 @@ Every anti-pattern in this skill is a _tell_, a construction that reads as AI-ge
 
 Sweep the tripwires before publishing, with `references/anti-patterns.md` open. Scan the draft against it section by section, resolve every tell fired (rewritten, or accepted with a documented reason), and confirm a final read-through fires no new tells. Between revisions the sweep is optional; before publishing it isn't. Sweeping mid-draft distracts from substance and produces mechanical, over-corrected prose.
 
-The sweep is the author's own step, and delegating a review does not satisfy it. Run your own sweep first; the review pass below is the backstop. When you delegate that review to a subagent, name the tell classes in the prompt (paragraph rhythm and label-led leads, punctuation tells, banned words, comparison closures, headings), because a reviewer catches only what its instructions name.
+The sweep is the author's own step, and delegating a review does not satisfy it. Run your own sweep first; the review pass below is the backstop. When the user asks you to delegate that review to a subagent, name the tell classes in the prompt (paragraph rhythm and label-led leads, punctuation tells, banned words, comparison closures, headings), because a reviewer catches only what its instructions name.
 
 When a tell fires, restructure the sentence or section rather than swapping one banned pattern for another. An em dash traded for a punchy colon, or a triad traded for an anaphora chain, is not a fix.
 
 ### Review pass
 
-After running the sweep above, run a review pass (self-review, and optionally a delegated subagent review as a backstop). The review checks for structural issues, redundancy, and tone, not content accuracy. Only the author knows if the content is correct.
+After running the sweep above, run a review pass yourself. A subagent review runs as a backstop only when the user asks for one. The review checks for structural issues, redundancy, and tone, not content accuracy. Only the author knows if the content is correct.
 
 Review for:
 
@@ -67,7 +67,15 @@ Before finalizing a revision, trace the new information through the document. Do
 
 This is the authoring habit. The revision-coherence check in the review pass is the backstop.
 
-## Version supersession
+## The current position
+
+Body prose states what is true now, written as you would write it fresh. Leave out who decided a point, when, and in which conversation, such as "as the owner chose on 2026-11-04" or "the team approved this in Tuesday's sync", and never quote a chat to support a claim. A reader coming back later cannot recall that day, and version control, the pull request, and the changelog already record it. Keep a date that records a fact outside the project, such as when a browser shipped a feature. A decision record, such as an ADR, keeps its date and context, since recording the decision is its job.
+
+### Moving content between documents
+
+Content that moves into a document from somewhere else, such as an issue body, a chat, or a document of another type, is rewritten in the structure the target sets, never carried over in its old shape. When asked to move content, say what the target form needs before you move it, and push back on a move that would only copy. Then check its claims as "Verify inherited claims" below describes.
+
+### Version supersession
 
 When creating a superseding revision of a document (v2 revising v1, v3 revising v2), treat the prior version as source material to bring forward, not as an authoritative companion doc.
 
@@ -214,6 +222,13 @@ Once a concept has a name, refer to it by that name, not by the section that def
 
 - Avoid: "The §4.3 primitive serves bidirectional gRPC..."
 - Prefer: "The managed real-time primitive (proposed in §4.3) serves bidirectional gRPC..."
+
+### Identifiers the reader has not seen
+
+Put a few words beside every identifier the reader cannot be assumed to know, such as a requirement ID, a rule ID, a task label, a ticket number, or a term only a draft defines, saying what it is. This holds hardest in writing addressed to a person, such as a pull request body, an issue comment, a chat reply, or a report at the end of a task, where the reader should never have to open another document to follow you.
+
+- Avoid: "This closes CLIENT-007 and leaves T6 for later."
+- Prefer: "This closes CLIENT-007 (the recovery link on the first screen) and leaves T6 (the rate limit on new accounts) for later."
 
 ## Evidence and claims
 

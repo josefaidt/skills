@@ -15,8 +15,8 @@
     "prepare": "git config core.hooksPath .git-hooks",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "lint": "oxlint",
-    "lint:fix": "oxlint --fix"
+    "lint": "oxlint --no-error-on-unmatched-pattern",
+    "lint:fix": "oxlint --fix --no-error-on-unmatched-pattern"
   },
   "devDependencies": {
     "@types/bun": "catalog:",
