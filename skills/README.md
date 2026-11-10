@@ -1,6 +1,6 @@
 # Skills
 
-Reusable skill definitions for agents. Each skill lives in its own directory with a `SKILL.md` and any supporting reference files.
+Reusable skill definitions for agents. Each skill lives in its own directory with a `SKILL.md` and any supporting reference files. The Group column names the Claude Code plugin each skill ships in, in lowercase, as the root README describes.
 
 | Skill                                                 | Group      | Covers                                                       |
 | :---------------------------------------------------- | :--------- | :----------------------------------------------------------- |

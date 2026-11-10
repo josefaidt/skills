@@ -7,6 +7,8 @@ Skills follow the [Agent Skills](https://code.claude.com/docs/en/skills) format:
 ## Layout
 
 ```
+.claude-plugin/
+  marketplace.json          the plugins, each a group of skills
 skills/
   writing-prose/            prose rules, plus doc structure on demand
     SKILL.md
@@ -15,6 +17,7 @@ skills/
       business-doc.md
       anti-patterns.md
       markdown-gfm.md
+  answering-with-sources/   sourced answers with confidence levels
   writing-typescript/       file-level TypeScript conventions
   new-typescript-package/   workspace package scaffolding
   monorepo/                 workspace structure and dependency installs
@@ -32,15 +35,59 @@ See [`skills/README.md`](./skills/README.md) for what each skill covers.
 
 Each skill directory stands alone. A skill never requires another skill to be installed, so any one of them can be copied out on its own.
 
-## Using a skill
+## Installing
 
-Copy or symlink a skill directory into the agent's skills path. For Claude Code that is `.claude/skills/` in a project or `~/.claude/skills/` for every project:
+### Claude Code plugins
 
-```sh
-ln -s "$PWD/skills/writing-prose" ~/.claude/skills/writing-prose
+The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json). Each plugin bundles the skills of one group:
+
+| Plugin       | Skills                                                                     |
+| :----------- | :------------------------------------------------------------------------- |
+| `writing`    | `writing-prose`                                                            |
+| `answering`  | `answering-with-sources`                                                   |
+| `typescript` | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
+| `design`     | `domain-modeling`                                                          |
+| `agents`     | `retro`                                                                    |
+
+Install a plugin from inside Claude Code:
+
+```
+/plugin install writing --marketplace josefaidt/skills
+/plugin install answering --marketplace josefaidt/skills
+/plugin install typescript --marketplace josefaidt/skills
+/plugin install design --marketplace josefaidt/skills
+/plugin install agents --marketplace josefaidt/skills
 ```
 
-Skills with a `name` and `description` in frontmatter are discovered automatically. The agent reads the description to decide when a skill is relevant, so the description carries the trigger conditions.
+A plugin's skills take its name as a prefix, so `new-monorepo` runs as `/typescript:new-monorepo`. A plugin carries no version of its own, so its version is the commit it was read from, and every push to `main` is a new version.
+
+To name the skills a project uses, declare the marketplace and its plugins in the project's `.claude/settings.json`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "josefaidt-skills": {
+      "source": { "source": "github", "repo": "josefaidt/skills" }
+    }
+  },
+  "enabledPlugins": {
+    "writing@josefaidt-skills": true,
+    "typescript@josefaidt-skills": true
+  }
+}
+```
+
+Once someone trusts the folder, Claude Code adds the marketplace, but each person still installs the plugins, such as with `claude plugin install typescript@josefaidt-skills --scope project`. Until they do, `/plugin` reports each one as enabled in project settings but not installed.
+
+### Copies in a repository
+
+For an agent other than Claude Code, such as Codex, or to pin a skill's text inside a repository, vendor the skills with the [skills CLI](https://github.com/vercel-labs/skills). It copies each one into `.agents/skills/`, links it into `.claude/skills/`, and pins its source in `skills-lock.json`:
+
+```sh
+bunx skills add josefaidt/skills --skill writing-prose --skill writing-typescript -a claude-code -a codex -y
+```
+
+Skills with a `name` and `description` in frontmatter are discovered automatically either way. The agent reads the description to decide when a skill is relevant, so the description carries the trigger conditions.
 
 ## Development
 
@@ -66,3 +113,4 @@ Tool versions are pinned in the root `package.json` catalog. Reference them from
 4. Add `user-invocable: false` for skills an agent should load on its own, and `argument-hint` for skills a user invokes with arguments.
 5. Keep the skill self-contained. Do not write a prerequisite that tells the agent to load a file in a sibling skill directory, because the relative path breaks the moment someone installs one skill without the other. Rules two skills share belong in a reference file inside one of them, or the two skills belong together as one.
 6. Add a row to [`skills/README.md`](./skills/README.md).
+7. Add the skill's path to one plugin's `skills` list in [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json), or add a plugin for a new group, and the row to the plugin table above. Then run `claude plugin validate .`, which checks the manifest's shape but not that each skill path exists, so check the path by hand.
