@@ -120,6 +120,7 @@ Even more content.
 ## Line breaks and paragraphs
 
 - Use blank lines to separate paragraphs
+- Write each paragraph, list item, and table cell as one unbroken line, even in a file that is already hard-wrapped. Never wrap prose at a column width. A hard wrap turns a one-word edit into a reflowed paragraph in every diff, and formatters such as Prettier and oxfmt keep the breaks they find rather than reflowing them
 - Never use trailing spaces for line breaks
 - Use `<br>` only when absolutely necessary (rare)
 
@@ -170,6 +171,7 @@ Before completing any markdown file, verify:
 - [ ] All code blocks use triple backticks with language identifiers
 - [ ] All lists use `-` for unordered, `1.` for ordered
 - [ ] No line or paragraph begins with an `N/` marker
+- [ ] No paragraph or list item is hard-wrapped across lines
 - [ ] All tables are properly formatted with alignment
 - [ ] No HTML except necessary `<br>` tags
 - [ ] Headings follow proper hierarchy (no skipped levels)

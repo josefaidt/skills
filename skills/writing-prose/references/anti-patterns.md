@@ -52,6 +52,7 @@ Scan the draft against these lists. Each entry that appears is a tell.
 - **Marketing language:** `revolutionary`, `cutting-edge`, `best-in-class`, `world-class`, `next-generation`, `powerful`.
 - **Filler words:** `basically`, `simply`, `just`, `very`, `really`, `actually`, `quite`, `fairly`.
 - **Empty intensifiers:** `highly`, `extremely`, `incredibly`.
+- **Connotation:** `cheap` for a price or a cost (inexpensive, low-cost), since it also reads as low quality.
 - **Inflated vocabulary** (plain word in parens): `utilize` (use), `demonstrate` (show), `commence` (start), `endeavor` (try), `ascertain` (find out), `leverage` (use, as verb), `robust` (reliable), `comprehensive` (thorough), `meticulous` (careful), `pivotal` (key), `underscore` (highlight), `delve` (look at).
 
 ## Punctuation tripwires
