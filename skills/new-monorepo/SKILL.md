@@ -23,11 +23,11 @@ Three skills cover the repo once it exists: `monorepo` decides where code goes a
 | Git hooks                   | Format and lint check on staged files, and a reinstall after a rebase that changes a dependency | `.git-hooks/`                                 |
 | Claude Code hooks           | Setup on session start, format on each edit, and every static check before each turn ends       | `.claude/`                                    |
 | GitHub Actions              | Every check on each pull request, in one job                                                    | `.github/`                                    |
-| skills CLI                  | Agent skills vendored into the repo and pinned                                                  | `.agents/skills/`, `skills-lock.json`         |
+| Claude Code plugins         | Agent skills from the `josefaidt-skills` marketplace                                            | `.claude/settings.json`                       |
 
 ## Starting from the template
 
-[josefaidt/bun-oxc-monorepo-template](https://github.com/josefaidt/bun-oxc-monorepo-template) holds the result of these steps, apart from the skills. For a new repository, `bun create josefaidt/bun-oxc-monorepo-template <directory>` copies it without its history, renames the root package to the directory name, and runs `git init` and `bun install`. It also attempts a first commit, which the `commit-msg` hook rejects, so the files stay staged. Then describe the project in `README.md` and `AGENTS.md`, rename the `@workspace` scope in `tsconfig.base.json` and `AGENTS.md` if the user wants another, and continue from step 8.
+[josefaidt/bun-oxc-monorepo-template](https://github.com/josefaidt/bun-oxc-monorepo-template) holds the result of these steps. For a new repository, `bun create josefaidt/bun-oxc-monorepo-template <directory>` copies it without its history, renames the root package to the directory name, and runs `git init` and `bun install`. It also attempts a first commit, which the `commit-msg` hook rejects, so the files stay staged. Then describe the project in `README.md` and `AGENTS.md`, rename the `@workspace` scope in `tsconfig.base.json` and `AGENTS.md` if the user wants another, and continue from step 8.
 
 ## Before you start
 
@@ -102,14 +102,17 @@ Write `.github/actions/setup/action.yml` and `.github/workflows/ci.yml` from `re
 
 ### 8. Skills
 
-Vendor the skills `AGENTS.md` lists, for Claude Code and Codex:
+The skills come as Claude Code plugins from the `josefaidt-skills` marketplace. The `.claude/settings.json` example declares the marketplace and enables four plugins, `writing`, `typescript`, `design`, and `agents`, and the `AGENTS.md` example lists their skills under their plugin names, such as `typescript:writing-typescript`. Settings don't install a plugin, so install them for the user with the commands in the `AGENTS.md` example:
 
 ```sh
-bunx skills add josefaidt/skills --skill writing-typescript --skill new-typescript-package --skill monorepo --skill writing-prose --skill domain-modeling --skill retro -a claude-code -a codex -y
-bunx skills add github/awesome-copilot --skill conventional-commit -a claude-code -a codex -y
+claude plugin marketplace add josefaidt/skills
+claude plugin install writing@josefaidt-skills --scope project
+claude plugin install typescript@josefaidt-skills --scope project
+claude plugin install design@josefaidt-skills --scope project
+claude plugin install agents@josefaidt-skills --scope project
 ```
 
-The CLI writes each skill to `.agents/skills/`, links it into `.claude/skills/`, and pins its source in `skills-lock.json`. Then run `bun run fmt` once, since the repository's formatter can lay out a skill's markdown differently from the repository it came from. Add or drop a skill only with the user's say, and keep the Skills table in `AGENTS.md` matching what is installed.
+Add or drop a plugin only with the user's say, and keep `enabledPlugins`, the install commands, and the Skills table in `AGENTS.md` matching. When the user also works in Codex, which doesn't read Claude Code plugins, vendor the skills there with `bunx skills add josefaidt/skills`, as the skills repository's README describes.
 
 ### 9. The first package
 

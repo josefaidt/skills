@@ -6,7 +6,7 @@ Examples for the agent configuration step. Make each script in `.claude/hooks/` 
 
 Replace the placeholder under "What this is" with one paragraph saying what the project is and who it is for, and keep the Skills table matching the skills the repository installs. `CLAUDE.md` is a symlink to this file.
 
-```markdown
+````markdown
 # AGENTS.md
 
 Guidance for coding agents working in this repository. `CLAUDE.md` is a symlink to this file, so Claude Code, Codex, and anything else reading `AGENTS.md` all get the same instructions. Edit this file, never the symlink.
@@ -21,20 +21,29 @@ This file holds what every session needs before it picks a skill, plus pointers.
 
 ## Skills
 
-Project skills live in `.agents/skills/`, symlinked into `.claude/skills/`. Load the matching skill before starting the work it covers.
+The skills are Claude Code plugins from the `josefaidt-skills` marketplace in [josefaidt/skills](https://github.com/josefaidt/skills), which `.claude/settings.json` declares along with the plugins this repository uses. Settings don't install a plugin, so each person installs them once:
 
-| Skill                    | Load when                                                               |
-| :----------------------- | :---------------------------------------------------------------------- |
-| `writing-typescript`     | Writing or reviewing any TypeScript                                     |
-| `new-typescript-package` | Adding a workspace package or app                                       |
-| `monorepo`               | Deciding where code belongs, or adding or upgrading a dependency        |
-| `writing-prose`          | Writing any prose, such as a README, an issue, or a pull request body   |
-| `domain-modeling`        | Naming or renaming a domain concept, or editing `GLOSSARY.md` or an ADR |
-| `conventional-commit`    | Writing a commit message                                                |
+```sh
+claude plugin marketplace add josefaidt/skills
+claude plugin install writing@josefaidt-skills --scope project
+claude plugin install typescript@josefaidt-skills --scope project
+claude plugin install design@josefaidt-skills --scope project
+claude plugin install agents@josefaidt-skills --scope project
+```
 
-`retro` runs only when the user invokes it by name, and codifies what a session taught into the files future agents read.
+Load the matching skill before starting the work it covers.
 
-Skills vendored from other repositories are pinned in `skills-lock.json`. Change them upstream and run `bunx skills update` rather than editing the copies here.
+| Skill                               | Load when                                                               |
+| :---------------------------------- | :---------------------------------------------------------------------- |
+| `typescript:writing-typescript`     | Writing or reviewing any TypeScript                                     |
+| `typescript:new-typescript-package` | Adding a workspace package or app                                       |
+| `typescript:monorepo`               | Deciding where code belongs, or adding or upgrading a dependency        |
+| `writing:writing-prose`             | Writing any prose, such as a README, an issue, or a pull request body   |
+| `design:domain-modeling`            | Naming or renaming a domain concept, or editing `GLOSSARY.md` or an ADR |
+
+`agents:retro` runs only when the user invokes it by name, and codifies what a session taught into the files future agents read.
+
+Codex and other agents don't read Claude Code plugins. To use the skills there, copy them in with `bunx skills add josefaidt/skills`, as the skills repository's README describes.
 
 ## Local setup
 
@@ -69,11 +78,11 @@ Write each paragraph and list item in any markdown as one unbroken line, even in
 ## Commits and pull requests
 
 Commit messages and pull request titles follow Conventional Commits, `type(scope): summary`, and the `commit-msg` hook checks them with commitlint. When a branch needs commits from `main`, rebase it onto `origin/main` and push with `git push --force-with-lease`. Do not merge `main` into it.
-```
+````
 
 ## `.claude/settings.json`
 
-The allow list covers the commands an agent runs on every task, and the deny list keeps dotenv files out of its context. The hooks wire in the four scripts below.
+The allow list covers the commands an agent runs on every task, and the deny list keeps dotenv files out of its context. The hooks wire in the four scripts below. The last two keys declare the `josefaidt-skills` marketplace and the plugins the repository uses, and they stay after `hooks`, where `claude plugin install` writes them, so an install leaves the file unchanged.
 
 ```json
 {
@@ -158,6 +167,20 @@ The allow list covers the commands an agent runs on every task, and the deny lis
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "writing@josefaidt-skills": true,
+    "typescript@josefaidt-skills": true,
+    "design@josefaidt-skills": true,
+    "agents@josefaidt-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "josefaidt-skills": {
+      "source": {
+        "source": "github",
+        "repo": "josefaidt/skills"
+      }
+    }
   }
 }
 ```
