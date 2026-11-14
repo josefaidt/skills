@@ -1,6 +1,6 @@
 ---
 name: new-typescript-package
-description: Scaffold a new TypeScript package or app in a Bun workspace, creating package.json, tsconfig.json, the entrypoint, and an optional rolldown build, with bun check for type checking and Vitest for tests. Use when asked to create a new package or app in a monorepo.
+description: Scaffold a new TypeScript package or app in a Bun workspace, creating package.json, tsconfig.json, and the entrypoint, or a bin/ executable and start script for an app that runs a server or CLI, plus an optional rolldown build, with bun check for type checking and Vitest for tests. Use when asked to create a new package or app in a monorepo.
 argument-hint: <name> [apps|packages]
 ---
 
@@ -14,8 +14,9 @@ The first argument is the package name, such as `utils`. The second optional arg
 
 1. Read the root `package.json` for the workspace scope (the `name` prefix the other packages share, such as `@workspace`) and the catalog entries, and `tsconfig.base.json` for a `customConditions` entry such as `@workspace/source`.
 2. Determine the destination: `packages/<name>` or `apps/<name>`.
-3. Decide the runtime the code runs on, such as Bun, Node, a browser, or a worker. It sets the ambient types in `tsconfig.json`.
-4. Create the files below.
+3. For an app, decide whether it starts something, such as a server or a CLI. An app that does takes the files in "A runnable app" below in place of `<name>.ts`. An app with nothing to start takes the package files below without the `exports` field, since nothing imports an app.
+4. Decide the runtime the code runs on, such as Bun, Node, a browser, or a worker. It sets the ambient types in `tsconfig.json`.
+5. Create the files below.
 
 ### `package.json`
 
@@ -108,6 +109,49 @@ export default defineConfig({
 })
 ```
 
+## A runnable app
+
+An app that starts something, such as a server or a CLI, ships an executable at `bin/<name>.ts` where a package ships its root entrypoint. Its `package.json` declares the executable in `bin`, runs it from a `start` script, and has no `exports` field.
+
+### `package.json`
+
+```json
+{
+  "name": "@<scope>/<name>",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "<name>": "./bin/<name>.ts"
+  },
+  "scripts": {
+    "start": "bun run bin/<name>.ts",
+    "typecheck": "bun check"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+```
+
+`bun run --filter @<scope>/<name> start` then starts the app from the repo root. Add the `test` script and Vitest the same way as for a package.
+
+### `tsconfig.json`
+
+Use the package `tsconfig.json` above as is. Its `./**/*.ts` include covers `bin/`, while a root-only pattern such as `*.ts` would leave the executable unchecked.
+
+### `bin/<name>.ts`
+
+The executable. Open it with a shebang so the `bin` link runs it under Bun, and start with an empty export:
+
+```typescript
+#!/usr/bin/env bun
+export {}
+```
+
+Mark it executable with `chmod +x bin/<name>.ts`, so the file runs directly and git records the mode.
+
 ## After scaffolding
 
 Run `bun install` from the repo root to link the new workspace package, then `bun run --filter @<scope>/<name> typecheck`.
@@ -116,6 +160,7 @@ Run `bun install` from the repo root to link the new workspace package, then `bu
 
 - Use `catalog:` for any dependency the root `package.json` catalog already pins. Add the entry to the catalog first if it is missing.
 - Use `workspace:*` to depend on another package in the same workspace.
-- The entrypoint **must** be `<name>.ts` at the package root, never `src/index.ts`.
+- The entrypoint **must** be `<name>.ts` at the package root, never `src/index.ts`. A runnable app's executable **must** be `bin/<name>.ts` instead, declared in `bin` and run by `start`.
+- An app declares no `exports` field, whether or not it has something to start.
 - Never use barrel files. Import directly from specific files.
 - Put build, codegen, and one-off scripts in `scripts/`, wired up through a `package.json` script, and widen the tsconfig `include` to cover them.

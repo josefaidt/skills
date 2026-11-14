@@ -1,6 +1,6 @@
 ---
 name: monorepo
-description: Structure and maintain a JavaScript or TypeScript monorepo. Covers the apps and packages split and when code belongs in each, promoting shared code to a package, pinning shared dependency versions in one place, and isolated node_modules to prevent phantom dependencies. Load the matching reference file for package-manager syntax. Use when structuring a monorepo, deciding where new code belongs, adding or upgrading a dependency across packages, or debugging a resolution failure.
+description: Structure and maintain a JavaScript or TypeScript monorepo. Covers the apps and packages split and when code belongs in each, why an app declares no exports and a runnable one uses bin/, promoting shared code to a package, pinning shared dependency versions in one place, and isolated node_modules to prevent phantom dependencies. Load the matching reference file for package-manager syntax. Use when structuring a monorepo, deciding where new code belongs, adding or upgrading a dependency across packages, or debugging a resolution failure.
 ---
 
 # Monorepo
@@ -32,6 +32,8 @@ Check the repo's lockfile and `packageManager` field before reaching for a refer
 ```
 
 `apps/*` holds deployable units. An app is something you run: a server, a CLI, a site, a worker. It sits at the top of the dependency graph, nothing imports it, and it owns environment config, entrypoints, and deploy manifests.
+
+Since nothing imports an app, an app exposes nothing for import, and its manifest declares no `exports`. An app that starts a process, such as a server or a CLI, names its executable in the manifest's `bin` field instead, keeps it at `bin/<name>.ts`, and adds a `start` script that runs it, which gives every runnable app in the repo the same start command. `new-typescript-package` scaffolds it.
 
 `packages/*` holds shared libraries. A package is something you import. It has an entrypoint other workspace members consume, no deploy target, and no knowledge of which app is calling it.
 
