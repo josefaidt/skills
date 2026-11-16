@@ -1,6 +1,6 @@
 ---
 name: writing-typescript
-description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline and explicit ambient types, import ordering and import type, the no-any rule and unknown at trust boundaries, JSDoc on exported types, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, supporting modules in lib/, the bin/ executable and start script of an app that runs a server or CLI, the single-entrypoint rule for scoped packages' exports, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, editing a package.json exports map or bin field, or restructuring a package's layout.
+description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline and explicit ambient types, import ordering and import type, the no-any rule and unknown at trust boundaries, JSDoc on exported types, plain // and /* */ comments for explaining code, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, supporting modules in lib/, the bin/ executable and start script of an app that runs a server or CLI, the single-entrypoint rule for scoped packages' exports, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, editing a package.json exports map or bin field, or restructuring a package's layout.
 user-invocable: false
 ---
 
@@ -92,6 +92,33 @@ export interface CreateTenantInput {
    */
   allowed_origins?: string[]
 }
+```
+
+## Comments that explain the code
+
+A `/** */` block is JSDoc, which the editor shows on hover wherever the declaration is used, so keep it for the API documentation that "Documenting exported types" describes. A comment that explains how or why the code behaves, such as why a write takes a lock or what a script does when it runs, is for someone reading the source and stays out of the hover.
+
+- Write a one-line comment with `//`.
+- Write a comment longer than one line as a plain `/* */` block, with `/*` and `*/` on their own lines and `*` before each line of text. Never stack `//` lines, and never open the block with `/**`, which turns it into JSDoc.
+- Apply this wherever the comment sits, whether that is a module header, above an internal function or constant, or inside a function body.
+- Leave lint and type-checker directives, such as `// oxlint-disable-next-line` and `// @ts-expect-error`, as `//` lines, since the tools read them only in that form. Put the reason for a directive in its own comment directly above it.
+
+```typescript
+/*
+ * Every write reads, checks, and writes inside one `immediate` transaction, which holds SQLite's
+ * write lock throughout, so two moves can't race even when another process shares the database.
+ */
+function makeStore(db: DatabaseSync) {
+  // prepared once, since every move reads the game first
+  const selectGame = db.prepare("select * from games where id = ?")
+}
+
+/*
+ * BroadcastChannel reaches only same-origin frames and takes no target origin, while the rule is
+ * written for window.postMessage.
+ */
+// oxlint-disable-next-line unicorn/require-post-message-target-origin
+channel.postMessage(claim)
 ```
 
 ## Validation
