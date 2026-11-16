@@ -1,6 +1,6 @@
 ---
 name: writing-typescript
-description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline and explicit ambient types, import ordering and import type, the no-any rule and unknown at trust boundaries, JSDoc on exported types, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, the bin/ executable and start script of an app that runs a server or CLI, the single-entrypoint rule for scoped packages' exports, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, editing a package.json exports map or bin field, or restructuring a package's layout.
+description: Conventions for authoring TypeScript source files and laying out a package's files. Covers tsconfig baseline and explicit ambient types, import ordering and import type, the no-any rule and unknown at trust boundaries, JSDoc on exported types, Zod schema validation with contextual error messages, as const for fixed data and derived types, long-form class access modifiers, kebab-case filenames, entrypoint naming, supporting modules in lib/, the bin/ executable and start script of an app that runs a server or CLI, the single-entrypoint rule for scoped packages' exports, the no-barrel-file rule, script placement in scripts/, and generated-file handling. Apply when writing or reviewing TypeScript, parsing external data, adding a build or codegen script, editing a package.json exports map or bin field, or restructuring a package's layout.
 user-invocable: false
 ---
 
@@ -185,6 +185,7 @@ Mark a member `private` unless something outside the class calls it. `#` fields 
 - **Filenames are kebab-case**: `generate-script.ts`, `parse-config.ts`. Never `generateScript.ts` or `GenerateScript.ts`, including for a file whose only export is a class or a component.
 - The entrypoint of a package, and of an app with nothing to start, is `<package-name>.ts` at the package root. A package named `template` has `template.ts`, not `src/index.ts`.
 - An app that starts something, such as a server or a CLI, has an executable at `bin/<package-name>.ts` in place of the root entrypoint, as "Runnable apps start from `bin/`" below describes.
+- Every module the entrypoint or executable imports lives under `lib/`, never in a directory beside `package.json`, as "Supporting modules go in `lib/`" below describes.
 - **NEVER use barrel files.** Import directly from the file that defines the symbol.
 - **NEVER include file extensions** in import statements.
 
@@ -219,9 +220,29 @@ An app that starts something, such as a server or a CLI, ships an executable whe
 
 - Declare the executable in the `bin` field and leave out the `exports` field. An `exports` map advertises an import surface, and an app has no importer to serve.
 - Add a `start` script that runs the executable, so every runnable app in the workspace starts with the same command.
-- Keep `bin/` to the executable itself. The modules it imports live outside `bin/`, and build, codegen, and one-off scripts still go in `scripts/`.
+- Keep `bin/` to the executable itself. The modules it imports live in `lib/`, and build, codegen, and one-off scripts still go in `scripts/`.
 
 An app with nothing to start, such as a worker its platform loads by path from a config file, keeps the `<name>.ts` entrypoint at its root like a package, and declares no `exports` either.
+
+## Supporting modules go in `lib/`
+
+Everything the entrypoint or executable imports lives under `lib/`. A package with more than a handful of modules groups them by concern, such as `lib/server/` and `lib/ui/`, and each test sits beside the module it covers.
+
+```text
+apps/<name>/
+├── bin/<name>.ts
+├── lib/
+│   ├── server/
+│   └── ui/
+├── scripts/
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
+
+The package root holds only the manifest, the tsconfig, the README, config files whose tools look for them at the root (such as `vite.config.ts` and `vitest.config.ts`), the entrypoint, and the `bin/`, `lib/`, and `scripts/` directories. A source directory such as `server/` or `ui/` beside `package.json` belongs under `lib/`.
+
+`lib/` differs from a `src/` layout. The entrypoint stays at the root as `<name>.ts`, and only the modules it imports move down. `lib/` has no entrypoint or barrel of its own, such as `lib/index.ts`, so the entrypoint imports each module from the file that defines it.
 
 ## Scripts go in `scripts/`
 
@@ -232,7 +253,7 @@ Any build, codegen, or one-off script belongs in a `scripts/` subdirectory, neve
 - Path-relative logic inside the script needs no change when the file moves into `scripts/`. `bun run <script>` executes with cwd at the package root regardless of where the script file lives, so `process.cwd()` and output paths such as `colors/` or `dist/` still resolve the same way.
 - Keep the tsconfig `include` covering the new directory. A flat `*.ts` glob stops matching once scripts move down a level, while `./**/*.ts` already covers them.
 
-This keeps the package root readable at a glance, holding the manifest, the tsconfig, and the shipped entrypoint, instead of mixing tooling in with them.
+This keeps tooling apart from both the shipped entrypoint at the root and the source in `lib/`.
 
 ## Generated files
 

@@ -162,5 +162,6 @@ Run `bun install` from the repo root to link the new workspace package, then `bu
 - Use `workspace:*` to depend on another package in the same workspace.
 - The entrypoint **must** be `<name>.ts` at the package root, never `src/index.ts`. A runnable app's executable **must** be `bin/<name>.ts` instead, declared in `bin` and run by `start`.
 - An app declares no `exports` field, whether or not it has something to start.
+- Put every module the entrypoint or executable imports under `lib/`, never in a directory beside `package.json`. The `./**/*.ts` include already covers it.
 - Never use barrel files. Import directly from specific files.
 - Put build, codegen, and one-off scripts in `scripts/`, wired up through a `package.json` script, and widen the tsconfig `include` to cover them.
