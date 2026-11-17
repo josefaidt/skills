@@ -12,7 +12,7 @@ Reusable skill definitions for agents. Each skill lives in its own directory wit
 | [`new-monorepo`](./new-monorepo/)                     | TypeScript     | Walking through a Bun monorepo's tooling and agent hooks     |
 | [`domain-modeling`](./domain-modeling/)               | Design         | The glossary and ADRs a project's code and docs share        |
 | [`retro`](./retro/)                                   | Agents         | Codifying what a session taught into the agent's environment |
-| [`learn-mcp-apps`](./learn-mcp-apps/)                 | MCP extensions | Building and debugging MCP Apps, and what hosts actually do  |
+| [`learn-mcp-apps`](./learn-mcp-apps/)                 | Learn MCP Apps | Building and debugging MCP Apps, and what hosts actually do  |
 
 ## Writing skills
 
@@ -73,7 +73,7 @@ Bun is the only one documented so far. Add a sibling file and a row to the skill
 
 [`retro`](./retro/) runs a retrospective at the end of a session and proposes changes to what the next agent reads or runs, such as steering files, skills, standards, the glossary, and automated checks, each tied to a correction or a cost from the session. It runs only when the user invokes it, with optional focus topics to examine in depth.
 
-## MCP extension skills
+## MCP Apps skills
 
 [`learn-mcp-apps`](./learn-mcp-apps/) covers MCP Apps, the extension that lets an MCP server's tools render an interactive HTML View inside a host such as Claude or ChatGPT. Its `SKILL.md` is a map: the mental model, the facts that most often trip up a build, and a table pointing at reference files for the protocol, the `@modelcontextprotocol/ext-apps` SDK, design patterns, observed host behavior, security, authorization, and canonical links. It complements the MCP project's own scaffolding skills by holding the reasoning and the dated host observations, and it says where each new lesson goes so it keeps growing with each demo. It sets `user-invocable: false`, so an agent loads it on its own when work touches an MCP App.
 

@@ -51,7 +51,7 @@ The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.
 | `typescript`     | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
 | `design`         | `domain-modeling`                                                          |
 | `agents`         | `retro`                                                                    |
-| `mcp-extensions` | `learn-mcp-apps`                                                           |
+| `learn-mcp-apps` | `learn-mcp-apps`                                                           |
 
 Install a plugin from inside Claude Code:
 
@@ -61,7 +61,7 @@ Install a plugin from inside Claude Code:
 /plugin install typescript --marketplace josefaidt/skills
 /plugin install design --marketplace josefaidt/skills
 /plugin install agents --marketplace josefaidt/skills
-/plugin install mcp-extensions --marketplace josefaidt/skills
+/plugin install learn-mcp-apps --marketplace josefaidt/skills
 ```
 
 A plugin's skills take its name as a prefix, so `new-monorepo` runs as `/typescript:new-monorepo`. A plugin carries no version of its own, so its version is the commit it was read from, and every push to `main` is a new version.

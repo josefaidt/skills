@@ -47,8 +47,8 @@
       "skills": ["./skills/retro"]
     },
     {
-      "name": "mcp-extensions",
-      "description": "MCP extensions in practice: the MCP Apps protocol and SDK, design patterns for Views, observed host behavior, and canonical references",
+      "name": "learn-mcp-apps",
+      "description": "MCP Apps in practice: the protocol and SDK, design patterns for Views, observed host behavior, and canonical references",
       "source": "./",
       "strict": false,
       "skills": ["./skills/learn-mcp-apps"]
