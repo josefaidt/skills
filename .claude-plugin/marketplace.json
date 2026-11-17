@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "josefaidt-skills",
-  "description": "Agent skills for writing, sourced answers, TypeScript monorepos, domain modeling, and session retrospectives",
+  "description": "Agent skills for writing, sourced answers, TypeScript monorepos, domain modeling, session retrospectives, and MCP Apps",
   "owner": {
     "name": "josefaidt"
   },
@@ -45,6 +45,13 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/retro"]
+    },
+    {
+      "name": "learn-mcp-apps",
+      "description": "MCP Apps in practice: the protocol and SDK, design patterns for Views, observed host behavior, and canonical references",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/learn-mcp-apps"]
     }
   ]
 }
