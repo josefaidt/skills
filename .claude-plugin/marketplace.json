@@ -51,7 +51,7 @@
       "description": "MCP extensions in practice: the MCP Apps protocol and SDK, design patterns for Views, observed host behavior, and canonical references",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/mcp-apps"]
+      "skills": ["./skills/learn-mcp-apps"]
     }
   ]
 }

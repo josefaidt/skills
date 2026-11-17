@@ -29,7 +29,7 @@ skills/
     references/
   domain-modeling/          glossary and ADRs
   retro/                    session retrospectives that codify lessons
-  mcp-apps/                 MCP Apps protocol, SDK, patterns, and host notes
+  learn-mcp-apps/           MCP Apps protocol, SDK, patterns, and host notes
     SKILL.md
     references/
 ```
@@ -51,7 +51,7 @@ The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.
 | `typescript`     | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
 | `design`         | `domain-modeling`                                                          |
 | `agents`         | `retro`                                                                    |
-| `mcp-extensions` | `mcp-apps`                                                                 |
+| `mcp-extensions` | `learn-mcp-apps`                                                           |
 
 Install a plugin from inside Claude Code:
 

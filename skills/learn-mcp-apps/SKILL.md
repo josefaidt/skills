@@ -1,6 +1,7 @@
 ---
-name: mcp-apps
+name: learn-mcp-apps
 description: Build, debug, and reason about MCP Apps, the Model Context Protocol extension (io.modelcontextprotocol/ui, SEP-1865) that lets a server's tools render an interactive HTML View inside a host such as Claude or ChatGPT. Covers the protocol and its lifecycle, the @modelcontextprotocol/ext-apps SDK, design patterns for Views and app-only tools, observed host behavior such as what Claude Desktop offers a View, security, and where the official references live. Use when building or changing an MCP App's server or View, answering how the spec or SDK behaves, deciding what a View can do in a given host, or debugging a View that doesn't render, size, theme, or reach the model.
+user-invocable: false
 ---
 
 # MCP Apps

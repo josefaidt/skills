@@ -12,7 +12,7 @@ Reusable skill definitions for agents. Each skill lives in its own directory wit
 | [`new-monorepo`](./new-monorepo/)                     | TypeScript     | Walking through a Bun monorepo's tooling and agent hooks     |
 | [`domain-modeling`](./domain-modeling/)               | Design         | The glossary and ADRs a project's code and docs share        |
 | [`retro`](./retro/)                                   | Agents         | Codifying what a session taught into the agent's environment |
-| [`mcp-apps`](./mcp-apps/)                             | MCP extensions | Building and debugging MCP Apps, and what hosts actually do  |
+| [`learn-mcp-apps`](./learn-mcp-apps/)                 | MCP extensions | Building and debugging MCP Apps, and what hosts actually do  |
 
 ## Writing skills
 
@@ -75,16 +75,16 @@ Bun is the only one documented so far. Add a sibling file and a row to the skill
 
 ## MCP extension skills
 
-[`mcp-apps`](./mcp-apps/) covers MCP Apps, the extension that lets an MCP server's tools render an interactive HTML View inside a host such as Claude or ChatGPT. Its `SKILL.md` is a map: the mental model, the facts that most often trip up a build, and a table pointing at reference files for the protocol, the `@modelcontextprotocol/ext-apps` SDK, design patterns, observed host behavior, security, and canonical links. It complements the MCP project's own scaffolding skills by holding the reasoning and the dated host observations, and it says where each new lesson goes so it keeps growing with each demo.
+[`learn-mcp-apps`](./learn-mcp-apps/) covers MCP Apps, the extension that lets an MCP server's tools render an interactive HTML View inside a host such as Claude or ChatGPT. Its `SKILL.md` is a map: the mental model, the facts that most often trip up a build, and a table pointing at reference files for the protocol, the `@modelcontextprotocol/ext-apps` SDK, design patterns, observed host behavior, security, authorization, and canonical links. It complements the MCP project's own scaffolding skills by holding the reasoning and the dated host observations, and it says where each new lesson goes so it keeps growing with each demo. It sets `user-invocable: false`, so an agent loads it on its own when work touches an MCP App.
 
 ### References
 
-| File                                                                   | Covers                                                                                                                               |
-| :--------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| [`mcp-apps/references/protocol.md`](./mcp-apps/references/protocol.md) | Resource and tool `_meta.ui`, negotiation, lifecycle, every `ui/*` method, host context, caching, and the spec's own inconsistencies |
-| [`mcp-apps/references/sdk.md`](./mcp-apps/references/sdk.md)           | The SDK's entry points, `App`, server helpers, style helpers, `AppBridge`, and the transport                                         |
-| [`mcp-apps/references/patterns.md`](./mcp-apps/references/patterns.md) | Design patterns tied to the constraints that cause them                                                                              |
-| [`mcp-apps/references/hosts.md`](./mcp-apps/references/hosts.md)       | Dated observations of Claude and other hosts, and open questions                                                                     |
-| [`mcp-apps/references/security.md`](./mcp-apps/references/security.md) | What the host enforces and what the server and View must do                                                                          |
-| [`mcp-apps/references/auth.md`](./mcp-apps/references/auth.md)         | Whose token a View's calls carry, lazy sign-in, Enterprise-Managed Authorization and ID-JAG, and audit trails                        |
-| [`mcp-apps/references/sources.md`](./mcp-apps/references/sources.md)   | Verified links to the spec, SDK, docs, examples, and tools                                                                           |
+| File                                                                               | Covers                                                                                                                               |
+| :--------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| [`learn-mcp-apps/references/protocol.md`](./learn-mcp-apps/references/protocol.md) | Resource and tool `_meta.ui`, negotiation, lifecycle, every `ui/*` method, host context, caching, and the spec's own inconsistencies |
+| [`learn-mcp-apps/references/sdk.md`](./learn-mcp-apps/references/sdk.md)           | The SDK's entry points, `App`, server helpers, style helpers, `AppBridge`, and the transport                                         |
+| [`learn-mcp-apps/references/patterns.md`](./learn-mcp-apps/references/patterns.md) | Design patterns tied to the constraints that cause them                                                                              |
+| [`learn-mcp-apps/references/hosts.md`](./learn-mcp-apps/references/hosts.md)       | Dated observations of Claude and other hosts, and open questions                                                                     |
+| [`learn-mcp-apps/references/security.md`](./learn-mcp-apps/references/security.md) | What the host enforces and what the server and View must do                                                                          |
+| [`learn-mcp-apps/references/auth.md`](./learn-mcp-apps/references/auth.md)         | Whose token a View's calls carry, lazy sign-in, Enterprise-Managed Authorization and ID-JAG, and audit trails                        |
+| [`learn-mcp-apps/references/sources.md`](./learn-mcp-apps/references/sources.md)   | Verified links to the spec, SDK, docs, examples, and tools                                                                           |
