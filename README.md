@@ -29,6 +29,9 @@ skills/
     references/
   domain-modeling/          glossary and ADRs
   retro/                    session retrospectives that codify lessons
+  mcp-apps/                 MCP Apps protocol, SDK, patterns, and host notes
+    SKILL.md
+    references/
 ```
 
 See [`skills/README.md`](./skills/README.md) for what each skill covers.
@@ -41,13 +44,14 @@ Each skill directory stands alone. A skill never requires another skill to be in
 
 The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json). Each plugin bundles the skills of one group:
 
-| Plugin       | Skills                                                                     |
-| :----------- | :------------------------------------------------------------------------- |
-| `writing`    | `writing-prose`                                                            |
-| `answering`  | `answering-with-sources`                                                   |
-| `typescript` | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
-| `design`     | `domain-modeling`                                                          |
-| `agents`     | `retro`                                                                    |
+| Plugin           | Skills                                                                     |
+| :--------------- | :------------------------------------------------------------------------- |
+| `writing`        | `writing-prose`                                                            |
+| `answering`      | `answering-with-sources`                                                   |
+| `typescript`     | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
+| `design`         | `domain-modeling`                                                          |
+| `agents`         | `retro`                                                                    |
+| `mcp-extensions` | `mcp-apps`                                                                 |
 
 Install a plugin from inside Claude Code:
 
@@ -57,6 +61,7 @@ Install a plugin from inside Claude Code:
 /plugin install typescript --marketplace josefaidt/skills
 /plugin install design --marketplace josefaidt/skills
 /plugin install agents --marketplace josefaidt/skills
+/plugin install mcp-extensions --marketplace josefaidt/skills
 ```
 
 A plugin's skills take its name as a prefix, so `new-monorepo` runs as `/typescript:new-monorepo`. A plugin carries no version of its own, so its version is the commit it was read from, and every push to `main` is a new version.
