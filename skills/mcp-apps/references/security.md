@@ -15,7 +15,7 @@ None of this protects your server from callers other than the host.
 
 1. **Validate every tool's arguments,** app-only tools included. `visibility` is a host convention, and any MCP client can call any tool the server exposes.
 2. **Bind HTTP servers to localhost and check the `Host` header** against an allowlist, which stops DNS rebinding. Send no CORS headers unless a browser client needs them.
-3. **Treat a tunnel as public.** A server exposed through a tunnel without auth is open to anyone holding the URL.
+3. **Treat a tunnel as public.** A server exposed through a tunnel without auth is open to anyone holding the URL. `auth.md` covers adding sign-in.
 4. **Quote client-sent values in logs.** Client names, versions, and tool arguments can carry newlines that forge log lines, or escape codes that reach a terminal. Write them as JSON, also escape DEL, the C1 controls, and U+2028 and U+2029, and cap their length.
 5. **Declare only the domains the View needs** in `csp`, and the narrowest `permissions`.
 

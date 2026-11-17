@@ -14,13 +14,12 @@ Canonical and widely used references for MCP Apps, each loaded and checked on 20
 
 ## Official docs
 
-| Link                                                                                 | What it is                                                                                                                              |
-| :----------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| [MCP Apps overview](https://modelcontextprotocol.io/extensions/apps/overview)        | The MCP docs' introduction, with a list of clients                                                                                      |
-| [Build an MCP App](https://modelcontextprotocol.io/extensions/apps/build)            | Setup, the agent skills, and testing in Claude and `basic-host`                                                                         |
-| [Extensions overview](https://modelcontextprotocol.io/extensions/overview)           | Extension lifecycle, `io.modelcontextprotocol/ui` negotiation, and `server/discover` in protocol `2026-07-28`                           |
-| [Extension support matrix](https://modelcontextprotocol.io/extensions/client-matrix) | Which clients support which extensions, maintained by the community                                                                     |
-| [Authorization extensions](https://modelcontextprotocol.io/extensions/auth/overview) | A sibling extension, not part of MCP Apps: OAuth client credentials and enterprise-managed authorization for the connection to a server |
+| Link                                                                                 | What it is                                                                                                    |
+| :----------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
+| [MCP Apps overview](https://modelcontextprotocol.io/extensions/apps/overview)        | The MCP docs' introduction, with a list of clients                                                            |
+| [Build an MCP App](https://modelcontextprotocol.io/extensions/apps/build)            | Setup, the agent skills, and testing in Claude and `basic-host`                                               |
+| [Extensions overview](https://modelcontextprotocol.io/extensions/overview)           | Extension lifecycle, `io.modelcontextprotocol/ui` negotiation, and `server/discover` in protocol `2026-07-28` |
+| [Extension support matrix](https://modelcontextprotocol.io/extensions/client-matrix) | Which clients support which extensions, maintained by the community                                           |
 
 ## SDK
 
@@ -43,6 +42,18 @@ Canonical and widely used references for MCP Apps, each loaded and checked on 20
 | [OpenAI: add UI to your MCP server](https://developers.openai.com/apps-sdk/mcp-apps-in-chatgpt/)                                   | MCP Apps in ChatGPT, mapping `window.openai` calls to `ui/*` methods and naming the ChatGPT-only features                                                                                                                                                                                                                                                     |
 | [VS Code: MCP Apps support](https://code.visualstudio.com/blogs/2026/01/26/mcp-apps-support)                                       | Microsoft's announcement for VS Code                                                                                                                                                                                                                                                                                                                          |
 | [AI SDK: MCP Apps](https://ai-sdk.dev/docs/ai-sdk-core/mcp-apps)                                                                   | Building your own host with Vercel's AI SDK: `mcpAppClientCapabilities`, `splitMCPAppTools`, and `readMCPAppResource` in `@ai-sdk/mcp`, and `MCPAppRenderer` in `@ai-sdk/react`                                                                                                                                                                               |
+
+## Authorization
+
+| Link                                                                                                                 | What it is                                                                     |
+| :------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------- |
+| [MCP authorization spec](https://modelcontextprotocol.io/specification/latest/basic/authorization)                   | Core OAuth 2.1 authorization for HTTP servers, revision `2026-07-28`           |
+| [MCP authorization extensions](https://modelcontextprotocol.io/extensions/auth/overview)                             | The overview of MCP's optional authorization extensions                        |
+| [Enterprise-Managed Authorization](https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization) | ID-JAG applied to MCP, with a vendor support table                             |
+| [OAuth Client Credentials](https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials)                 | Machine-to-machine access with no user present                                 |
+| [ID-JAG draft](https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/)                    | The IETF OAuth working group draft, revision `-06` of 2026-10-31               |
+| [Auth0: what is ID-JAG](https://auth0.com/blog/what-is-id-jag/)                                                      | A plain-language explainer, and how Cross App Access (XAA) relates             |
+| [`lazy-auth-server` example](https://github.com/modelcontextprotocol/ext-apps/tree/main/examples/lazy-auth-server)   | A View triggering core MCP OAuth on demand through a 401, plus URL elicitation |
 
 ## Announcements
 

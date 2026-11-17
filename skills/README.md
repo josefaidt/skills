@@ -86,4 +86,5 @@ Bun is the only one documented so far. Add a sibling file and a row to the skill
 | [`mcp-apps/references/patterns.md`](./mcp-apps/references/patterns.md) | Design patterns tied to the constraints that cause them                                                                              |
 | [`mcp-apps/references/hosts.md`](./mcp-apps/references/hosts.md)       | Dated observations of Claude and other hosts, and open questions                                                                     |
 | [`mcp-apps/references/security.md`](./mcp-apps/references/security.md) | What the host enforces and what the server and View must do                                                                          |
+| [`mcp-apps/references/auth.md`](./mcp-apps/references/auth.md)         | Whose token a View's calls carry, lazy sign-in, Enterprise-Managed Authorization and ID-JAG, and audit trails                        |
 | [`mcp-apps/references/sources.md`](./mcp-apps/references/sources.md)   | Verified links to the spec, SDK, docs, examples, and tools                                                                           |

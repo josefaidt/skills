@@ -11,14 +11,15 @@ This file is the map. The reference files hold the detail, so load the one the t
 
 ## Reference files
 
-| File                     | Load when                                                                                                                                                                                                                 |
-| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `references/protocol.md` | You need the wire format: resource and tool `_meta.ui`, capability negotiation, the lifecycle, every `ui/*` method, host context, display modes, caching, and the spec's own inconsistencies                              |
-| `references/sdk.md`      | Writing a View or server with `@modelcontextprotocol/ext-apps`: entry points, the `App` class, server helpers, style helpers, `AppBridge` for hosts and tests, and SDK behavior beyond the spec                           |
-| `references/patterns.md` | Designing an app: the model and View data split, app-only tools, handing turns to the model, polling, several Views per conversation, server-side state, single-file builds, theming, probing a host, testing without one |
-| `references/hosts.md`    | Something depends on a specific host: Claude Desktop's capabilities, its two server copies, logs, consent prompts, web and mobile access, and what is still unknown                                                       |
-| `references/security.md` | Reviewing a server or View: what the host enforces, what the server and View must do themselves, prompt injection through tool results and messages                                                                       |
-| `references/sources.md`  | You need the canonical spec, SDK, docs, examples, or a related project, or want to read further                                                                                                                           |
+| File                     | Load when                                                                                                                                                                                                                  |
+| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `references/protocol.md` | You need the wire format: resource and tool `_meta.ui`, capability negotiation, the lifecycle, every `ui/*` method, host context, display modes, caching, and the spec's own inconsistencies                               |
+| `references/sdk.md`      | Writing a View or server with `@modelcontextprotocol/ext-apps`: entry points, the `App` class, server helpers, style helpers, `AppBridge` for hosts and tests, and SDK behavior beyond the spec                            |
+| `references/patterns.md` | Designing an app: the model and View data split, app-only tools, handing turns to the model, polling, several Views per conversation, server-side state, single-file builds, theming, probing a host, testing without one  |
+| `references/hosts.md`    | Something depends on a specific host: Claude Desktop's capabilities, its two server copies, logs, consent prompts, web and mobile access, and what is still unknown                                                        |
+| `references/security.md` | Reviewing a server or View: what the host enforces, what the server and View must do themselves, prompt injection through tool results and messages                                                                        |
+| `references/auth.md`     | Signing users in or auditing access: whose token a View's calls carry, core MCP OAuth and lazy sign-in from a View, Enterprise-Managed Authorization and ID-JAG, client credentials, and what an audit trail can attribute |
+| `references/sources.md`  | You need the canonical spec, SDK, docs, examples, or a related project, or want to read further                                                                                                                            |
 
 ## How the pieces fit
 
@@ -47,7 +48,8 @@ Model ──tools/call──▶ Host ──tools/call──▶ Server
 8. Hosts may cache UI resources indefinitely, since the spec defines no invalidation. Version the `ui://` URI to force a fresh fetch.
 9. Claude Desktop starts two copies of each local stdio server, so state kept in process memory diverges between the model's calls and the View's.
 10. Check `getHostCapabilities()` before using a method that depends on a capability, and handle refusal, because every View request can be denied.
-11. The spec's prose has known errors, such as an example that sends `initialize` instead of `ui/initialize`. `protocol.md` lists them.
+11. A View holds no credentials. Its tool calls ride the host's MCP connection and access token, the same as the model's, so the server can't tell them apart by token. See `auth.md`.
+12. The spec's prose has known errors, such as an example that sends `initialize` instead of `ui/initialize`. `protocol.md` lists them.
 
 ## Working on an app
 

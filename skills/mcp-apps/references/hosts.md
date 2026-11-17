@@ -77,4 +77,6 @@ None of these have been probed with a capability report yet. Probe one before re
 - Whether Claude Desktop re-reads a UI resource within a session, or caches it until restart.
 - Whether the Claude desktop app's Code tab renders Views, and with which capabilities.
 - Whether Views render from an `.mcpb` bundle install.
+- Whether Claude runs the OAuth flow when a View's `callServerTool` gets a 401, the lazy sign-in in `auth.md`.
+- Which Claude surfaces support Enterprise-Managed Authorization, and whether any host sets the ID-JAG `act` claim.
 - Whether a `BroadcastChannel` reaches every View of one resource on Claude on the web, where each server's `domain` decides the origin.
