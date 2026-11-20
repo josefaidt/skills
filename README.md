@@ -17,6 +17,10 @@ skills/
       business-doc.md
       anti-patterns.md
       markdown-gfm.md
+  writing-code/             when a comment earns its place, in any language
+    SKILL.md
+    references/
+      comments.md
   answering-with-sources/   sourced answers with confidence levels
   writing-typescript/       file-level TypeScript conventions
   new-typescript-package/   workspace package scaffolding
@@ -28,7 +32,7 @@ skills/
     SKILL.md
     references/
   domain-modeling/          glossary and ADRs
-  retro/                    session retrospectives that codify lessons
+  reflect/                  route what a session taught to the file that should hold it
   learn-mcp-apps/           MCP Apps protocol, SDK, patterns, and host notes
     SKILL.md
     references/
@@ -46,11 +50,11 @@ The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.
 
 | Plugin           | Skills                                                                     |
 | :--------------- | :------------------------------------------------------------------------- |
-| `writing`        | `writing-prose`                                                            |
+| `writing`        | `writing-prose`, `writing-code`                                            |
 | `answering`      | `answering-with-sources`                                                   |
 | `typescript`     | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
 | `design`         | `domain-modeling`                                                          |
-| `agents`         | `retro`                                                                    |
+| `agents`         | `reflect`, `wait-what`, `catch-me-up`                                      |
 | `learn-mcp-apps` | `learn-mcp-apps`                                                           |
 
 Install a plugin from inside Claude Code:
@@ -114,7 +118,7 @@ Tool versions are pinned in the root `package.json` catalog. Reference them from
 
 1. Create `skills/<name>/SKILL.md` with `name` and `description` frontmatter. The `name` must match the directory.
 2. Write the description so it states when to load the skill, not just what it contains. Discovery depends on it.
-3. Put anything the skill needs only sometimes in `references/` and link to it from a table in `SKILL.md`, so the agent loads it on demand instead of up front.
+3. Keep `SKILL.md` under 200 lines. State each rule's intent in a line or a table row rather than every case behind it, and put anything the skill needs only sometimes in `references/`, linked from `SKILL.md`, so the agent loads it on demand instead of up front.
 4. Add `user-invocable: false` for skills an agent should load on its own, and `argument-hint` for skills a user invokes with arguments.
 5. Keep the skill self-contained. Do not write a prerequisite that tells the agent to load a file in a sibling skill directory, because the relative path breaks the moment someone installs one skill without the other. Rules two skills share belong in a reference file inside one of them, or the two skills belong together as one.
 6. Add a row to [`skills/README.md`](./skills/README.md).

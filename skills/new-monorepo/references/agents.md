@@ -41,7 +41,7 @@ Load the matching skill before starting the work it covers.
 | `writing:writing-prose`             | Writing any prose, such as a README, an issue, or a pull request body   |
 | `design:domain-modeling`            | Naming or renaming a domain concept, or editing `GLOSSARY.md` or an ADR |
 
-`agents:retro` runs only when the user invokes it by name, and codifies what a session taught into the files future agents read.
+`agents:reflect` runs only when the user invokes it by name, and routes what a session taught to the files and checks future agents read.
 
 Codex and other agents don't read Claude Code plugins. To use the skills there, copy them in with `bunx skills add josefaidt/skills`, as the skills repository's README describes.
 

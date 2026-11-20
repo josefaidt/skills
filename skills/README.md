@@ -2,21 +2,24 @@
 
 Reusable skill definitions for agents. Each skill lives in its own directory with a `SKILL.md` and any supporting reference files. The Group column names the Claude Code plugin each skill ships in, in lowercase, as the root README describes.
 
-| Skill                                                 | Group          | Covers                                                       |
-| :---------------------------------------------------- | :------------- | :----------------------------------------------------------- |
-| [`writing-prose`](./writing-prose/)                   | Writing        | Prose rules, PRDs, and internal documents                    |
-| [`answering-with-sources`](./answering-with-sources/) | Answering      | Sourced answers with confidence levels                       |
-| [`writing-typescript`](./writing-typescript/)         | TypeScript     | File-level conventions, typing, and layout                   |
-| [`new-typescript-package`](./new-typescript-package/) | TypeScript     | Scaffolding a workspace package or app                       |
-| [`monorepo`](./monorepo/)                             | TypeScript     | Workspace structure and dependency installs                  |
-| [`new-monorepo`](./new-monorepo/)                     | TypeScript     | Walking through a Bun monorepo's tooling and agent hooks     |
-| [`domain-modeling`](./domain-modeling/)               | Design         | The glossary and ADRs a project's code and docs share        |
-| [`retro`](./retro/)                                   | Agents         | Codifying what a session taught into the agent's environment |
-| [`learn-mcp-apps`](./learn-mcp-apps/)                 | Learn MCP Apps | Building and debugging MCP Apps, and what hosts actually do  |
+| Skill                                                 | Group          | Covers                                                        |
+| :---------------------------------------------------- | :------------- | :------------------------------------------------------------ |
+| [`writing-prose`](./writing-prose/)                   | Writing        | Prose rules, PRDs, and internal documents                     |
+| [`writing-code`](./writing-code/)                     | Writing        | When a comment earns its place, in any language               |
+| [`answering-with-sources`](./answering-with-sources/) | Answering      | Sourced answers with confidence levels                        |
+| [`writing-typescript`](./writing-typescript/)         | TypeScript     | File-level conventions, typing, and layout                    |
+| [`new-typescript-package`](./new-typescript-package/) | TypeScript     | Scaffolding a workspace package or app                        |
+| [`monorepo`](./monorepo/)                             | TypeScript     | Workspace structure and dependency installs                   |
+| [`new-monorepo`](./new-monorepo/)                     | TypeScript     | Walking through a Bun monorepo's tooling and agent hooks      |
+| [`domain-modeling`](./domain-modeling/)               | Design         | The glossary and ADRs a project's code and docs share         |
+| [`reflect`](./reflect/)                               | Agents         | Routing what a session taught to the file that should hold it |
+| [`wait-what`](./wait-what/)                           | Agents         | Saying the last reply again in plain words                    |
+| [`catch-me-up`](./catch-me-up/)                       | Agents         | What changed since your last message, and what waits on you   |
+| [`learn-mcp-apps`](./learn-mcp-apps/)                 | Learn MCP Apps | Building and debugging MCP Apps, and what hosts actually do   |
 
 ## Writing skills
 
-One skill covers writing. [`writing-prose`](./writing-prose/) holds the rules that apply to anything you write that is not code: voice, sentence construction, punctuation, rhythm, openings, paragraph leads, comparison closures, headings, terminology, identifiers the reader has not seen, stating the current position, and changelogs. Those rules load with the skill and always apply. The name pairs with `writing-typescript` on the axis that separates them, prose against code.
+Two skills cover writing. [`writing-prose`](./writing-prose/) holds the rules that apply to anything you write that is not code: voice, sentence construction, punctuation, rhythm, openings, paragraph leads, comparison closures, headings, terminology, identifiers the reader has not seen, stating the current position, and changelogs. Those rules load with the skill and always apply. [`writing-code`](./writing-code/) holds the guidance for code that holds in any language, starting with comments: what earns one, what to delete, and how to clear them from a diff, turning an excuse for surprising code into a fix and a protective comment into a test or check. Language skills such as `writing-typescript` set the syntax.
 
 Document structure lives in reference files, so a task only pays for the shape it needs. Asking for a PRD loads the PRD structure; asking for a proposal loads the business-doc structure; neither loads the other.
 
@@ -42,12 +45,12 @@ The anti-pattern catalog draws on two open-source skills that document AI writin
 
 Four skills cover working in a TypeScript workspace, layered by scope: source files, one package, the whole repo, and the tooling a repo starts with.
 
-| Skill                                                 | Covers                                                                                                                                                                                                                                                                     |
-| :---------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`writing-typescript`](./writing-typescript/)         | Source files: imports, no `any`, `//` and `/* */` for comments that explain code, Zod validation, `as const`, class modifiers, kebab-case names, no barrels, one export per scoped package, `lib/` for supporting modules, `bin/` for runnable apps, `scripts/` placement. |
-| [`new-typescript-package`](./new-typescript-package/) | A new package or app: scaffolding `package.json`, `tsconfig.json`, the entrypoint or a runnable app's `bin/` executable, and an optional rolldown build.                                                                                                                   |
-| [`monorepo`](./monorepo/)                             | The repo: the `apps` and `packages` split, shared version pinning, and isolated `node_modules`.                                                                                                                                                                            |
-| [`new-monorepo`](./new-monorepo/)                     | A new repo: Bun, TypeScript 7, oxfmt, type-aware oxlint, Vitest, commitlint, git hooks, Claude Code hooks, CI, `AGENTS.md`, and the skill plugins it enables.                                                                                                              |
+| Skill                                                 | Covers                                                                                                                                                                                                                                           |
+| :---------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`writing-typescript`](./writing-typescript/)         | Source files: no `any`, parsing at the boundary, unions, branded IDs, exhaustive switches, imports, comment syntax, class modifiers, kebab-case names, no barrels, one export per scoped package, and the `lib/`, `bin/`, and `scripts/` layout. |
+| [`new-typescript-package`](./new-typescript-package/) | A new package or app: scaffolding `package.json`, `tsconfig.json`, the entrypoint or a runnable app's `bin/` executable, and an optional rolldown build.                                                                                         |
+| [`monorepo`](./monorepo/)                             | The repo: the `apps` and `packages` split, shared version pinning, and isolated `node_modules`.                                                                                                                                                  |
+| [`new-monorepo`](./new-monorepo/)                     | A new repo: Bun, TypeScript 7, oxfmt, type-aware oxlint, Vitest, commitlint, git hooks, Claude Code hooks, CI, `AGENTS.md`, and the skill plugins it enables.                                                                                    |
 
 `writing-typescript` sets `user-invocable: false`, so an agent loads it on its own when writing or reviewing TypeScript. `new-typescript-package` takes arguments, `<name>` and an optional `apps` or `packages` target directory that defaults to `packages`. `new-monorepo` takes an optional target directory and `--scope`.
 
@@ -71,7 +74,11 @@ Bun is the only one documented so far. Add a sibling file and a row to the skill
 
 ## Agent environment skills
 
-[`retro`](./retro/) runs a retrospective at the end of a session and proposes changes to what the next agent reads or runs, such as steering files, skills, standards, the glossary, and automated checks, each tied to a correction or a cost from the session. It runs only when the user invokes it, with optional focus topics to examine in depth.
+[`reflect`](./reflect/) mines a session at its end for lessons that will still hold in six months and would change what a future agent does, and routes each to where it will fire: a mechanical mistake to an automated check, a judgment call to a standard, a missed skill to its description, a question to the requirements or design document, and a repo-wide note out of memory. It lists what it accepted, what it rejected and why, and what belongs in a backlog, and edits nothing until the user approves. It runs only when the user invokes it, with optional focus topics to examine in depth.
+
+[`wait-what`](./wait-what/) and [`catch-me-up`](./catch-me-up/) cut an agent's reply down to what a person needs. `wait-what` says the last reply again in plain words, without jargon, IDs, or file paths. `catch-me-up` sums up what changed since the user's last message and lists each decision waiting on them, with the agent's pick and its risk. Both run only when the user invokes them.
+
+`reflect` takes its filters and its Accepted, Rejected, and Backlog report from the skill of the same name in [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Lauren Tan (MIT), and `wait-what` and `catch-me-up` are adapted from its `bro` and `ketchup`. `writing-typescript` takes several of its type rules from pstack's `typescript-best-practices`, and `writing-code` adapts its comment rules from pstack's `no-comments`.
 
 ## MCP Apps skills
 
