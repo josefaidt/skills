@@ -19,7 +19,7 @@ const example = "always specify language"
 
 - Use `-` for unordered lists (never `*` or `+`)
 - Use `1.` for ordered lists with proper sequential numbering
-- Never start a line with `1/`, `2/`, or another `N/` marker; it renders as plain text, not a list. `N/` belongs only inside a running paragraph (see "Lists vs prose" in `SKILL.md`)
+- Never start a line with `1/`, `2/`, or another `N/` marker; it renders as plain text, not a list. `N/` belongs only inside a running paragraph (see "Lists vs prose" under "Paragraphs and structure" in `SKILL.md`)
 - Add blank lines between list items that contain multiple paragraphs
 - Use 2 spaces for nested list indentation
 - When nesting under ordered lists, use ordered lists (not unordered)

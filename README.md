@@ -10,7 +10,7 @@ Skills follow the [Agent Skills](https://code.claude.com/docs/en/skills) format:
 .claude-plugin/
   marketplace.json          the plugins, each a group of skills
 skills/
-  writing-prose/            prose rules, plus doc structure on demand
+  writing-prose/            layered prose rules, plus structure for each kind of document
     SKILL.md
     references/
       prd.md
