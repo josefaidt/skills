@@ -19,18 +19,21 @@ Reusable skill definitions for agents. Each skill lives in its own directory wit
 
 ## Writing skills
 
-Two skills cover writing. [`writing-prose`](./writing-prose/) holds the rules that apply to anything you write that is not code: voice, sentence construction, punctuation, rhythm, openings, paragraph leads, comparison closures, headings, terminology, identifiers the reader has not seen, stating the current position, and changelogs. Those rules load with the skill and always apply. [`writing-code`](./writing-code/) holds the guidance for code that holds in any language, starting with comments: what earns one, what to delete, and how to clear them from a diff, turning an excuse for surprising code into a fix and a protective comment into a test or check. Language skills such as `writing-typescript` set the syntax.
+Two skills cover writing. [`writing-prose`](./writing-prose/) holds the rules for anything you write that is not code, layered so each builds on the one before: core rules, sentences, unambiguous Global English, and paragraphs and structure, then the structure for each kind of document. Those rules load with the skill and always apply. The layering and the developer-docs, briefing, and Global English rules come from pstack's `technical-writing`, which draws on [Diátaxis](https://diataxis.fr/), the [Google developer documentation style guide](https://developers.google.com/style), Simplified Technical English, and Global English. [`writing-code`](./writing-code/) holds the guidance for code that holds in any language, starting with comments: what earns one, what to delete, and how to clear them from a diff, turning an excuse for surprising code into a fix and a protective comment into a test or check. Language skills such as `writing-typescript` set the syntax.
 
-Document structure lives in reference files, so a task only pays for the shape it needs. Asking for a PRD loads the PRD structure; asking for a proposal loads the business-doc structure; neither loads the other.
+Document structure lives in reference files, so a task only pays for the shape it needs. Asking for a PRD loads the PRD structure, a pull request body loads the briefing structure, and a docs page loads the developer-docs structure, and none loads the others.
 
 ### References
 
-| File                                                                                       | Covers                                                                                                                               |
-| :----------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| [`writing-prose/references/prd.md`](./writing-prose/references/prd.md)                     | PRDs: executive summary, customer problem, numbered user stories with acceptance criteria, behavioral clarifications, open decisions |
-| [`writing-prose/references/business-doc.md`](./writing-prose/references/business-doc.md)   | Internal product and business docs: proposals, analyses, strategy memos, options-and-tenets templates                                |
-| [`writing-prose/references/anti-patterns.md`](./writing-prose/references/anti-patterns.md) | The tripwire scan: phrase patterns, em-dash use, banned words, comparison closures, heading shapes                                   |
-| [`writing-prose/references/markdown-gfm.md`](./writing-prose/references/markdown-gfm.md)   | GFM formatting: fences, lists, headings, tables, emphasis, blockquotes                                                               |
+| File                                                                                         | Covers                                                                                                                               |
+| :------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| [`writing-prose/references/prd.md`](./writing-prose/references/prd.md)                       | PRDs: executive summary, customer problem, numbered user stories with acceptance criteria, behavioral clarifications, open decisions |
+| [`writing-prose/references/business-doc.md`](./writing-prose/references/business-doc.md)     | Internal product and business docs: proposals, analyses, strategy memos, options-and-tenets templates                                |
+| [`writing-prose/references/anti-patterns.md`](./writing-prose/references/anti-patterns.md)   | The tripwire scan: phrase patterns, em-dash use, banned words, comparison closures, heading shapes                                   |
+| [`writing-prose/references/markdown-gfm.md`](./writing-prose/references/markdown-gfm.md)     | GFM formatting: fences, lists, headings, tables, emphasis, blockquotes                                                               |
+| [`writing-prose/references/developer-docs.md`](./writing-prose/references/developer-docs.md) | Tutorials, how-tos, reference, and explanation, after Diátaxis                                                                       |
+| [`writing-prose/references/briefings.md`](./writing-prose/references/briefings.md)           | Pull request bodies, commit messages, issues, thread replies, and task reports                                                       |
+| [`writing-prose/references/revising.md`](./writing-prose/references/revising.md)             | Revising a shared document, superseding versions, moving content in, and changelogs                                                  |
 
 The anti-pattern catalog draws on two open-source skills that document AI writing tells:
 

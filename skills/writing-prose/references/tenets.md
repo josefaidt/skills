@@ -42,7 +42,7 @@ Use an _ordered list_ when each tenet stays succinct: a bold short name, a full-
 
 The list form holds only while the items stay short. A numbered list whose items each carry a multi-sentence rationale paragraph turns into walls of text nested under numbers: hard to read, and it indents awkwardly when the doc exports to Word. If you cannot state a tenet succinctly, that is the signal to switch forms, not to cram the rationale into the list item.
 
-Use _bold-led paragraphs_ when each tenet needs a multi-sentence explanation: one paragraph per tenet, no numbering, the bold tenet name leading each. (Tenet headings are one of the carve-outs where a bold lead is correct; see the Paragraph leads section of `SKILL.md`.)
+Use _bold-led paragraphs_ when each tenet needs a multi-sentence explanation: one paragraph per tenet, no numbering, the bold tenet name leading each. (Tenet headings are one of the carve-outs where a bold lead is correct; see "Paragraph leads" under "Paragraphs and structure" in `SKILL.md`.)
 
 ```
 **Short name.** Full-sentence tenet statement. Rationale that explains the reasoning and names how the tenet applies to the options in scope, running across as many sentences as it genuinely needs.
