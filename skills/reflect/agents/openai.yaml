@@ -1,0 +1,5 @@
+interface:
+  display_name: "Reflect"
+  short_description: "Mine a session for durable lessons and route each to the file or check that should hold it."
+policy:
+  allow_implicit_invocation: false

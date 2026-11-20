@@ -8,10 +8,10 @@
   "plugins": [
     {
       "name": "writing",
-      "description": "Writing standards for prose and internal documents: voice, sentence construction, structure, and GFM markdown, with PRD and business-doc structures",
+      "description": "Writing standards for prose and internal documents, with PRD and business-doc structures, and language-agnostic guidance for code, such as when a comment earns its place",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/writing-prose"]
+      "skills": ["./skills/writing-prose", "./skills/writing-code"]
     },
     {
       "name": "answering",
@@ -41,10 +41,10 @@
     },
     {
       "name": "agents",
-      "description": "Session retrospectives that codify what a session taught into the files and checks the next agent reads",
+      "description": "Reflection that routes what a session taught to the file or check that should hold it, and plain-language recaps of what an agent did and what waits on you",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/retro"]
+      "skills": ["./skills/reflect", "./skills/wait-what", "./skills/catch-me-up"]
     },
     {
       "name": "learn-mcp-apps",
