@@ -39,7 +39,8 @@ Drop one-offs, and strip details that drift, such as commit IDs, versions, count
 | Finding | Destination |
 | :-- | :-- |
 | A mechanical mistake, such as a banned API, an import shape, a file location, or a title format | An automated check: a lint rule, a hook, or a CI job. Read the repo's existing check command first, since an unwired check is the finding. A repo with no guardrail at all is a finding |
-| A judgment call about code | The coding standards, which the reviewer enforces |
+| A judgment call about code | `CODING_STANDARDS.md`, as a new `advisory` rule with an ID. Only the user moves a rule to `blocking` |
+| A rule or check that flagged code nothing was wrong with, or whose finding the user dismissed | A sharper wording or its retirement, never a second rule beside it |
 | A judgment call about prose, such as voice or what a document covers | The writing style guide |
 | A skill that should have loaded | Its description, which decides whether it loads |
 | A skill that gave stale or wrong guidance, or a procedure the agent improvised | The skill, stating intent in a line or a table row, under 200 lines, with occasional detail in `references/` |

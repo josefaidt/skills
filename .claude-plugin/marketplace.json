@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "josefaidt-skills",
-  "description": "Agent skills for writing, sourced answers, TypeScript monorepos, domain modeling, session retrospectives, and MCP Apps",
+  "description": "Agent skills for writing, sourced answers, TypeScript monorepos, domain modeling, code and design review, session retrospectives, and MCP Apps",
   "owner": {
     "name": "josefaidt"
   },
@@ -40,11 +40,29 @@
       "skills": ["./skills/domain-modeling"]
     },
     {
-      "name": "agents",
-      "description": "Reflection that routes what a session taught to the file or check that should hold it, and plain-language recaps of what an agent did and what waits on you",
+      "name": "review",
+      "description": "How a repository specifies features and gets them approved, the coding standards a reviewer enforces with stable rule IDs, and reviews of behavior, designs, and diffs that cite them",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/reflect", "./skills/wait-what", "./skills/catch-me-up"]
+      "skills": [
+        "./skills/setup-docs-workflow",
+        "./skills/coding-standards",
+        "./skills/reviewing-behavior",
+        "./skills/reviewing-design",
+        "./skills/reviewing-code"
+      ]
+    },
+    {
+      "name": "agents",
+      "description": "Reflection that routes what a session taught to the file or check that should hold it, plain-language recaps of what an agent did and what waits on you, and the report that closes a milestone",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/reflect",
+        "./skills/wait-what",
+        "./skills/catch-me-up",
+        "./skills/milestone-report"
+      ]
     },
     {
       "name": "learn-mcp-apps",

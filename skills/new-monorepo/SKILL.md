@@ -8,7 +8,7 @@ argument-hint: "[directory] [--scope <scope>]"
 
 This skill walks through setting up a TypeScript monorepo on Bun workspaces: the tooling that keeps every package formatted, linted, type checked, and tested, and the agent configuration that runs those checks on each turn. Each step says what its files do and points at a working example in `references/`. Write each file from its example, adapted to the repository, rather than pasting it whole: use the repository's names, the current version of each tool, and only what the repository will use. A step the user does not want, such as the Claude Code hooks in a repository no agent works in, can be left out, and the steps after it still hold.
 
-Three skills cover the repo once it exists: `monorepo` decides where code goes and how dependencies resolve, `new-typescript-package` adds each package or app, and `writing-typescript` governs each source file.
+Three skills cover the repo once it exists: `monorepo` decides where code goes and how dependencies resolve, `new-typescript-package` adds each package or app, and `writing-typescript` governs each source file. `setup-docs-workflow` sets up how the repository specifies features and gets them approved.
 
 ## The stack
 

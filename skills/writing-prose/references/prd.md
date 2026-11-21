@@ -15,6 +15,12 @@ The prose rules in `SKILL.md` are already in force. This file adds document shap
 A PRD has five required sections in this order, and closes with an optional FAQ. Do not reorder, merge, or omit required sections. The closing resolves what the PRD leaves open, as an Open decisions list, an FAQ, or both (see "Open decisions and FAQ" below).
 
 ```markdown
+---
+kind: prd
+key: [KEY]
+status: draft
+---
+
 # [Feature Name] PRD
 
 ## Executive summary
@@ -100,8 +106,8 @@ The core of the document. Each story is a numbered section with a title and a pr
 
 **Acceptance criteria:**
 
-- [Observable, testable behavior]
-- [Observable, testable behavior]
+- **[KEY]-N.1** [Observable, testable behavior]
+- **[KEY]-N.2** [Observable, testable behavior]
 - ...
 ```
 
@@ -132,6 +138,16 @@ Rules:
 - Use present tense: "The platform assigns..." not "The platform will assign...".
 - A story with no acceptance criteria is incomplete. Every story needs at least two criteria.
 - When a criterion involves a set of options or presets, enumerate them inline as a nested list rather than describing them abstractly.
+
+#### Criterion IDs
+
+Every criterion opens with a bold ID, so a design document, a test, and a review can point at it. The ID is the PRD's key, the story number, and the criterion's number within the story, as in `RESET-3.2` for story 3, criterion 2 of the PRD whose key is `RESET`.
+
+- The key is a short uppercase word set once in the PRD's frontmatter (`key: RESET`), unique across the repository's RFCs and PRDs, and never changed.
+- The frontmatter `status` is `draft` while an agent writes it, `approved` once the maintainer merges it, and `implemented` once every P0 criterion has shipped with a test.
+- IDs never move. Add a new criterion at the end of its story with the next number, even when it reads better earlier.
+- To remove a criterion, keep its ID and strike its text through, as in `- **RESET-3.2** ~~A used link is rejected.~~`, so a test that still names it shows up as stale. To change one's meaning, strike it and add a new criterion. Fixing its wording keeps the ID.
+- A story keeps its number for the same reason. A removed story keeps its heading with "(removed)" after its title and its criteria struck through.
 
 #### Ordering stories
 

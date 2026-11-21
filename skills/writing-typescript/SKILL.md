@@ -8,7 +8,7 @@ user-invocable: false
 
 Make the compiler reject what the code cannot handle, and make every package look the same so a reader finds things without searching.
 
-When the repository has a `CODING_STANDARDS.md`, read it first. Its rules win where they differ, and a review cites its rule IDs. This skill covers what it leaves out. To scaffold a package, load `new-typescript-package`, and for when a comment earns its place, `writing-code`. Examples for each rule are in [references/patterns.md](references/patterns.md).
+When the repository has a `CODING_STANDARDS.md`, read it first. Its rules win where they differ, and it sets how strictly a review enforces each rule here. This skill covers what it leaves out. Each rule's ID is `ts/` and its name in lowercase kebab case, with code font and punctuation dropped, such as `ts/no-any` and `ts/derive-dont-copy`, and a review cites that ID. Renaming a rule changes its ID, so rename one only when retiring the old ID is acceptable. To scaffold a package, load `new-typescript-package`, and for when a comment earns its place, `writing-code`. Examples for each rule are in [references/patterns.md](references/patterns.md).
 
 ## Types
 
