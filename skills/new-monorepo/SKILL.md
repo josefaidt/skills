@@ -8,22 +8,22 @@ argument-hint: "[directory] [--scope <scope>]"
 
 This skill walks through setting up a TypeScript monorepo on Bun workspaces: the tooling that keeps every package formatted, linted, type checked, and tested, and the agent configuration that runs those checks on each turn. Each step says what its files do and points at a working example in `references/`. Write each file from its example, adapted to the repository, rather than pasting it whole: use the repository's names, the current version of each tool, and only what the repository will use. A step the user does not want, such as the Claude Code hooks in a repository no agent works in, can be left out, and the steps after it still hold.
 
-Three skills cover the repo once it exists: `monorepo` decides where code goes and how dependencies resolve, `new-typescript-package` adds each package or app, and `writing-typescript` governs each source file.
+Three skills cover the repo once it exists: `monorepo` decides where code goes and how dependencies resolve, `new-typescript-package` adds each package or app, and `writing-typescript` governs each source file. `setup-docs-workflow` sets up how the repository specifies features and gets them approved.
 
 ## The stack
 
-| Tool                        | Role                                                                                            | Configured in                                 |
-| :-------------------------- | :---------------------------------------------------------------------------------------------- | :-------------------------------------------- |
-| Bun 1.4 or later            | Package manager, script runner, and type checker (`bun check`)                                  | `package.json`, `bunfig.toml`, `.bun-version` |
-| TypeScript 7                | Strict compiler baseline every package extends                                                  | `tsconfig.base.json`                          |
-| oxfmt                       | Formatter, import order, and `package.json` key order                                           | `.oxfmtrc.jsonc`                              |
-| oxlint with oxlint-tsgolint | Type-aware linter on its strict categories                                                      | `.oxlintrc.jsonc`                             |
-| Vitest                      | Each package's `test` script                                                                    | Each package                                  |
-| commitlint                  | Conventional Commits on every message                                                           | `.commitlintrc.json`, `.git-hooks/commit-msg` |
-| Git hooks                   | Format and lint check on staged files, and a reinstall after a rebase that changes a dependency | `.git-hooks/`                                 |
-| Claude Code hooks           | Setup on session start, format on each edit, and every static check before each turn ends       | `.claude/`                                    |
-| GitHub Actions              | Every check on each pull request, in one job                                                    | `.github/`                                    |
-| Claude Code plugins         | Agent skills from the `josefaidt-skills` marketplace                                            | `.claude/settings.json`                       |
+| Tool | Role | Configured in |
+| :-- | :-- | :-- |
+| Bun 1.4 or later | Package manager, script runner, and type checker (`bun check`) | `package.json`, `bunfig.toml`, `.bun-version` |
+| TypeScript 7 | Strict compiler baseline every package extends | `tsconfig.base.json` |
+| oxfmt | Formatter, import order, and `package.json` key order | `.oxfmtrc.jsonc` |
+| oxlint with oxlint-tsgolint | Type-aware linter on its strict categories | `.oxlintrc.jsonc` |
+| Vitest | Each package's `test` script | Each package |
+| commitlint | Conventional Commits on every message | `.commitlintrc.json`, `.git-hooks/commit-msg` |
+| Git hooks | Format and lint check on staged files, and a reinstall after a rebase that changes a dependency | `.git-hooks/` |
+| Claude Code hooks | Setup on session start, format on each edit, and every static check before each turn ends | `.claude/` |
+| GitHub Actions | Every check on each pull request, in one job | `.github/` |
+| Claude Code plugins | Agent skills from the `josefaidt-skills` marketplace | `.claude/settings.json` |
 
 ## Starting from the template
 
@@ -87,12 +87,12 @@ In `AGENTS.md`, describe the project in one paragraph saying what it is and who 
 
 The hooks run the checks so an agent never spends a tool call on them:
 
-| Event                                                | Script                    | Does                                                                                                                                                                                      |
-| :--------------------------------------------------- | :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `SessionStart`, and `PostToolUse` on `EnterWorktree` | `setup-workspace.sh`      | Runs `scripts/setup.sh` in a fresh worktree, and `bun ci` and the build in a warm one                                                                                                     |
-| `PostToolUse` on `Edit`, `Write`, and `MultiEdit`    | `format-file.sh`          | Formats the file, so the agent reads formatted code back                                                                                                                                  |
-| `UserPromptSubmit`                                   | `turn-checks.sh snapshot` | Records the working tree as the turn's base                                                                                                                                               |
-| `Stop`                                               | `turn-checks.sh check`    | Formats and lints the files the turn changed, type checks the repo when a file the type checker reads changed, and on a failure exits 2, which keeps the turn going until the checks pass |
+| Event | Script | Does |
+| :-- | :-- | :-- |
+| `SessionStart`, and `PostToolUse` on `EnterWorktree` | `setup-workspace.sh` | Runs `scripts/setup.sh` in a fresh worktree, and `bun ci` and the build in a warm one |
+| `PostToolUse` on `Edit`, `Write`, and `MultiEdit` | `format-file.sh` | Formats the file, so the agent reads formatted code back |
+| `UserPromptSubmit` | `turn-checks.sh snapshot` | Records the working tree as the turn's base |
+| `Stop` | `turn-checks.sh check` | Formats and lints the files the turn changed, type checks the repo when a file the type checker reads changed, and on a failure exits 2, which keeps the turn going until the checks pass |
 
 `session-workspace.sh` is sourced by the other three to find the checkout a forked session works in. `.worktreeinclude` lists the gitignored files Claude Code copies into a new worktree, such as `.env.local`.
 

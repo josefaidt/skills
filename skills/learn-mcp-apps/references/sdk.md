@@ -11,14 +11,14 @@ Its peer dependencies are `@modelcontextprotocol/client`, `@modelcontextprotocol
 
 ## Entry points
 
-| Import                                      | For        | Holds                                                                                             |
-| :------------------------------------------ | :--------- | :------------------------------------------------------------------------------------------------ |
-| `@modelcontextprotocol/ext-apps`            | The View   | `App`, `PostMessageTransport`, style helpers, method constants, the zod schemas and types         |
-| `@modelcontextprotocol/ext-apps/react`      | The View   | `useApp`, `useAutoResize`, `useDocumentTheme`, `useHostStyles`                                    |
-| `@modelcontextprotocol/ext-apps/server`     | The server | `registerAppTool`, `registerAppResource`, `getUiCapability`, `EXTENSION_ID`, `RESOURCE_MIME_TYPE` |
-| `@modelcontextprotocol/ext-apps/app-bridge` | A host     | `AppBridge`, the host side of the protocol                                                        |
-| `…/app-with-deps`, `…/react-with-deps`      | The View   | The same as above with dependencies bundled in                                                    |
-| `…/schema.json`                             | Anything   | The protocol as JSON Schema                                                                       |
+| Import | For | Holds |
+| :-- | :-- | :-- |
+| `@modelcontextprotocol/ext-apps` | The View | `App`, `PostMessageTransport`, style helpers, method constants, the zod schemas and types |
+| `@modelcontextprotocol/ext-apps/react` | The View | `useApp`, `useAutoResize`, `useDocumentTheme`, `useHostStyles` |
+| `@modelcontextprotocol/ext-apps/server` | The server | `registerAppTool`, `registerAppResource`, `getUiCapability`, `EXTENSION_ID`, `RESOURCE_MIME_TYPE` |
+| `@modelcontextprotocol/ext-apps/app-bridge` | A host | `AppBridge`, the host side of the protocol |
+| `…/app-with-deps`, `…/react-with-deps` | The View | The same as above with dependencies bundled in |
+| `…/schema.json` | Anything | The protocol as JSON Schema |
 
 ## Server helpers
 
@@ -30,25 +30,25 @@ Its peer dependencies are `@modelcontextprotocol/client`, `@modelcontextprotocol
 
 Register handlers first, then `await app.connect()`, which defaults to a `PostMessageTransport` to `window.parent`. `connect()` sends `ui/initialize`, stores the host's answer, sends `initialized`, and starts size reporting.
 
-| Member                                                                 | Protocol                            | Notes                                                                                                                                                         |
-| :--------------------------------------------------------------------- | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ontoolinput`, `ontoolinputpartial`, `ontoolresult`, `ontoolcancelled` | Host notifications                  | One-shot. Set before `connect()`, or the notification can arrive before the handler exists.                                                                   |
-| `onhostcontextchanged`                                                 | `host-context-changed`              | The SDK merges each change into `getHostContext()` before calling you.                                                                                        |
-| `onteardown`                                                           | `ui/resource-teardown`              | Return after saving state.                                                                                                                                    |
-| `addEventListener(event, fn)`                                          |                                     | Adds listeners. The `on*` setters replace the previous handler.                                                                                               |
-| `getHostCapabilities()`, `getHostVersion()`, `getHostContext()`        |                                     | `undefined` until `connect()` resolves.                                                                                                                       |
-| `callServerTool({ name, arguments })`                                  | `tools/call`                        | Takes an object, never a bare tool name. Resets its timeout on progress.                                                                                      |
-| `readServerResource(params)`, `listServerResources(params?)`           | `resources/read`, `resources/list`  |                                                                                                                                                               |
-| `sendMessage({ role: "user", content: [...] })`                        | `ui/message`                        | `content` is an array of content blocks.                                                                                                                      |
-| `updateModelContext({ content?, structuredContent? })`                 | `ui/update-model-context`           |                                                                                                                                                               |
-| `openLink({ url })`                                                    | `ui/open-link`                      |                                                                                                                                                               |
-| `downloadFile({ contents })`                                           | `ui/download-file`                  | Embedded resources or resource links. Needs `hostCapabilities.downloadFile`.                                                                                  |
-| `requestDisplayMode({ mode })`                                         | `ui/request-display-mode`           |                                                                                                                                                               |
-| `requestTeardown()`                                                    | `ui/notifications/request-teardown` | Asks the host to close the View.                                                                                                                              |
-| `createSamplingMessage(params)`                                        | `sampling/createMessage`            | A model completion through the host. Throws unless `hostCapabilities.sampling` exists. With `tools`, needs `sampling.tools`.                                  |
-| `sendLog(params)`                                                      | `notifications/message`             |                                                                                                                                                               |
-| `sendSizeChanged`, `setupSizeChangedNotifications()`                   | `size-changed`                      | Automatic with `autoResize`. It measures `<html>` at `height: max-content`, so a View whose root is `100vh` reports the container's height and never shrinks. |
-| `registerTool(name, config, cb)`                                       | Host's `tools/call` to the View     | The View exposes its own tools to the host, with `enable()`, `disable()`, `update()`, and `remove()` handles that send `tools/list_changed`.                  |
+| Member | Protocol | Notes |
+| :-- | :-- | :-- |
+| `ontoolinput`, `ontoolinputpartial`, `ontoolresult`, `ontoolcancelled` | Host notifications | One-shot. Set before `connect()`, or the notification can arrive before the handler exists. |
+| `onhostcontextchanged` | `host-context-changed` | The SDK merges each change into `getHostContext()` before calling you. |
+| `onteardown` | `ui/resource-teardown` | Return after saving state. |
+| `addEventListener(event, fn)` |  | Adds listeners. The `on*` setters replace the previous handler. |
+| `getHostCapabilities()`, `getHostVersion()`, `getHostContext()` |  | `undefined` until `connect()` resolves. |
+| `callServerTool({ name, arguments })` | `tools/call` | Takes an object, never a bare tool name. Resets its timeout on progress. |
+| `readServerResource(params)`, `listServerResources(params?)` | `resources/read`, `resources/list` |  |
+| `sendMessage({ role: "user", content: [...] })` | `ui/message` | `content` is an array of content blocks. |
+| `updateModelContext({ content?, structuredContent? })` | `ui/update-model-context` |  |
+| `openLink({ url })` | `ui/open-link` |  |
+| `downloadFile({ contents })` | `ui/download-file` | Embedded resources or resource links. Needs `hostCapabilities.downloadFile`. |
+| `requestDisplayMode({ mode })` | `ui/request-display-mode` |  |
+| `requestTeardown()` | `ui/notifications/request-teardown` | Asks the host to close the View. |
+| `createSamplingMessage(params)` | `sampling/createMessage` | A model completion through the host. Throws unless `hostCapabilities.sampling` exists. With `tools`, needs `sampling.tools`. |
+| `sendLog(params)` | `notifications/message` |  |
+| `sendSizeChanged`, `setupSizeChangedNotifications()` | `size-changed` | Automatic with `autoResize`. It measures `<html>` at `height: max-content`, so a View whose root is `100vh` reports the container's height and never shrinks. |
+| `registerTool(name, config, cb)` | Host's `tools/call` to the View | The View exposes its own tools to the host, with `enable()`, `disable()`, `update()`, and `remove()` handles that send `tools/list_changed`. |
 
 Most methods warn when called before `connect()` finishes the handshake and will throw in a future release, so load data in `ontoolresult`, not during module evaluation.
 
