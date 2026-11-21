@@ -1,0 +1,20 @@
+schema_version = "1.4"
+
+[task]
+name = "josefaidt-skills/reviewing-code-blocking-violations"
+description = "A diff that logs a reset secret, skips the tenant filter, and invalidates every tenant's tokens"
+keywords = ["code-review", "reviewing-code"]
+
+[metadata]
+skill = "reviewing-code"
+difficulty_explanation = "Three findings, one of them a logic defect the diff's own test does not catch"
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 900.0
+
+[environment]
+build_timeout_sec = 600.0
+network_mode = "public"

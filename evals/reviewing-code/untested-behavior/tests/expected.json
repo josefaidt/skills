@@ -1,0 +1,6 @@
+{
+  "verdict": "Request changes",
+  "findings": [],
+  "untested": ["RESET-3.2"],
+  "exceptions": []
+}

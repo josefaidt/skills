@@ -1,0 +1,20 @@
+{
+  "verdict": "Request changes",
+  "findings": [
+    {
+      "kind": "tenancy/scoped-queries",
+      "section": "Blocking",
+      "file": "lib/resend-reset.ts",
+      "lines": [22, 27, 28]
+    },
+    {
+      "kind": "secrets/no-tokens-in-logs",
+      "section": "Blocking",
+      "file": "lib/resend-reset.ts",
+      "lines": [33]
+    },
+    { "kind": "defect", "section": "Blocking", "file": "lib/resend-reset.ts", "lines": [27, 28] }
+  ],
+  "untested": [],
+  "exceptions": []
+}

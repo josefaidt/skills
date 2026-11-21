@@ -16,7 +16,8 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint --no-error-on-unmatched-pattern",
-    "lint:fix": "oxlint --fix --no-error-on-unmatched-pattern"
+    "lint:fix": "oxlint --fix --no-error-on-unmatched-pattern",
+    "evals:sync": "bun evals/sync.ts"
   },
   "devDependencies": {
     "@types/bun": "catalog:",

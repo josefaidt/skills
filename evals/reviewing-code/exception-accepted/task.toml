@@ -1,0 +1,20 @@
+schema_version = "1.4"
+
+[task]
+name = "josefaidt-skills/reviewing-code-exception-accepted"
+description = "A correct diff that breaks a blocking SHOULD rule on purpose, with a reason specific to the change"
+keywords = ["code-review", "reviewing-code"]
+
+[metadata]
+skill = "reviewing-code"
+difficulty_explanation = "Tests exceptions: accept a sound exception to a SHOULD rule, and let it alone decide an Approve verdict"
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 900.0
+
+[environment]
+build_timeout_sec = 600.0
+network_mode = "public"
