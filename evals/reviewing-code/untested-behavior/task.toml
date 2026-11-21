@@ -1,0 +1,20 @@
+schema_version = "1.4"
+
+[task]
+name = "josefaidt-skills/reviewing-code-untested-behavior"
+description = "A correct diff that claims a MUST behavior no test names"
+keywords = ["code-review", "reviewing-code"]
+
+[metadata]
+skill = "reviewing-code"
+difficulty_explanation = "Tests the behavior section: the code is right, but an untested MUST still blocks"
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 900.0
+
+[environment]
+build_timeout_sec = 600.0
+network_mode = "public"

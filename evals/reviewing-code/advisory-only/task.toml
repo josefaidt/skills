@@ -1,0 +1,20 @@
+schema_version = "1.4"
+
+[task]
+name = "josefaidt-skills/reviewing-code-advisory-only"
+description = "A diff whose only problem is an advisory rule, beside code that invites comments no rule backs"
+keywords = ["code-review", "reviewing-code"]
+
+[metadata]
+skill = "reviewing-code"
+difficulty_explanation = "Tests restraint: one advisory finding, and a Comment verdict rather than Request changes"
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 900.0
+
+[environment]
+build_timeout_sec = 600.0
+network_mode = "public"

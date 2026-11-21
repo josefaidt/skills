@@ -1,0 +1,20 @@
+schema_version = "1.4"
+
+[task]
+name = "josefaidt-skills/reviewing-code-clean-diff"
+description = "A correct diff that a reviewer should approve without findings"
+keywords = ["code-review", "reviewing-code"]
+
+[metadata]
+skill = "reviewing-code"
+difficulty_explanation = "Tests restraint: no rule is broken, so every finding is noise"
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 900.0
+
+[environment]
+build_timeout_sec = 600.0
+network_mode = "public"
