@@ -110,7 +110,7 @@ Skills with a `name` and `description` in frontmatter are discovered automatical
 
 ## Development
 
-The repo is a Bun workspace. It ships markdown, the scripts two skills install, and the tooling that keeps them formatted.
+The repo is a Bun workspace. It ships markdown, the scripts two skills install, the Harbor evals in [`evals/`](./evals/), and the tooling that keeps them formatted.
 
 ```sh
 bun install       # installs tooling and configures the git hooks path
@@ -120,7 +120,7 @@ bun run lint      # lint with oxlint
 bun run lint:fix  # lint and apply fixes
 ```
 
-`bun install` runs the `prepare` script, which points `core.hooksPath` at `.git-hooks`. The pre-commit hook formats staged files with the repository's own oxfmt, runs its `oxlint --fix` over staged JavaScript and TypeScript, and re-stages the results. It stops with a message when `bun install` has not run, and exits early when `CI` is set. Formatting follows `.oxfmtrc.jsonc`, the same rules as Keyhaw.
+`bun install` runs the `prepare` script, which points `core.hooksPath` at `.git-hooks`. The pre-commit hook formats staged files with the repository's own oxfmt, runs its `oxlint --fix` over staged JavaScript and TypeScript, and re-stages the results. When the commit touches `evals/`, it also runs `bun run evals:sync --check`, so no task drifts from the shared files. It stops with a message when `bun install` has not run, and exits early when `CI` is set. Formatting follows `.oxfmtrc.jsonc`, the same rules as Keyhaw, and skips the eval fixtures, whose line numbers the evals depend on.
 
 Tool versions are pinned in the root `package.json` catalog. Reference them from a workspace package with `"oxlint": "catalog:"` rather than a literal version.
 

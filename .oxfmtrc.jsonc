@@ -16,5 +16,10 @@
       }
     }
   ],
-  "ignorePatterns": [".claude/worktrees/*"]
+  "ignorePatterns": [
+    ".claude/worktrees/*",
+    // eval fixtures are data: expected.json points at their line numbers, so formatting must not move them
+    "evals/shared/*/base/**",
+    "evals/*/*/environment/**"
+  ]
 }

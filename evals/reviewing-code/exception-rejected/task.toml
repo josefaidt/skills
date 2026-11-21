@@ -1,0 +1,20 @@
+schema_version = "1.4"
+
+[task]
+name = "josefaidt-skills/reviewing-code-exception-rejected"
+description = "A diff that claims an exception to a blocking MUST rule, which takes none"
+keywords = ["code-review", "reviewing-code"]
+
+[metadata]
+skill = "reviewing-code"
+difficulty_explanation = "Tests exceptions: reject any exception to a MUST rule however plausible its reason, and block on the violation"
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 900.0
+
+[environment]
+build_timeout_sec = 600.0
+network_mode = "public"

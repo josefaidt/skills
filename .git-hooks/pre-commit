@@ -16,7 +16,12 @@ if [ ! -x "$BIN/oxfmt" ] || [ ! -x "$BIN/oxlint" ]; then
   exit 1
 fi
 
-# --no-error-on-unmatched-pattern lets a commit of only ignored files through
+# --no-error-on-unmatched-pattern lets a commit of only ignored files, such as eval fixtures, through
 echo "$STAGED" | xargs "$BIN/oxfmt" --no-error-on-unmatched-pattern
 [ -n "$STAGED_LINT" ] && echo "$STAGED_LINT" | xargs "$BIN/oxlint" --fix --no-error-on-unmatched-pattern
 echo "$STAGED" | xargs git add
+
+# each eval task carries its own copy of the shared files, so a commit to evals/ must keep them in step
+if git diff --cached --name-only | grep -q '^evals/'; then
+  bun "$(git rev-parse --show-toplevel)/evals/sync.ts" --check
+fi
