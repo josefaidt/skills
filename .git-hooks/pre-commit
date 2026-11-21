@@ -9,6 +9,14 @@ STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ts|tsx|js
 
 STAGED_LINT=$(echo "$STAGED" | grep -E '\.(ts|tsx|js|jsx|cjs|mjs|cts|mts|vue|svelte|astro)$' || true)
 
-echo "$STAGED" | xargs oxfmt
-[ -n "$STAGED_LINT" ] && echo "$STAGED_LINT" | xargs oxlint --fix
+# The repository's own binaries, so the hook never depends on what happens to be on PATH
+BIN="$(git rev-parse --show-toplevel)/node_modules/.bin"
+if [ ! -x "$BIN/oxfmt" ] || [ ! -x "$BIN/oxlint" ]; then
+  echo "pre-commit: oxfmt or oxlint is not installed. Run 'bun install', then commit again." >&2
+  exit 1
+fi
+
+# --no-error-on-unmatched-pattern lets a commit of only ignored files through
+echo "$STAGED" | xargs "$BIN/oxfmt" --no-error-on-unmatched-pattern
+[ -n "$STAGED_LINT" ] && echo "$STAGED_LINT" | xargs "$BIN/oxlint" --fix --no-error-on-unmatched-pattern
 echo "$STAGED" | xargs git add

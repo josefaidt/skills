@@ -32,7 +32,15 @@ skills/
     SKILL.md
     references/
   domain-modeling/          glossary and ADRs
+  setup-docs-workflow/      pick and set up the RFC or PRD workflow, with its guard and coverage scripts
+    SKILL.md
+    scripts/
+  coding-standards/         the rule table a reviewer enforces, and how rules are promoted and retired
+  reviewing-behavior/       pre-check of the behavior the maintainer approves
+  reviewing-code/           diff review that cites a rule ID on every finding
+  reviewing-design/         design document review against its PRD
   reflect/                  route what a session taught to the file that should hold it
+  milestone-report/         the report that closes a milestone
   learn-mcp-apps/           MCP Apps protocol, SDK, patterns, and host notes
     SKILL.md
     references/
@@ -48,14 +56,15 @@ Each skill directory stands alone. A skill never requires another skill to be in
 
 The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json). Each plugin bundles the skills of one group:
 
-| Plugin           | Skills                                                                     |
-| :--------------- | :------------------------------------------------------------------------- |
-| `writing`        | `writing-prose`, `writing-code`                                            |
-| `answering`      | `answering-with-sources`                                                   |
-| `typescript`     | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
-| `design`         | `domain-modeling`                                                          |
-| `agents`         | `reflect`, `wait-what`, `catch-me-up`                                      |
-| `learn-mcp-apps` | `learn-mcp-apps`                                                           |
+| Plugin | Skills |
+| :-- | :-- |
+| `writing` | `writing-prose`, `writing-code` |
+| `answering` | `answering-with-sources` |
+| `typescript` | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
+| `design` | `domain-modeling` |
+| `review` | `setup-docs-workflow`, `coding-standards`, `reviewing-behavior`, `reviewing-design`, `reviewing-code` |
+| `agents` | `reflect`, `wait-what`, `catch-me-up`, `milestone-report` |
+| `learn-mcp-apps` | `learn-mcp-apps` |
 
 Install a plugin from inside Claude Code:
 
@@ -64,6 +73,7 @@ Install a plugin from inside Claude Code:
 /plugin install answering --marketplace josefaidt/skills
 /plugin install typescript --marketplace josefaidt/skills
 /plugin install design --marketplace josefaidt/skills
+/plugin install review --marketplace josefaidt/skills
 /plugin install agents --marketplace josefaidt/skills
 /plugin install learn-mcp-apps --marketplace josefaidt/skills
 ```
@@ -100,7 +110,7 @@ Skills with a `name` and `description` in frontmatter are discovered automatical
 
 ## Development
 
-The repo is a Bun workspace. It ships no source code, only markdown and the tooling that keeps it formatted.
+The repo is a Bun workspace. It ships markdown, the scripts two skills install, and the tooling that keeps them formatted.
 
 ```sh
 bun install       # installs tooling and configures the git hooks path
@@ -110,7 +120,7 @@ bun run lint      # lint with oxlint
 bun run lint:fix  # lint and apply fixes
 ```
 
-`bun install` runs the `prepare` script, which points `core.hooksPath` at `.git-hooks`. The pre-commit hook formats staged files with oxfmt, runs `oxlint --fix` over staged JavaScript and TypeScript, and re-stages the results. It exits early when `CI` is set.
+`bun install` runs the `prepare` script, which points `core.hooksPath` at `.git-hooks`. The pre-commit hook formats staged files with the repository's own oxfmt, runs its `oxlint --fix` over staged JavaScript and TypeScript, and re-stages the results. It stops with a message when `bun install` has not run, and exits early when `CI` is set. Formatting follows `.oxfmtrc.jsonc`, the same rules as Keyhaw.
 
 Tool versions are pinned in the root `package.json` catalog. Reference them from a workspace package with `"oxlint": "catalog:"` rather than a literal version.
 

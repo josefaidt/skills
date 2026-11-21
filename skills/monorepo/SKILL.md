@@ -11,8 +11,8 @@ For setting up a repository with this structure and its tooling, load `new-monor
 
 ## Reference files
 
-| File                | Use when                                                                                                        |
-| :------------------ | :-------------------------------------------------------------------------------------------------------------- |
+| File | Use when |
+| :-- | :-- |
 | `references/bun.md` | Working in a Bun workspace: `workspaces` and catalog config, `workspace:*`, `bunfig.toml` linker, filtered runs |
 
 Check the repo's lockfile and `packageManager` field before reaching for a reference file. Only Bun is documented here. For any other package manager, apply the concepts below and confirm the syntax against its own docs rather than assuming it matches Bun's.

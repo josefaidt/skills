@@ -14,26 +14,26 @@ When the repository has a `CODING_STANDARDS.md` or a comment rule of its own, re
 
 Before writing a comment, try to make it unnecessary: rename, extract a function, narrow a type, or restructure. Write one only when a careful reader would otherwise get the code wrong, or would have to work out again what its author already knew.
 
-| Keep                        | When                                                                                                                                                                 |
-| :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A constraint from outside   | Behavior forced by something you cannot reshape, such as a platform limit, a protocol, a vendor API, or a spec requirement. Say what breaks if someone simplifies it |
-| An upstream workaround      | A fix for a bug in a dependency or the platform, linking the upstream issue so a reader knows when it can go                                                         |
-| Dense logic                 | Logic that stays hard once the code is as plain as it can be, such as a bit mask or rejection sampling, explained at the lines it covers                             |
-| A value's origin            | A number or limit whose source is not obvious, such as a timeout set relative to another one                                                                         |
-| API docs                    | Doc comments that define a public contract: what a declaration is, its units, formats, defaults, and invariants                                                      |
-| Legal and generated headers | A license header, or a line naming the script that generated the file                                                                                                |
-| A justified directive       | A formatter or lint directive whose rule is wrong for this line, with the reason beside it                                                                           |
+| Keep | When |
+| :-- | :-- |
+| A constraint from outside | Behavior forced by something you cannot reshape, such as a platform limit, a protocol, a vendor API, or a spec requirement. Say what breaks if someone simplifies it |
+| An upstream workaround | A fix for a bug in a dependency or the platform, linking the upstream issue so a reader knows when it can go |
+| Dense logic | Logic that stays hard once the code is as plain as it can be, such as a bit mask or rejection sampling, explained at the lines it covers |
+| A value's origin | A number or limit whose source is not obvious, such as a timeout set relative to another one |
+| API docs | Doc comments that define a public contract: what a declaration is, its units, formats, defaults, and invariants |
+| Legal and generated headers | A license header, or a line naming the script that generated the file |
+| A justified directive | A formatter or lint directive whose rule is wrong for this line, with the reason beside it |
 
-| Delete                                        | Instead                                                                                |
-| :-------------------------------------------- | :------------------------------------------------------------------------------------- |
-| Narration of the next line                    | Nothing. The code says it                                                              |
-| A name or type restated                       | Nothing, or a better name                                                              |
-| Section banners                               | Reorder or split the file                                                              |
-| History ("changed to fix…")                   | The commit message                                                                     |
-| Commented-out code                            | Version control                                                                        |
-| A bare `TODO`                                 | An issue, linked from the `TODO`                                                       |
-| An explanation of a surprise in your own code | Remove the surprise with a rename, an extraction, a type, or a redesign                |
-| "Do not remove", "IMPORTANT"                  | A test, type, assertion, or lint rule that enforces it. A claim nobody can verify goes |
+| Delete | Instead |
+| :-- | :-- |
+| Narration of the next line | Nothing. The code says it |
+| A name or type restated | Nothing, or a better name |
+| Section banners | Reorder or split the file |
+| History ("changed to fix…") | The commit message |
+| Commented-out code | Version control |
+| A bare `TODO` | An issue, linked from the `TODO` |
+| An explanation of a surprise in your own code | Remove the surprise with a rename, an extraction, a type, or a redesign |
+| "Do not remove", "IMPORTANT" | A test, type, assertion, or lint rule that enforces it. A claim nobody can verify goes |
 
 A comment changes with its code or goes. When unsure whether a keep reason still holds, read the code it points at and trace the symbol it names. A reason you cannot confirm is a reason to delete, not to shorten the comment into a smaller excuse.
 

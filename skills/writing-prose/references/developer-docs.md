@@ -2,12 +2,12 @@
 
 Developer documentation comes in four kinds, after [Diátaxis](https://diataxis.fr/). Each serves a reader in a different state, so a page that mixes two serves neither. When a page drifts into another kind, split it and link the two.
 
-| Kind        | Reader                          | The page                                                                                                       |
-| :---------- | :------------------------------ | :------------------------------------------------------------------------------------------------------------- |
-| Tutorial    | Learning by doing               | Says what the reader will build. Every step produces a visible result, and the page says what they should see  |
-| How-to      | Has a goal and knows the basics | Gets them to the goal with actions only, allowing forks. Its title names the task                              |
-| Reference   | Looking up a fact               | Describes and nothing else. Dry, complete, and sure, structured like the thing it describes                    |
-| Explanation | Wants to understand why         | Covers one bounded topic with its context: design decisions, history, constraints, and alternatives considered |
+| Kind | Reader | The page |
+| :-- | :-- | :-- |
+| Tutorial | Learning by doing | Says what the reader will build. Every step produces a visible result, and the page says what they should see |
+| How-to | Has a goal and knows the basics | Gets them to the goal with actions only, allowing forks. Its title names the task |
+| Reference | Looking up a fact | Describes and nothing else. Dry, complete, and sure, structured like the thing it describes |
+| Explanation | Wants to understand why | Covers one bounded topic with its context: design decisions, history, constraints, and alternatives considered |
 
 ## Voice by kind
 
