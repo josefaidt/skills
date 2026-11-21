@@ -53,12 +53,12 @@ Let content set the height. Report it with `size-changed`, or let `autoResize` d
 
 ## Reaching the model
 
-| Need                                          | Use                                                    | Visible to the user                                |
-| :-------------------------------------------- | :----------------------------------------------------- | :------------------------------------------------- |
-| Start a model turn                            | `ui/message`                                           | Yes, as a user message, often after approval       |
-| Inform the model's next turn                  | `ui/update-model-context`                              | Host-dependent, never starts a turn                |
-| A completion with no chat turn                | `sampling/createMessage` (`app.createSamplingMessage`) | Host-dependent. Needs `hostCapabilities.sampling`. |
-| A completion when the host offers no sampling | An app-only tool whose server calls a model API        | No, and it runs on your account, not the user's    |
+| Need | Use | Visible to the user |
+| :-- | :-- | :-- |
+| Start a model turn | `ui/message` | Yes, as a user message, often after approval |
+| Inform the model's next turn | `ui/update-model-context` | Host-dependent, never starts a turn |
+| A completion with no chat turn | `sampling/createMessage` (`app.createSamplingMessage`) | Host-dependent. Needs `hostCapabilities.sampling`. |
+| A completion when the host offers no sampling | An app-only tool whose server calls a model API | No, and it runs on your account, not the user's |
 
 ## Probing a host
 

@@ -75,10 +75,10 @@ A server that calls a downstream API for the user needs a grant of its own for t
 
 ## Choosing a mechanism
 
-| Situation                                                             | Mechanism                                                      |
-| :-------------------------------------------------------------------- | :------------------------------------------------------------- |
-| A local stdio demo                                                    | Credentials from the server's environment, and no OAuth        |
-| A remote server with per-user data                                    | Core MCP authorization, signing in up front or lazily on a 401 |
-| An organization that wants IT to grant access with no per-app consent | Enterprise-Managed Authorization, built on ID-JAG              |
-| A service with no user present                                        | OAuth Client Credentials                                       |
-| A server that needs the user's account elsewhere                      | URL elicitation                                                |
+| Situation | Mechanism |
+| :-- | :-- |
+| A local stdio demo | Credentials from the server's environment, and no OAuth |
+| A remote server with per-user data | Core MCP authorization, signing in up front or lazily on a 401 |
+| An organization that wants IT to grant access with no per-app consent | Enterprise-Managed Authorization, built on ID-JAG |
+| A service with no user present | OAuth Client Credentials |
+| A server that needs the user's account elsewhere | URL elicitation |

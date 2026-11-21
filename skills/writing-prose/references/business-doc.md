@@ -13,10 +13,10 @@ The prose rules in `SKILL.md` are already in force. This file adds document shap
 
 ## Document types
 
-| Type       | Purpose                                                        | Examples                                        |
-| :--------- | :------------------------------------------------------------- | :---------------------------------------------- |
-| `product`  | Requirements, user stories, specifications                     | `cli-user-stories.md`, `config-user-stories.md` |
-| `business` | Proposals, analyses, strategy docs for leadership/stakeholders | `platform-strategy.md`, `vendor-comparison.md`  |
+| Type | Purpose | Examples |
+| :-- | :-- | :-- |
+| `product` | Requirements, user stories, specifications | `cli-user-stories.md`, `config-user-stories.md` |
+| `business` | Proposals, analyses, strategy docs for leadership/stakeholders | `platform-strategy.md`, `vendor-comparison.md` |
 
 ## Structure by type
 

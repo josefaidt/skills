@@ -33,13 +33,13 @@ claude plugin install agents@josefaidt-skills --scope project
 
 Load the matching skill before starting the work it covers.
 
-| Skill                               | Load when                                                               |
-| :---------------------------------- | :---------------------------------------------------------------------- |
-| `typescript:writing-typescript`     | Writing or reviewing any TypeScript                                     |
-| `typescript:new-typescript-package` | Adding a workspace package or app                                       |
-| `typescript:monorepo`               | Deciding where code belongs, or adding or upgrading a dependency        |
-| `writing:writing-prose`             | Writing any prose, such as a README, an issue, or a pull request body   |
-| `design:domain-modeling`            | Naming or renaming a domain concept, or editing `GLOSSARY.md` or an ADR |
+| Skill | Load when |
+| :-- | :-- |
+| `typescript:writing-typescript` | Writing or reviewing any TypeScript |
+| `typescript:new-typescript-package` | Adding a workspace package or app |
+| `typescript:monorepo` | Deciding where code belongs, or adding or upgrading a dependency |
+| `writing:writing-prose` | Writing any prose, such as a README, an issue, or a pull request body |
+| `design:domain-modeling` | Naming or renaming a domain concept, or editing `GLOSSARY.md` or an ADR |
 
 `agents:reflect` runs only when the user invokes it by name, and routes what a session taught to the files and checks future agents read.
 

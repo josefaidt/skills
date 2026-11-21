@@ -2,20 +2,20 @@
 
 Reusable skill definitions for agents. Each skill lives in its own directory with a `SKILL.md` and any supporting reference files. The Group column names the Claude Code plugin each skill ships in, in lowercase, as the root README describes.
 
-| Skill                                                 | Group          | Covers                                                        |
-| :---------------------------------------------------- | :------------- | :------------------------------------------------------------ |
-| [`writing-prose`](./writing-prose/)                   | Writing        | Prose rules, PRDs, and internal documents                     |
-| [`writing-code`](./writing-code/)                     | Writing        | When a comment earns its place, in any language               |
-| [`answering-with-sources`](./answering-with-sources/) | Answering      | Sourced answers with confidence levels                        |
-| [`writing-typescript`](./writing-typescript/)         | TypeScript     | File-level conventions, typing, and layout                    |
-| [`new-typescript-package`](./new-typescript-package/) | TypeScript     | Scaffolding a workspace package or app                        |
-| [`monorepo`](./monorepo/)                             | TypeScript     | Workspace structure and dependency installs                   |
-| [`new-monorepo`](./new-monorepo/)                     | TypeScript     | Walking through a Bun monorepo's tooling and agent hooks      |
-| [`domain-modeling`](./domain-modeling/)               | Design         | The glossary and ADRs a project's code and docs share         |
-| [`reflect`](./reflect/)                               | Agents         | Routing what a session taught to the file that should hold it |
-| [`wait-what`](./wait-what/)                           | Agents         | Saying the last reply again in plain words                    |
-| [`catch-me-up`](./catch-me-up/)                       | Agents         | What changed since your last message, and what waits on you   |
-| [`learn-mcp-apps`](./learn-mcp-apps/)                 | Learn MCP Apps | Building and debugging MCP Apps, and what hosts actually do   |
+| Skill | Group | Covers |
+| :-- | :-- | :-- |
+| [`writing-prose`](./writing-prose/) | Writing | Prose rules, PRDs, and internal documents |
+| [`writing-code`](./writing-code/) | Writing | When a comment earns its place, in any language |
+| [`answering-with-sources`](./answering-with-sources/) | Answering | Sourced answers with confidence levels |
+| [`writing-typescript`](./writing-typescript/) | TypeScript | File-level conventions, typing, and layout |
+| [`new-typescript-package`](./new-typescript-package/) | TypeScript | Scaffolding a workspace package or app |
+| [`monorepo`](./monorepo/) | TypeScript | Workspace structure and dependency installs |
+| [`new-monorepo`](./new-monorepo/) | TypeScript | Walking through a Bun monorepo's tooling and agent hooks |
+| [`domain-modeling`](./domain-modeling/) | Design | The glossary and ADRs a project's code and docs share |
+| [`reflect`](./reflect/) | Agents | Routing what a session taught to the file that should hold it |
+| [`wait-what`](./wait-what/) | Agents | Saying the last reply again in plain words |
+| [`catch-me-up`](./catch-me-up/) | Agents | What changed since your last message, and what waits on you |
+| [`learn-mcp-apps`](./learn-mcp-apps/) | Learn MCP Apps | Building and debugging MCP Apps, and what hosts actually do |
 
 ## Writing skills
 
@@ -25,15 +25,15 @@ Document structure lives in reference files, so a task only pays for the shape i
 
 ### References
 
-| File                                                                                         | Covers                                                                                                                               |
-| :------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| [`writing-prose/references/prd.md`](./writing-prose/references/prd.md)                       | PRDs: executive summary, customer problem, numbered user stories with acceptance criteria, behavioral clarifications, open decisions |
-| [`writing-prose/references/business-doc.md`](./writing-prose/references/business-doc.md)     | Internal product and business docs: proposals, analyses, strategy memos, options-and-tenets templates                                |
-| [`writing-prose/references/anti-patterns.md`](./writing-prose/references/anti-patterns.md)   | The tripwire scan: phrase patterns, em-dash use, banned words, comparison closures, heading shapes                                   |
-| [`writing-prose/references/markdown-gfm.md`](./writing-prose/references/markdown-gfm.md)     | GFM formatting: fences, lists, headings, tables, emphasis, blockquotes                                                               |
-| [`writing-prose/references/developer-docs.md`](./writing-prose/references/developer-docs.md) | Tutorials, how-tos, reference, and explanation, after Diátaxis                                                                       |
-| [`writing-prose/references/briefings.md`](./writing-prose/references/briefings.md)           | Pull request bodies, commit messages, issues, thread replies, and task reports                                                       |
-| [`writing-prose/references/revising.md`](./writing-prose/references/revising.md)             | Revising a shared document, superseding versions, moving content in, and changelogs                                                  |
+| File | Covers |
+| :-- | :-- |
+| [`writing-prose/references/prd.md`](./writing-prose/references/prd.md) | PRDs: executive summary, customer problem, numbered user stories with acceptance criteria, behavioral clarifications, open decisions |
+| [`writing-prose/references/business-doc.md`](./writing-prose/references/business-doc.md) | Internal product and business docs: proposals, analyses, strategy memos, options-and-tenets templates |
+| [`writing-prose/references/anti-patterns.md`](./writing-prose/references/anti-patterns.md) | The tripwire scan: phrase patterns, em-dash use, banned words, comparison closures, heading shapes |
+| [`writing-prose/references/markdown-gfm.md`](./writing-prose/references/markdown-gfm.md) | GFM formatting: fences, lists, headings, tables, emphasis, blockquotes |
+| [`writing-prose/references/developer-docs.md`](./writing-prose/references/developer-docs.md) | Tutorials, how-tos, reference, and explanation, after Diátaxis |
+| [`writing-prose/references/briefings.md`](./writing-prose/references/briefings.md) | Pull request bodies, commit messages, issues, thread replies, and task reports |
+| [`writing-prose/references/revising.md`](./writing-prose/references/revising.md) | Revising a shared document, superseding versions, moving content in, and changelogs |
 
 The anti-pattern catalog draws on two open-source skills that document AI writing tells:
 
@@ -48,12 +48,12 @@ The anti-pattern catalog draws on two open-source skills that document AI writin
 
 Four skills cover working in a TypeScript workspace, layered by scope: source files, one package, the whole repo, and the tooling a repo starts with.
 
-| Skill                                                 | Covers                                                                                                                                                                                                                                           |
-| :---------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`writing-typescript`](./writing-typescript/)         | Source files: no `any`, parsing at the boundary, unions, branded IDs, exhaustive switches, imports, comment syntax, class modifiers, kebab-case names, no barrels, one export per scoped package, and the `lib/`, `bin/`, and `scripts/` layout. |
-| [`new-typescript-package`](./new-typescript-package/) | A new package or app: scaffolding `package.json`, `tsconfig.json`, the entrypoint or a runnable app's `bin/` executable, and an optional rolldown build.                                                                                         |
-| [`monorepo`](./monorepo/)                             | The repo: the `apps` and `packages` split, shared version pinning, and isolated `node_modules`.                                                                                                                                                  |
-| [`new-monorepo`](./new-monorepo/)                     | A new repo: Bun, TypeScript 7, oxfmt, type-aware oxlint, Vitest, commitlint, git hooks, Claude Code hooks, CI, `AGENTS.md`, and the skill plugins it enables.                                                                                    |
+| Skill | Covers |
+| :-- | :-- |
+| [`writing-typescript`](./writing-typescript/) | Source files: no `any`, parsing at the boundary, unions, branded IDs, exhaustive switches, imports, comment syntax, class modifiers, kebab-case names, no barrels, one export per scoped package, and the `lib/`, `bin/`, and `scripts/` layout. |
+| [`new-typescript-package`](./new-typescript-package/) | A new package or app: scaffolding `package.json`, `tsconfig.json`, the entrypoint or a runnable app's `bin/` executable, and an optional rolldown build. |
+| [`monorepo`](./monorepo/) | The repo: the `apps` and `packages` split, shared version pinning, and isolated `node_modules`. |
+| [`new-monorepo`](./new-monorepo/) | A new repo: Bun, TypeScript 7, oxfmt, type-aware oxlint, Vitest, commitlint, git hooks, Claude Code hooks, CI, `AGENTS.md`, and the skill plugins it enables. |
 
 `writing-typescript` sets `user-invocable: false`, so an agent loads it on its own when writing or reviewing TypeScript. `new-typescript-package` takes arguments, `<name>` and an optional `apps` or `packages` target directory that defaults to `packages`. `new-monorepo` takes an optional target directory and `--scope`.
 
@@ -65,8 +65,8 @@ They cross-reference each other rather than repeating rules, and the scope bound
 
 `monorepo` keeps package-manager syntax out of the skill body. The concepts hold anywhere; each reference file supplies the configuration for one package manager.
 
-| File                                                         | Covers                                                                                                           |
-| :----------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| File | Covers |
+| :-- | :-- |
 | [`monorepo/references/bun.md`](./monorepo/references/bun.md) | `workspaces` and catalog config, `workspace:*`, the `bunfig.toml` linker and install settings, and filtered runs |
 
 Bun is the only one documented so far. Add a sibling file and a row to the skill's reference table to cover another.
@@ -89,12 +89,12 @@ Bun is the only one documented so far. Add a sibling file and a row to the skill
 
 ### References
 
-| File                                                                               | Covers                                                                                                                               |
-| :--------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| File | Covers |
+| :-- | :-- |
 | [`learn-mcp-apps/references/protocol.md`](./learn-mcp-apps/references/protocol.md) | Resource and tool `_meta.ui`, negotiation, lifecycle, every `ui/*` method, host context, caching, and the spec's own inconsistencies |
-| [`learn-mcp-apps/references/sdk.md`](./learn-mcp-apps/references/sdk.md)           | The SDK's entry points, `App`, server helpers, style helpers, `AppBridge`, and the transport                                         |
-| [`learn-mcp-apps/references/patterns.md`](./learn-mcp-apps/references/patterns.md) | Design patterns tied to the constraints that cause them                                                                              |
-| [`learn-mcp-apps/references/hosts.md`](./learn-mcp-apps/references/hosts.md)       | Dated observations of Claude and other hosts, and open questions                                                                     |
-| [`learn-mcp-apps/references/security.md`](./learn-mcp-apps/references/security.md) | What the host enforces and what the server and View must do                                                                          |
-| [`learn-mcp-apps/references/auth.md`](./learn-mcp-apps/references/auth.md)         | Whose token a View's calls carry, lazy sign-in, Enterprise-Managed Authorization and ID-JAG, and audit trails                        |
-| [`learn-mcp-apps/references/sources.md`](./learn-mcp-apps/references/sources.md)   | Verified links to the spec, SDK, docs, examples, and tools                                                                           |
+| [`learn-mcp-apps/references/sdk.md`](./learn-mcp-apps/references/sdk.md) | The SDK's entry points, `App`, server helpers, style helpers, `AppBridge`, and the transport |
+| [`learn-mcp-apps/references/patterns.md`](./learn-mcp-apps/references/patterns.md) | Design patterns tied to the constraints that cause them |
+| [`learn-mcp-apps/references/hosts.md`](./learn-mcp-apps/references/hosts.md) | Dated observations of Claude and other hosts, and open questions |
+| [`learn-mcp-apps/references/security.md`](./learn-mcp-apps/references/security.md) | What the host enforces and what the server and View must do |
+| [`learn-mcp-apps/references/auth.md`](./learn-mcp-apps/references/auth.md) | Whose token a View's calls carry, lazy sign-in, Enterprise-Managed Authorization and ID-JAG, and audit trails |
+| [`learn-mcp-apps/references/sources.md`](./learn-mcp-apps/references/sources.md) | Verified links to the spec, SDK, docs, examples, and tools |

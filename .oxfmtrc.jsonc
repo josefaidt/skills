@@ -6,5 +6,15 @@
     "newlinesBetween": false
   },
   "sortPackageJson": true,
+  // A paragraph stays on one line, so a diff shows the sentence that changed
+  "proseWrap": "never",
+  "overrides": [
+    {
+      "files": ["*.jsonc"],
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ],
   "ignorePatterns": [".claude/worktrees/*"]
 }

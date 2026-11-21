@@ -12,13 +12,13 @@ A briefing is writing a person acts on: a pull request body, a commit message, a
 
 ## By kind
 
-| Kind              | Holds                                                                                                                                             |
-| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Kind | Holds |
+| :-- | :-- |
 | Pull request body | The outcome and the approach in two or three sentences, then at most a few notes on what a reviewer would otherwise miss, then how it was checked |
-| Commit message    | A header that says what the change does in the imperative, and a body that says why, when the why is not obvious                                  |
-| Issue             | The problem, the outcome that ends it, and how someone checks that outcome. The steps belong to whoever picks it up                               |
-| Reply in a thread | The answer first: what changed and where, or why nothing changed. Then anything the other person needs to do                                      |
-| Task report       | What is now true, what is left or unverified, and the one decision that waits on the reader                                                       |
+| Commit message | A header that says what the change does in the imperative, and a body that says why, when the why is not obvious |
+| Issue | The problem, the outcome that ends it, and how someone checks that outcome. The steps belong to whoever picks it up |
+| Reply in a thread | The answer first: what changed and where, or why nothing changed. Then anything the other person needs to do |
+| Task report | What is now true, what is left or unverified, and the one decision that waits on the reader |
 
 ## Gotchas
 

@@ -35,15 +35,15 @@ Hosts fetch it with `resources/read`. A server may leave UI-only resources out o
 
 Rendering settings live in `_meta.ui` on the resource contents returned by `resources/read`, and the declaration may repeat them:
 
-| Field                 | Meaning                                                                                                                                                 |
-| :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `csp.connectDomains`  | Origins for fetch, XHR, and WebSocket. Maps to `connect-src`.                                                                                           |
+| Field | Meaning |
+| :-- | :-- |
+| `csp.connectDomains` | Origins for fetch, XHR, and WebSocket. Maps to `connect-src`. |
 | `csp.resourceDomains` | Origins for scripts, styles, images, fonts, and media. Maps to `script-src`, `style-src`, `img-src`, `font-src`, `media-src`. Wildcard subdomains work. |
-| `csp.frameDomains`    | Origins for nested iframes. Omitted means `frame-src 'none'`.                                                                                           |
-| `csp.baseUriDomains`  | Allowed `<base>` URIs. Omitted means `base-uri 'self'`.                                                                                                 |
-| `permissions`         | `camera`, `microphone`, `geolocation`, `clipboardWrite`, each `{}`. Hosts MAY map them to the iframe `allow` attribute, so feature-detect.              |
-| `domain`              | A dedicated sandbox origin, for OAuth callbacks, CORS, or API key allowlists. The format is host-specific, such as `{hash}.claudemcpcontent.com`.       |
-| `prefersBorder`       | `true` asks the host for a visible border and background, `false` for none. Set it explicitly, because host defaults differ.                            |
+| `csp.frameDomains` | Origins for nested iframes. Omitted means `frame-src 'none'`. |
+| `csp.baseUriDomains` | Allowed `<base>` URIs. Omitted means `base-uri 'self'`. |
+| `permissions` | `camera`, `microphone`, `geolocation`, `clipboardWrite`, each `{}`. Hosts MAY map them to the iframe `allow` attribute, so feature-detect. |
+| `domain` | A dedicated sandbox origin, for OAuth callbacks, CORS, or API key allowlists. The format is host-specific, such as `{hash}.claudemcpcontent.com`. |
+| `prefersBorder` | `true` asks the host for a visible border and background, `false` for none. Set it explicitly, because host defaults differ. |
 
 The SDK types `csp` and `permissions` as `never` on tool metadata, so they belong on the resource, never on the tool.
 
@@ -87,33 +87,33 @@ A View only ever receives the input and result of the tool call that created it.
 
 ## View to host
 
-| Method                          | Kind         | Purpose                                                                                                                        |
-| :------------------------------ | :----------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| `ui/initialize`                 | request      | Handshake. Carries `appCapabilities`, including `availableDisplayModes` and `tools`.                                           |
-| `ui/notifications/initialized`  | notification | Ends the handshake.                                                                                                            |
-| `tools/call`                    | request      | Calls a tool on the View's server through the host.                                                                            |
-| `resources/read`                | request      | Reads a server resource through the host.                                                                                      |
-| `notifications/message`         | notification | Logs to the host.                                                                                                              |
-| `ping`                          | request      | Health check.                                                                                                                  |
-| `ui/message`                    | request      | Adds a user message to the chat and starts a turn. The host MAY ask the user first.                                            |
-| `ui/update-model-context`       | request      | Sets `content` and `structuredContent` the model sees on later turns. Each call replaces the last, and it never starts a turn. |
-| `ui/open-link`                  | request      | Asks the host to open a URL.                                                                                                   |
-| `ui/request-display-mode`       | request      | Asks for `inline`, `fullscreen`, or `pip`. The response holds the mode actually set.                                           |
-| `ui/notifications/size-changed` | notification | Reports `width` and `height`. Required for hosts to size flexible containers.                                                  |
+| Method | Kind | Purpose |
+| :-- | :-- | :-- |
+| `ui/initialize` | request | Handshake. Carries `appCapabilities`, including `availableDisplayModes` and `tools`. |
+| `ui/notifications/initialized` | notification | Ends the handshake. |
+| `tools/call` | request | Calls a tool on the View's server through the host. |
+| `resources/read` | request | Reads a server resource through the host. |
+| `notifications/message` | notification | Logs to the host. |
+| `ping` | request | Health check. |
+| `ui/message` | request | Adds a user message to the chat and starts a turn. The host MAY ask the user first. |
+| `ui/update-model-context` | request | Sets `content` and `structuredContent` the model sees on later turns. Each call replaces the last, and it never starts a turn. |
+| `ui/open-link` | request | Asks the host to open a URL. |
+| `ui/request-display-mode` | request | Asks for `inline`, `fullscreen`, or `pip`. The response holds the mode actually set. |
+| `ui/notifications/size-changed` | notification | Reports `width` and `height`. Required for hosts to size flexible containers. |
 
 The draft spec and SDK 2.0.4 add `sampling/createMessage`, `ui/download-file`, and `ui/notifications/request-teardown` (the View asks the host to close it). The SDK also sends `resources/list` and types `ui/message` content as an array of content blocks. Each depends on a matching host capability. See `sdk.md`.
 
 ## Host to View
 
-| Method                                  | Kind         | Purpose                                                                                      |
-| :-------------------------------------- | :----------- | :------------------------------------------------------------------------------------------- |
-| `ui/notifications/tool-input-partial`   | notification | Best-effort partial arguments while streaming. Never act on them.                            |
-| `ui/notifications/tool-input`           | notification | Complete arguments, sent once.                                                               |
-| `ui/notifications/tool-result`          | notification | The `CallToolResult`: `content`, `structuredContent`, `_meta`.                               |
-| `ui/notifications/tool-cancelled`       | notification | The call was cancelled, with an optional `reason`.                                           |
-| `ui/notifications/host-context-changed` | notification | A partial `hostContext`. Merge it into what you hold.                                        |
-| `ui/resource-teardown`                  | request      | The View is about to go away. Save state, then respond.                                      |
-| `tools/call`, `tools/list`              | request      | Draft spec. Calls tools the View itself registers, when it declares `appCapabilities.tools`. |
+| Method | Kind | Purpose |
+| :-- | :-- | :-- |
+| `ui/notifications/tool-input-partial` | notification | Best-effort partial arguments while streaming. Never act on them. |
+| `ui/notifications/tool-input` | notification | Complete arguments, sent once. |
+| `ui/notifications/tool-result` | notification | The `CallToolResult`: `content`, `structuredContent`, `_meta`. |
+| `ui/notifications/tool-cancelled` | notification | The call was cancelled, with an optional `reason`. |
+| `ui/notifications/host-context-changed` | notification | A partial `hostContext`. Merge it into what you hold. |
+| `ui/resource-teardown` | request | The View is about to go away. Save state, then respond. |
+| `tools/call`, `tools/list` | request | Draft spec. Calls tools the View itself registers, when it declares `appCapabilities.tools`. |
 
 ## Host context
 

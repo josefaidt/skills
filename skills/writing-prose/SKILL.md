@@ -56,13 +56,13 @@ Many readers read in a second language or through a translator. Leave no sentenc
 
 Pick the kind before writing, and keep one document to one kind. Split and link rather than mixing them.
 
-| Kind                                     | Reader wants                                                                     | Load                                                                                                                 |
-| :--------------------------------------- | :------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------- |
-| Tutorial, how-to, reference, explanation | To learn, to reach a goal, to look up a fact, or to understand why               | [references/developer-docs.md](references/developer-docs.md)                                                         |
-| Briefing                                 | To act on a pull request, commit, issue, reply, or task report in under a minute | [references/briefings.md](references/briefings.md)                                                                   |
-| PRD                                      | What a feature must do, for whom, and how to tell it is done                     | [references/prd.md](references/prd.md)                                                                               |
-| Business document                        | A product or business analysis for stakeholders                                  | [references/business-doc.md](references/business-doc.md)                                                             |
-| Proposal                                 | Options weighed against tenets, and a recommendation                             | [references/proposal.md](references/proposal.md), with [tenets](references/tenets.md) and [FAQs](references/faqs.md) |
+| Kind | Reader wants | Load |
+| :-- | :-- | :-- |
+| Tutorial, how-to, reference, explanation | To learn, to reach a goal, to look up a fact, or to understand why | [references/developer-docs.md](references/developer-docs.md) |
+| Briefing | To act on a pull request, commit, issue, reply, or task report in under a minute | [references/briefings.md](references/briefings.md) |
+| PRD | What a feature must do, for whom, and how to tell it is done | [references/prd.md](references/prd.md) |
+| Business document | A product or business analysis for stakeholders | [references/business-doc.md](references/business-doc.md) |
+| Proposal | Options weighed against tenets, and a recommendation | [references/proposal.md](references/proposal.md), with [tenets](references/tenets.md) and [FAQs](references/faqs.md) |
 
 [references/revising.md](references/revising.md) covers revising a shared document, writing a new version, moving content in, and changelogs. [references/markdown-gfm.md](references/markdown-gfm.md) covers markdown formatting.
 

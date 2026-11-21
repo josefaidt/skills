@@ -36,20 +36,20 @@ Drop one-offs, and strip details that drift, such as commit IDs, versions, count
 
 ## Route
 
-| Finding                                                                                         | Destination                                                                                                                                                                             |
-| :---------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Finding | Destination |
+| :-- | :-- |
 | A mechanical mistake, such as a banned API, an import shape, a file location, or a title format | An automated check: a lint rule, a hook, or a CI job. Read the repo's existing check command first, since an unwired check is the finding. A repo with no guardrail at all is a finding |
-| A judgment call about code                                                                      | The coding standards, which the reviewer enforces                                                                                                                                       |
-| A judgment call about prose, such as voice or what a document covers                            | The writing style guide                                                                                                                                                                 |
-| A skill that should have loaded                                                                 | Its description, which decides whether it loads                                                                                                                                         |
-| A skill that gave stale or wrong guidance, or a procedure the agent improvised                  | The skill, stating intent in a line or a table row, under 200 lines, with occasional detail in `references/`                                                                            |
-| A name the user corrected, or two words for one concept                                         | The glossary, with the synonyms to avoid                                                                                                                                                |
-| A question whose answer changes what a user sees, does, or pays                                 | The requirements document, worded for the user to approve                                                                                                                               |
-| Any other question the agent had to ask                                                         | The design document                                                                                                                                                                     |
-| A file or fact that took too long to find                                                       | A pointer in the steering file or the nearest doc                                                                                                                                       |
-| Information the agent could not reach, such as server logs                                      | Access to it, such as teed logs or read-only credentials                                                                                                                                |
-| A script, hook, or permission that exists only to work around the environment                   | Its removal, when the platform or the tool's own configuration can replace it. Otherwise a header comment naming its constraint and what would retire it                                |
-| A steering-file line that changes nothing an agent does                                         | Its deletion                                                                                                                                                                            |
+| A judgment call about code | The coding standards, which the reviewer enforces |
+| A judgment call about prose, such as voice or what a document covers | The writing style guide |
+| A skill that should have loaded | Its description, which decides whether it loads |
+| A skill that gave stale or wrong guidance, or a procedure the agent improvised | The skill, stating intent in a line or a table row, under 200 lines, with occasional detail in `references/` |
+| A name the user corrected, or two words for one concept | The glossary, with the synonyms to avoid |
+| A question whose answer changes what a user sees, does, or pays | The requirements document, worded for the user to approve |
+| Any other question the agent had to ask | The design document |
+| A file or fact that took too long to find | A pointer in the steering file or the nearest doc |
+| Information the agent could not reach, such as server logs | Access to it, such as teed logs or read-only credentials |
+| A script, hook, or permission that exists only to work around the environment | Its removal, when the platform or the tool's own configuration can replace it. Otherwise a header comment naming its constraint and what would retire it |
+| A steering-file line that changes nothing an agent does | Its deletion |
 
 A lesson only one repository needs goes in that repository's docs, never in a skill other repositories share. A skill vendored from another repository changes upstream.
 
