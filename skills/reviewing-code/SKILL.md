@@ -1,6 +1,6 @@
 ---
 name: reviewing-code
-description: Review a diff or pull request against the repository's CODING_STANDARDS.md and the language skills' rules, citing a rule ID on every finding, and report defects, untested required behavior, and claimed exceptions in a fixed format. Use when asked to review code, a branch, a diff, or a pull request, or when acting as the reviewer in an implement-then-review loop.
+description: Review a diff or pull request against the repository's CODING_STANDARDS.md, its REVIEW.md, and the language skills' rules, citing a rule ID on every finding, and report defects, untested required behavior, and claimed exceptions in a fixed format. Use when asked to review code, a branch, a diff, or a pull request, or when acting as the reviewer in an implement-then-review loop.
 ---
 
 # Reviewing code
@@ -13,6 +13,12 @@ Review the diff, not the repository, and judge it only against rules that are wr
 2. Read the pull request body for the behavior IDs it claims to deliver, from an RFC or a PRD, and any exceptions it claims.
 3. Leave out what the static checks cover. When the format, lint, or type check did not run on this diff, run it and report its failures as they are, rather than judging those rules by eye.
 
+## Review instructions
+
+Read `REVIEW.md` at the repository root when it exists, along with each `REVIEW.md` in a directory that holds a changed file, which adds checks for changes under that path. Read each from the base with `git show <base>:<path>`, never from the branch, so a change cannot loosen its own review. When the diff changes a `REVIEW.md`, say that the change does not apply to itself.
+
+`REVIEW.md` holds the repository's own review procedure, such as how to find the requirements a change answers to, what else to check on every change, what not to report, and how its severities, verdict, and output map onto this skill's. Follow it alongside this skill. Where the two differ, `REVIEW.md` wins, as `CODING_STANDARDS.md` wins over a language skill's rules.
+
 ## Rules
 
 Read `CODING_STANDARDS.md` at the repository root when it exists, then the rules of the language skills that match the changed files, such as `writing-typescript` for `.ts` files. The table wins where the two disagree, and it sets each rule's level and status. A skill rule the table does not list is `SHOULD` and `advisory`.
@@ -21,7 +27,7 @@ Skip a rule that a lint rule in the repository's config already enforces, and a 
 
 ## Findings
 
-Report three kinds of finding, and nothing else:
+Report three kinds of finding, and any kind `REVIEW.md` adds, and nothing else:
 
 | Kind | What it is |
 | :-- | :-- |
@@ -51,7 +57,7 @@ Never approve a diff you wrote. When the implementer and the reviewer are the sa
 
 ## Output
 
-Post the review in this shape, leaving out any empty section, so the next review and the milestone report can find each rule ID by searching review comments. When the user thinks a finding is wrong, they reply `Dismissed: <rule ID>` with a reason, and that reply is what counts against the rule.
+Post the review in this shape, or the one `REVIEW.md` sets, leaving out any empty section, so the next review and the milestone report can find each rule ID by searching review comments. When the user thinks a finding is wrong, they reply `Dismissed: <rule ID>` with a reason, and that reply is what counts against the rule.
 
 ```markdown
 **Verdict:** Request changes
