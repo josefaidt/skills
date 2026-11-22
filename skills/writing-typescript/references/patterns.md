@@ -61,9 +61,7 @@ type DiffState = { loading: boolean; diff?: Diff; error?: string }
 
 // prefer
 type DiffState =
-  | { status: "loading" }
-  | { status: "ready"; diff: Diff }
-  | { status: "error"; error: string }
+  { status: "loading" } | { status: "ready"; diff: Diff } | { status: "error"; error: string }
 ```
 
 ## Exhaustive switches
