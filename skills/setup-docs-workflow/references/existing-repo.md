@@ -33,7 +33,7 @@ Summarize the inventory in a few lines, then ask the user to pick one option, re
 | Option | What changes | Recommend when |
 | :-- | :-- | :-- |
 | Adopt in place | Documents keep their paths, names, and other sections. Each one still being built gains the markers above, its behavior is rewritten as ID'd statements, and its status is mapped. `AGENTS.md` points at the existing paths | The existing docs already separate behavior from design, and the user likes where they live |
-| Migrate | Documents still being built move to `docs/rfcs/` or `docs/prd/` with `git mv`, are restructured to the template in `writing:writing-prose`, and gain IDs. Shipped documents stay where they are, untouched | The existing docs mix behavior and design, or are scattered across places |
+| Migrate | Documents still being built move to `docs/rfcs/` or `docs/prd/` with `git mv`, are restructured to the template in `prose:writing-prose`, and gain IDs. Shipped documents stay where they are, untouched | The existing docs mix behavior and design, or are scattered across places |
 | Start fresh | Nothing existing changes. New features use the chosen workflow, and `AGENTS.md` says where the old documents live and that they are frozen | The existing docs are mostly about shipped features, or the user wants no churn |
 
 Ask the questions the inventory leaves open in the same message, such as which status an existing "approved" or "in progress" maps to, and which documents count as still being built. When the repository's approval habit differs from a merged pull request, say how the workflow would change it.

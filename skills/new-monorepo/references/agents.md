@@ -25,7 +25,7 @@ The skills are Claude Code plugins from the `josefaidt-skills` marketplace in [j
 
 ```sh
 claude plugin marketplace add josefaidt/skills
-claude plugin install writing@josefaidt-skills --scope project
+claude plugin install prose@josefaidt-skills --scope project
 claude plugin install typescript@josefaidt-skills --scope project
 claude plugin install design@josefaidt-skills --scope project
 claude plugin install review@josefaidt-skills --scope project
@@ -39,7 +39,7 @@ Load the matching skill before starting the work it covers.
 | `typescript:writing-typescript` | Writing or reviewing any TypeScript |
 | `typescript:new-typescript-package` | Adding a workspace package or app |
 | `typescript:monorepo` | Deciding where code belongs, or adding or upgrading a dependency |
-| `writing:writing-prose` | Writing any prose, such as a README, an issue, or a pull request body |
+| `prose:writing-prose` | Writing any prose, such as a README, an issue, or a pull request body |
 | `design:domain-modeling` | Naming or renaming a domain concept, or editing `GLOSSARY.md` or an ADR |
 | `review:setup-docs-workflow` | Setting up or checking how features are specified and approved |
 | `review:coding-standards` | Adding, changing, or retiring a rule in `CODING_STANDARDS.md` |
@@ -175,7 +175,7 @@ The allow list covers the commands an agent runs on every task, and the deny lis
     ]
   },
   "enabledPlugins": {
-    "writing@josefaidt-skills": true,
+    "prose@josefaidt-skills": true,
     "typescript@josefaidt-skills": true,
     "design@josefaidt-skills": true,
     "review@josefaidt-skills": true,

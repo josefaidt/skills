@@ -7,7 +7,7 @@ The files `setup-docs-workflow` writes, for each workflow. Adapt the paths to th
 ```markdown
 ## Requirements and design
 
-Each feature is an RFC in `docs/rfcs/<feature>.md`, holding its motivation, its behavior as `MUST`, `SHOULD`, and `MAY` statements with IDs such as `RESET-3.2`, and its design. Load `writing:writing-prose` to write one. The maintainer approves the behavior, and agents own the design.
+Each feature is an RFC in `docs/rfcs/<feature>.md`, holding its motivation, its behavior as `MUST`, `SHOULD`, and `MAY` statements with IDs such as `RESET-3.2`, and its design. Load `prose:writing-prose` to write one. The maintainer approves the behavior, and agents own the design.
 
 | Status | Who acts | What happens |
 | :-- | :-- | :-- |
@@ -26,7 +26,7 @@ Each feature is an RFC in `docs/rfcs/<feature>.md`, holding its motivation, its 
 ```markdown
 ## Requirements and design
 
-Each feature has a PRD in `docs/prd/<feature>.md`, with acceptance criteria IDs such as `RESET-3.2`, and a design document in `docs/design/<feature>.md`. Load `writing:writing-prose` to write either. The maintainer approves the PRD, and agents own the design.
+Each feature has a PRD in `docs/prd/<feature>.md`, with acceptance criteria IDs such as `RESET-3.2`, and a design document in `docs/design/<feature>.md`. Load `prose:writing-prose` to write either. The maintainer approves the PRD, and agents own the design.
 
 1. An agent drafts the PRD in a pull request with `status: draft` and runs `review:reviewing-behavior` until it comes back clean.
 2. The maintainer approves the PRD by setting `status: approved` and merging. A later change to a merged PRD goes through the maintainer the same way.
