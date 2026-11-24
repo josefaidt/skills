@@ -16,7 +16,16 @@
     priority sets the tier: P0 is required, P1 expected, and P2 optional. A PRD counts unless its
     status is `draft`, and one with no status counts as approved.
 
-  A test names a behavior by its ID anywhere in a test file, usually the test's title.
+  A TypeScript or JavaScript test names a behavior by its ID anywhere in a `.test.` or `.spec.`
+  file, usually the test's title.
+
+  A Rust test is a function marked `#[test]` or by a path ending in `::test`, such as
+  `#[tokio::test]`, in any `.rs` file, so inline `#[cfg(test)] mod tests` blocks count along with
+  `tests/`. Rust test names are snake_case, so a test names a behavior as the prefix of its name:
+  `fn reset_3_2_rejects_a_used_link()` covers `RESET-3.2`. The prefix counts only when its key
+  belongs to a document, so an ordinary name like `parse_1_0_header` is never read as an ID. A test
+  that covers more names the extra IDs in its own doc comment, in their usual form:
+  `/// Also covers RESET-3.3.` Functions that are not tests never count.
 
   Usage: bun criteria-coverage.ts [--root <dir>] [--json]
 */
@@ -42,6 +51,8 @@ type Behavior = {
 }
 
 type Parsed = {
+  // The document's `key`, when it is an RFC or PRD that the scripts read.
+  key?: string
   // Behaviors that count toward coverage.
   counted: Behavior[]
   // Every ID the document defines and has not struck, counted or not.
@@ -61,6 +72,14 @@ const STORY = /^###\s+Story\s+\d+:.*-\s*(P[012])\s*$/
 const KEYWORD = /\b(MUST|SHOULD|MAY)\b/
 const ID = /\b[A-Z][A-Z0-9]*-\d+\.\d+\b/g
 const TEST_FILE = /\.(test|spec)\.(ts|tsx|mts|cts|js|jsx|mjs|cjs)$/
+const RUST_FILE = /\.rs$/
+// `#[test]`, or an attribute whose path ends in `::test`, with or without arguments. `#[cfg(test)]`
+// and `#[test_case]` do not match.
+const RUST_TEST_ATTRIBUTE = /^#\[\s*(?:[A-Za-z_]\w*\s*::\s*)*test\s*[(\]]/
+const RUST_FN = /^(?:pub(?:\([^)]*\))?\s+)?(?:(?:const|async|unsafe)\s+)*fn\s+(?:r#)?([A-Za-z_]\w*)/
+const RUST_DOC_COMMENT = /^\/\/\/(?!\/)(.*)$/
+// A snake_case ID prefix, such as `reset_3_2_` for `RESET-3.2`.
+const RUST_NAME_ID = /^([a-z][a-z0-9]*)_(\d+)_(\d+)(?:_|$)/
 const COUNTED_RFC_STATUSES = ["accepted", "implemented"]
 
 const TIER_OF: Record<string, Tier> = {
@@ -116,7 +135,58 @@ const parseDocument = (path: string, source: string): Parsed => {
     const tier = TIER_OF[label]
     if (counts && tier) counted.push({ id, tier, label, doc: path, text, shipped })
   }
-  return { counted, defined }
+  return { key, counted, defined }
+}
+
+// The index of the `]` that closes the attribute starting at the front of `text`, or -1 when the
+// attribute continues on a later line.
+const attributeEnd = (text: string): number => {
+  let depth = 0
+  for (let index = 1; index < text.length; index++) {
+    if (text[index] === "[") depth++
+    if (text[index] === "]" && --depth === 0) return index
+  }
+  return -1
+}
+
+// The behavior IDs the test functions in a Rust file name: from a function's name prefix when its
+// key is one a document defines, and from uppercase IDs in the function's own doc comments.
+const rustTestIds = (source: string, keys: Set<string>): string[] => {
+  const ids: string[] = []
+  let attributes: string[] = []
+  let docs: string[] = []
+  // An attribute that has not closed yet, because it continues on the next line.
+  let open = ""
+  for (const raw of source.split("\n")) {
+    let line = open ? `${open} ${raw.trim()}` : raw.trim()
+    open = ""
+    while (line.startsWith("#[")) {
+      const end = attributeEnd(line)
+      if (end === -1) {
+        open = line
+        break
+      }
+      attributes.push(line.slice(0, end + 1))
+      line = line.slice(end + 1).trim()
+    }
+    if (open || line === "") continue
+    const doc = RUST_DOC_COMMENT.exec(line)
+    if (doc) {
+      docs.push(doc[1] ?? "")
+      continue
+    }
+    if (line.startsWith("//")) continue
+
+    const name = RUST_FN.exec(line)?.[1]
+    if (name && attributes.some((attribute) => RUST_TEST_ATTRIBUTE.test(attribute))) {
+      const [, prefix = "", group, number] = RUST_NAME_ID.exec(name) ?? []
+      if (keys.has(prefix.toUpperCase())) ids.push(`${prefix.toUpperCase()}-${group}.${number}`)
+      ids.push(...(docs.join("\n").match(ID) ?? []))
+    }
+    attributes = []
+    docs = []
+  }
+  return ids
 }
 
 const coverage = (root: string): Coverage => {
@@ -126,12 +196,13 @@ const coverage = (root: string): Coverage => {
     .map((path) => parseDocument(path, readFileSync(join(root, path), "utf8")))
   const behaviors = parsed.flatMap((doc) => doc.counted)
   const defined = new Set(parsed.flatMap((doc) => doc.defined))
+  const keys = new Set(parsed.flatMap((doc) => (doc.key ? [doc.key] : [])))
 
   const named = new Map<string, string[]>()
-  for (const path of files.filter((file) => TEST_FILE.test(file))) {
-    for (const id of new Set(readFileSync(join(root, path), "utf8").match(ID) ?? [])) {
-      named.set(id, [...(named.get(id) ?? []), path])
-    }
+  for (const path of files.filter((file) => TEST_FILE.test(file) || RUST_FILE.test(file))) {
+    const source = readFileSync(join(root, path), "utf8")
+    const ids = RUST_FILE.test(path) ? rustTestIds(source, keys) : (source.match(ID) ?? [])
+    for (const id of new Set(ids)) named.set(id, [...(named.get(id) ?? []), path])
   }
 
   const untested = behaviors.filter((behavior) => !named.has(behavior.id))
