@@ -164,7 +164,7 @@ An app that deploys to the cloud through the repository's root infrastructure-as
 }
 ```
 
-`stack.ts` exports functions that take bindings and return Worker or website props, with every path anchored to the file through `import.meta.url`, so the stack resolves them wherever it runs. The root `package.json` lists the app as a `workspace:*` dependency, the one place anything depends on an app, and the root stack imports each app's `stack.ts` and wires them together. Every other app still declares no `exports`.
+`stack.ts` exports functions that take bindings and return Worker or website props, with every path anchored to the file, so the stack resolves them wherever it runs: a folder, such as an Astro site's `rootDir`, as `import.meta.dirname`, and a file, such as a Worker's `main`, as `new URL("./lib/worker.ts", import.meta.url).href`. Never build a folder from `import.meta.url`, which `unicorn/prefer-import-meta-properties` rejects. The root `package.json` lists the app as a `workspace:*` dependency, the one place anything depends on an app, and the root stack imports each app's `stack.ts` and wires them together. Every other app still declares no `exports`.
 
 ## After scaffolding
 
