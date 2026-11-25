@@ -63,7 +63,7 @@ Hooks run the static checks, so a Claude Code session never spends a tool call o
 
 A TypeScript monorepo on Bun workspaces.
 
-- `apps/` holds what you run or deploy, such as a server, a site, or a CLI. Nothing imports an app.
+- `apps/` holds what you run or deploy, such as a server, a site, or a CLI. Nothing takes a dependency on an app, apart from the root infrastructure-as-code stack, such as `alchemy.run.ts`. An app that deploys with it exports one thing, its `stack.ts`, which declares the app's cloud resources, and the root stack wires them together.
 - `packages/` holds what other workspaces import. A package has an entrypoint and no deploy target.
 
 ## Commands
