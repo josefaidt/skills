@@ -58,7 +58,7 @@ The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.
 
 | Plugin | Skills |
 | :-- | :-- |
-| `prose` | `writing-prose`, `writing-code` |
+| `writing` | `writing-prose`, `writing-code` |
 | `answering` | `answering-with-sources` |
 | `typescript` | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
 | `design` | `domain-modeling` |
@@ -69,7 +69,7 @@ The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.
 Install a plugin from inside Claude Code:
 
 ```
-/plugin install prose --marketplace josefaidt/skills
+/plugin install writing --marketplace josefaidt/skills
 /plugin install answering --marketplace josefaidt/skills
 /plugin install typescript --marketplace josefaidt/skills
 /plugin install design --marketplace josefaidt/skills
@@ -90,7 +90,7 @@ To name the skills a project uses, declare the marketplace and its plugins in th
     }
   },
   "enabledPlugins": {
-    "prose@josefaidt-skills": true,
+    "writing@josefaidt-skills": true,
     "typescript@josefaidt-skills": true
   }
 }

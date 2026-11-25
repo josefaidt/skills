@@ -102,11 +102,11 @@ Write `.github/actions/setup/action.yml` and `.github/workflows/ci.yml` from `re
 
 ### 8. Skills
 
-The skills come as Claude Code plugins from the `josefaidt-skills` marketplace. The `.claude/settings.json` example declares the marketplace and enables four plugins, `prose`, `typescript`, `design`, and `agents`, and the `AGENTS.md` example lists their skills under their plugin names, such as `typescript:writing-typescript`. Settings don't install a plugin, so install them for the user with the commands in the `AGENTS.md` example:
+The skills come as Claude Code plugins from the `josefaidt-skills` marketplace. The `.claude/settings.json` example declares the marketplace and enables four plugins, `writing`, `typescript`, `design`, and `agents`, and the `AGENTS.md` example lists their skills under their plugin names, such as `typescript:writing-typescript`. Settings don't install a plugin, so install them for the user with the commands in the `AGENTS.md` example:
 
 ```sh
 claude plugin marketplace add josefaidt/skills
-claude plugin install prose@josefaidt-skills --scope project
+claude plugin install writing@josefaidt-skills --scope project
 claude plugin install typescript@josefaidt-skills --scope project
 claude plugin install design@josefaidt-skills --scope project
 claude plugin install agents@josefaidt-skills --scope project

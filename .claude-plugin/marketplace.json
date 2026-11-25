@@ -7,7 +7,7 @@
   },
   "plugins": [
     {
-      "name": "prose",
+      "name": "writing",
       "description": "Writing standards for prose and internal documents, with PRD and business-doc structures, and language-agnostic guidance for code, such as when a comment earns its place",
       "source": "./",
       "strict": false,
