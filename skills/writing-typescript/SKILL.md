@@ -51,7 +51,7 @@ When the repository has a `CODING_STANDARDS.md`, read it first. Its rules win wh
 | :-- | :-- |
 | Kebab-case files | `parse-config.ts`, even for a file that exports one class or component. |
 | Entrypoint at the root | A package's entrypoint is `<name>.ts` beside `package.json`, not `src/index.ts`. |
-| Runnable apps use `bin/` | An app that starts a server or CLI has `bin/<name>.ts` with a `#!/usr/bin/env bun` shebang, a `bin` field, a `start` script, and no `exports`, unless the root infrastructure stack deploys it, in which case its one export is `stack.ts`. |
+| Runnable apps use `bin/` | An app that starts a server or CLI has `bin/<name>.ts` with a `#!/usr/bin/env bun` shebang, a `bin` field, a `start` script, and no `exports`, unless the root infrastructure stack deploys it, in which case its one export is the `"./alchemy.stack"` subpath. |
 | Modules in `lib/` | Everything the entrypoint imports lives under `lib/`, grouped by concern with tests beside their modules. `lib/` has no index file. |
 | Scripts in `scripts/` | Build, codegen, and one-off scripts go in `scripts/` and run through a `package.json` script. |
 | One export for scoped packages | A `@scope/name` package exports only `"."`. Wanting a subpath means the code belongs in the entrypoint or in its own package. |
