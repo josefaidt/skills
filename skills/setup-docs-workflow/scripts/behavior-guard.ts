@@ -4,9 +4,13 @@
 
   For each RFC this branch changes, compared with where it branched from the base ref:
   - When the RFC was `accepted` or `implemented` and its Behavior section changed, the branch must
-    end with the RFC in `review`, waiting on the maintainer, or back in `accepted` through a commit
-    that moves the status from `review` after the last commit that changed the Behavior section.
-    That commit is the maintainer's approval, so nothing may change the behavior after it.
+    end with the RFC pending, waiting on the maintainer, or back in `accepted` or `implemented`
+    through a commit that moves the status from `draft` after the last commit that changed the
+    Behavior section. That commit is the maintainer's approval, so nothing may change the behavior
+    after it.
+  - Pending means `status: draft` with `stage: review`. The old `review` status also counts as
+    pending, and as the state an approval moves from, so repositories that have not migrated keep
+    passing.
   - When the branch ends with the RFC `accepted` or `implemented`, its Open questions section holds
     no question, since the maintainer cannot accept behavior that is still undecided.
   - An `accepted` or `implemented` RFC is never deleted. Its status moves to `withdrawn` or
@@ -39,6 +43,14 @@ const isRfc = (source: string): boolean =>
 const status = (source: string): string => frontmatterField(source, "status") ?? ""
 
 const approved = (source: string): boolean => APPROVED.includes(status(source))
+
+// Waiting on the maintainer: a draft at the review stage, or the old `review` status.
+const pending = (source: string): boolean =>
+  (status(source) === "draft" && frontmatterField(source, "stage") === "review") ||
+  status(source) === "review"
+
+// The state an approval moves from. Any draft counts, and so does the old `review` status.
+const approvable = (source: string): boolean => status(source) === "draft" || pending(source)
 
 // The text of an H2 section, from its heading up to the next H2, with trailing whitespace trimmed.
 const section = (source: string, title: string): string => {
@@ -114,16 +126,16 @@ const check = (change: Change, mergeBase: string): string[] => {
       }
       const approval = versions.some(
         (version, index) =>
-          index > lastChange && status(versions[index - 1] ?? "") === "review" && approved(version),
+          index > lastChange && approvable(versions[index - 1] ?? "") && approved(version),
       )
       if (!approval) {
         problems.push(
-          `${path}: the Behavior section changed on an ${status(before)} RFC without an approval. Set its status to review, and the maintainer approves by setting it back to accepted in a later commit.`,
+          `${path}: the Behavior section changed on an ${status(before)} RFC without an approval. Set its status to draft with stage: review, and the maintainer approves by committing status: accepted and removing stage in a later commit.`,
         )
       }
-    } else if (status(head) !== "review") {
+    } else if (!pending(head)) {
       problems.push(
-        `${path}: the Behavior section changed on an ${status(before)} RFC. Set its status to review so the maintainer approves the change.`,
+        `${path}: the Behavior section changed on an ${status(before)} RFC. Set its status to draft with stage: review so the maintainer approves the change.`,
       )
     }
   }

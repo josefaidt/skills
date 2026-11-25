@@ -1,6 +1,6 @@
 ---
 name: reviewing-behavior
-description: Pre-check the part of an RFC or PRD the maintainer approves, its motivation and its behavior statements or acceptance criteria, before the maintainer reads it. Fixes what an agent can, such as missing IDs, untestable or compound statements, and implementation details, and surfaces the decisions only the maintainer can make. Use when an RFC in draft or a PRD is ready for review, before setting an RFC's status to review, or when asked to check requirements.
+description: Pre-check the part of an RFC or PRD the maintainer approves, its motivation and its behavior statements or acceptance criteria, before the maintainer reads it. Fixes what an agent can, such as missing IDs, untestable or compound statements, and implementation details, and surfaces the decisions only the maintainer can make. Use when an RFC in draft or a PRD is ready for review, before setting an RFC's `stage: review`, or when asked to check requirements.
 ---
 
 # Reviewing behavior
@@ -37,7 +37,7 @@ These need a call the author cannot make. Add each to the Open questions section
 
 ## Report
 
-When the agent-fixable checks pass, set an RFC's status to `review` in the same pull request and post this, so the maintainer reads the decisions before the document:
+When the agent-fixable checks pass, set `stage: review` on an RFC, which stays `status: draft`, in the same pull request and post this, so the maintainer reads the decisions before the document:
 
 ```markdown
 **Ready for you:** docs/rfcs/password-reset.md (`RESET`)
