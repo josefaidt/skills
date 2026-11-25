@@ -14,7 +14,7 @@ The first argument is the package name, such as `utils`. The second optional arg
 
 1. Read the root `package.json` for the workspace scope (the `name` prefix the other packages share, such as `@workspace`) and the catalog entries, and `tsconfig.base.json` for a `customConditions` entry such as `@workspace/source`.
 2. Determine the destination: `packages/<name>` or `apps/<name>`.
-3. For an app, decide whether it starts something, such as a server or a CLI. An app that does takes the files in "A runnable app" below in place of `<name>.ts`. An app with nothing to start takes the package files below without the `exports` field, since nothing imports an app.
+3. For an app, decide whether it starts something, such as a server or a CLI. An app that does takes the files in "A runnable app" below in place of `<name>.ts`. An app with nothing to start takes the package files below without the `exports` field, since nothing takes a dependency on an app. The one exception is an app that deploys with the root infrastructure-as-code stack, such as a root `alchemy.run.ts`: it exports exactly one thing, `".": "./stack.ts"`, described in "An app deployed by the root stack" below.
 4. Decide the runtime the code runs on, such as Bun, Node, a browser, or a worker. It sets the ambient types in `tsconfig.json`.
 5. Create the files below.
 
@@ -111,7 +111,7 @@ export default defineConfig({
 
 ## A runnable app
 
-An app that starts something, such as a server or a CLI, ships an executable at `bin/<name>.ts` where a package ships its root entrypoint. Its `package.json` declares the executable in `bin`, runs it from a `start` script, and has no `exports` field.
+An app that starts something, such as a server or a CLI, ships an executable at `bin/<name>.ts` where a package ships its root entrypoint. Its `package.json` declares the executable in `bin`, runs it from a `start` script, and has no `exports` field unless the root stack deploys it, as "An app deployed by the root stack" describes.
 
 ### `package.json`
 
@@ -152,6 +152,20 @@ export {}
 
 Mark it executable with `chmod +x bin/<name>.ts`, so the file runs directly and git records the mode.
 
+## An app deployed by the root stack
+
+An app that deploys to the cloud through the repository's root infrastructure-as-code stack, such as a root `alchemy.run.ts`, exports exactly one thing, its `stack.ts`, which declares that app's cloud resources. Add it to the app's `package.json` in place of no `exports` field:
+
+```json
+{
+  "exports": {
+    ".": "./stack.ts"
+  }
+}
+```
+
+`stack.ts` exports functions that take bindings and return Worker or website props, with every path anchored to the file through `import.meta.url`, so the stack resolves them wherever it runs. The root `package.json` lists the app as a `workspace:*` dependency, the one place anything depends on an app, and the root stack imports each app's `stack.ts` and wires them together. Every other app still declares no `exports`.
+
 ## After scaffolding
 
 Run `bun install` from the repo root to link the new workspace package, then `bun run --filter @<scope>/<name> typecheck`.
@@ -161,7 +175,8 @@ Run `bun install` from the repo root to link the new workspace package, then `bu
 - Use `catalog:` for any dependency the root `package.json` catalog already pins. Add the entry to the catalog first if it is missing.
 - Use `workspace:*` to depend on another package in the same workspace.
 - The entrypoint **must** be `<name>.ts` at the package root, never `src/index.ts`. A runnable app's executable **must** be `bin/<name>.ts` instead, declared in `bin` and run by `start`.
-- An app declares no `exports` field, whether or not it has something to start.
+- An app declares no `exports` field, whether or not it has something to start, except the single `".": "./stack.ts"` export of an app that the root infrastructure-as-code stack deploys.
+- Nothing takes a dependency on an app, apart from that root stack. Never add an app as a dependency of a package, of another app, or of an example.
 - Put every module the entrypoint or executable imports under `lib/`, never in a directory beside `package.json`. The `./**/*.ts` include already covers it.
 - Never use barrel files. Import directly from specific files.
 - Put build, codegen, and one-off scripts in `scripts/`, wired up through a `package.json` script, and widen the tsconfig `include` to cover them.

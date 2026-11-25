@@ -1,6 +1,6 @@
 ---
 name: monorepo
-description: Structure and maintain a JavaScript or TypeScript monorepo. Covers the apps and packages split and when code belongs in each, why an app declares no exports and a runnable one uses bin/, promoting shared code to a package, pinning shared dependency versions in one place, and isolated node_modules to prevent phantom dependencies. Load the matching reference file for package-manager syntax. Use when structuring a monorepo, deciding where new code belongs, adding or upgrading a dependency across packages, or debugging a resolution failure.
+description: Structure and maintain a JavaScript or TypeScript monorepo. Covers the apps and packages split and when code belongs in each, why nothing depends on an app, an app declares no exports apart from its stack.ts for the root infrastructure stack, and a runnable one uses bin/, promoting shared code to a package, pinning shared dependency versions in one place, and isolated node_modules to prevent phantom dependencies. Load the matching reference file for package-manager syntax. Use when structuring a monorepo, deciding where new code belongs, adding or upgrading a dependency across packages, or debugging a resolution failure.
 ---
 
 # Monorepo
@@ -31,20 +31,20 @@ Check the repo's lockfile and `packageManager` field before reaching for a refer
 └── tsconfig.base.json
 ```
 
-`apps/*` holds deployable units. An app is something you run: a server, a CLI, a site, a worker. It sits at the top of the dependency graph, nothing imports it, and it owns environment config, entrypoints, and deploy manifests.
+`apps/*` holds deployable units. An app is something you run: a server, a CLI, a site, a worker. It sits at the top of the dependency graph, nothing takes a dependency on it, and it owns environment config, entrypoints, and deploy manifests.
 
-Since nothing imports an app, an app exposes nothing for import, and its manifest declares no `exports`. An app that starts a process, such as a server or a CLI, names its executable in the manifest's `bin` field instead, keeps it at `bin/<name>.ts`, and adds a `start` script that runs it, which gives every runnable app in the repo the same start command. `new-typescript-package` scaffolds it.
+Nothing takes a dependency on an app, with one exception: the repository's root infrastructure-as-code stack, such as a root `alchemy.run.ts`. An app does not depend on another app, a package does not depend on an app, and an example does not depend on an app. Since nothing else depends on an app, an app exposes nothing for import, and its manifest declares no `exports`. An app that deploys with the root stack exports exactly one thing, its `stack.ts`, which declares that app's cloud resources, for instance as functions that take bindings and return Worker or website props, with every path anchored to the file through `import.meta.url`. The root stack imports each app's `stack.ts`, lists the apps as `workspace:*` dependencies, and wires them together. An app that starts a process, such as a server or a CLI, names its executable in the manifest's `bin` field instead, keeps it at `bin/<name>.ts`, and adds a `start` script that runs it, which gives every runnable app in the repo the same start command. `new-typescript-package` scaffolds it.
 
 `packages/*` holds shared libraries. A package is something you import. It has an entrypoint other workspace members consume, no deploy target, and no knowledge of which app is calling it.
 
-The split keeps the dependency graph acyclic and legible. Packages depend on packages, apps depend on packages, and nothing depends on an app. When that holds, you can tell what a change touches by walking one direction through the graph.
+The split keeps the dependency graph acyclic and legible. Packages depend on packages, apps depend on packages, and nothing depends on an app except the root stack. When that holds, you can tell what a change touches by walking one direction through the graph.
 
 ## Where new code goes
 
 Two rules keep the split from drifting:
 
 1. Code shared by two or more apps moves to `packages/`. The second consumer is the trigger, not the first.
-2. An app never imports from another app. If two apps need the same code, it is a package.
+2. An app never depends on another app. If two apps need the same code, it is a package.
 
 Do not create a package for code with one consumer that is unlikely to gain a second. A package costs a manifest, a tsconfig, a version-bump surface, and an indirection every reader has to follow. Leave the code in the app until a real second consumer appears.
 
