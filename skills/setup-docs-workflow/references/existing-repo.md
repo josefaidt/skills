@@ -21,7 +21,7 @@ The scripts find documents by their content, not their path, so a document can s
 | :-- | :-- | :-- |
 | Frontmatter `key` | A short uppercase word, unique in the repository | Same |
 | Frontmatter `kind` | `rfc`, or an H1 ending in "RFC" | `prd`, or an H1 ending in "PRD" |
-| Frontmatter `status` | `draft`, `review`, `accepted`, `implemented`, `withdrawn`, or `superseded` | `draft`, `approved`, or `implemented`. None counts as `approved` |
+| Frontmatter `status` | `draft` (with an optional `stage: review`), `accepted`, `implemented`, `withdrawn`, or `superseded` | `draft`, `approved`, or `implemented`. None counts as `approved` |
 | Behavior | Bold-ID bullets with `MUST`, `SHOULD`, or `MAY` under `## Behavior` | Bold-ID bullets under `### Story N: Title - P0` headings |
 
 A document without a `key` is ignored, which is how a finished document stays out of the checks.
@@ -42,6 +42,6 @@ Ask the questions the inventory leaves open in the same message, such as which s
 
 - Make the change in one pull request, separate from any feature work, so the user reviews the restructuring on its own.
 - Never renumber or reword an existing requirement while adding IDs. Give each statement an ID in its current order, and put any statement that needs rewording in the pull request description as a question.
-- Set the status of every adopted or migrated document to what the user mapped. A document that becomes `accepted` or `approved` must have no open questions left, or it goes in as `review` or `draft`.
+- Set the status of every adopted or migrated document to what the user mapped. A document that becomes `accepted` or `approved` must have no open questions left, or it goes in as `draft`.
 - A migrated document keeps its history through `git mv`. Move it in its own commit before restructuring, so the diff of the restructuring reads on its own.
 - For tests that already cite an old requirement ID, list them in the pull request and offer to rename the citations in a follow-up, rather than mixing test changes into the docs change.

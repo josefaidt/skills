@@ -13,12 +13,12 @@ Each feature is an RFC in `docs/rfcs/<feature>.md`, holding its motivation, its 
 
 | Status | Who acts | What happens |
 | :-- | :-- | :-- |
-| `draft` | Agent | Writes the Summary, Motivation, and Behavior sections in a pull request, runs `review:reviewing-behavior` until it comes back clean, then sets `review` |
-| `review` | Maintainer | Reads the review comment and the behavior. Approves by committing `accepted` as the last change to the behavior, then merging |
+| `draft` | Agent | Writes the Summary, Motivation, and Behavior sections in a pull request, runs `review:reviewing-behavior` until it comes back clean, then sets `stage: review` |
+| `draft` with `stage: review` | Maintainer | Reads the review comment and the behavior. The RFC stays a draft until the maintainer approves it by committing `status: accepted` and removing `stage` as the last change to the behavior, then merging |
 | `accepted` | Agent | Writes the Design section in a new pull request, runs `review:reviewing-design` until it comes back clean, then cuts tasks from it |
 | `implemented` | Agent | Set once every `MUST` statement has shipped with a test |
 
-- A change to the Behavior section of an `accepted` or `implemented` RFC sets its status back to `review` in the same pull request, and the maintainer approves it there the same way. `bun run docs:guard` fails a pull request whose behavior changed after the last move from `review` to `accepted`.
+- A change to the Behavior section of an `accepted` or `implemented` RFC sets its status back to `draft` with `stage: review` in the same pull request, and the maintainer approves it there the same way. `bun run docs:guard` fails a pull request whose behavior changed after the last move from `draft` to `accepted`.
 - A test names each behavior it covers by ID. In TypeScript the ID opens the title, as in `test("RESET-3.2 rejects a used link", ...)`. In Rust it opens the function name in snake_case, as in `fn reset_3_2_rejects_a_used_link()`, and a test that covers a second behavior names it in a doc comment above the function, as in `/// Also covers RESET-3.3.` `bun run docs:coverage` lists every untested behavior, and fails when a `MUST` in an `implemented` RFC has no test. Code review blocks a pull request that claims a `MUST` with no test.
 - Code review loads `review:reviewing-code`. A milestone ends with `agents:milestone-report`.
 ```
