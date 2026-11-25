@@ -1,6 +1,6 @@
 ---
 name: reviewing-behavior
-description: Pre-check the part of an RFC or PRD the maintainer approves, its motivation and its behavior statements or acceptance criteria, before the maintainer reads it. Fixes what an agent can, such as missing IDs, untestable or compound statements, and implementation details, and surfaces the decisions only the maintainer can make. Use when an RFC in draft or a PRD is ready for review, before setting an RFC's `stage: review`, or when asked to check requirements.
+description: "Pre-check the part of an RFC or PRD the maintainer approves, its motivation and its behavior statements or acceptance criteria, before the maintainer reads it. Fixes what an agent can, such as missing IDs, untestable or compound statements, and implementation details, and surfaces the decisions only the maintainer can make. Use when an RFC in draft or a PRD is ready for review, before setting an RFC's `stage: review`, or when asked to check requirements."
 ---
 
 # Reviewing behavior
