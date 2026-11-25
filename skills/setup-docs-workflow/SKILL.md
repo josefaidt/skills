@@ -1,6 +1,6 @@
 ---
 name: setup-docs-workflow
-description: Set up how a repository specifies features and gets them approved, in a new repository or one that already has its own docs. Picks a workflow (an RFC per feature, or a PRD with a design document), adopts or migrates any existing docs, records the workflow and its lifecycle in AGENTS.md, and installs the scripts and CI steps that guard approved behavior and find behavior with no test. Use when starting a project's requirements and design docs, bringing an existing repository's specs or RFCs into this workflow, switching to RFCs, or when the docs workflow seems broken or out of date.
+description: Set up how a repository specifies features and gets them approved, in a new repository or one that already has its own docs. Picks a workflow (an RFC per feature, or a PRD with a design document), adopts or migrates any existing docs, records the workflow and its lifecycle in AGENTS.md, and installs the scripts and CI steps that guard approved behavior and find behavior with no test. Use when starting a project's requirements and design docs, bringing an existing repository's specs or RFCs into this workflow, switching to RFCs, or when the docs workflow seems broken or out of date. Also use when asked to plan, spec, or propose a feature in a repository whose AGENTS.md has no "Requirements and design" section.
 argument-hint: "[rfc | prd]"
 ---
 
