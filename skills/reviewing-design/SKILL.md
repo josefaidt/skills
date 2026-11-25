@@ -31,7 +31,7 @@ Map every traced behavior to the part of the design that delivers it. Use the de
 
 ### Behavior the requirements do not settle
 
-Flag any choice in the design whose answer changes what a user sees, does, or pays, or what data the product keeps about them, when the behavior does not already decide it. Examples are an error message, a default, a limit, a retention period, or what happens on a second attempt. The agent does not settle these in the design. In an RFC, add each to Open questions with a recommendation and set the status back to `review`. With a PRD, add each to the PRD's open decisions.
+Flag any choice in the design whose answer changes what a user sees, does, or pays, or what data the product keeps about them, when the behavior does not already decide it. Examples are an error message, a default, a limit, a retention period, or what happens on a second attempt. The agent does not settle these in the design. In an RFC, add each to Open questions with a recommendation and set `stage: review` on the RFC again. With a PRD, add each to the PRD's open decisions.
 
 Check the open questions or open decisions too. A design that depends on one cannot be finished until the user settles it.
 
@@ -60,7 +60,7 @@ The agent fixes its own pile and runs the review again. Only the user's pile lea
 
 ### For you
 
-- **Behavior:** the RFC does not say whether a reset signs out the account's other sessions. Added to Open questions and set the status back to `review`. Pick: sign them out, since a reset usually follows a suspected compromise.
+- **Behavior:** the RFC does not say whether a reset signs out the account's other sessions. Added to Open questions and set `stage: review` again. Pick: sign them out, since a reset usually follows a suspected compromise.
 - **Hard to reverse:** reset tokens are stored as SHA-256 hashes keyed by token ID. No ADR yet.
 
 ### Fixed in the design

@@ -5,7 +5,7 @@ description: Structure for an RFC, one document holding why a feature exists, th
 
 # Writing RFCs
 
-An RFC defines one feature in one file: why it exists, what it must do, and how it is built. It has two owners. The maintainer approves the Motivation and Behavior sections, and an agent owns the Design section. The status in its frontmatter says which half is settled, and the merge to `main` that sets a status is the approval.
+An RFC defines one feature in one file: why it exists, what it must do, and how it is built. It has two owners. The maintainer approves the Motivation and Behavior sections, and an agent owns the Design section. The status in its frontmatter says which half is settled, and an RFC stays `draft` until the maintainer approves it by committing `status: accepted`.
 
 The prose rules in `SKILL.md` are already in force. This file adds document shape only.
 
@@ -16,6 +16,7 @@ The prose rules in `SKILL.md` are already in force. This file adds document shap
 kind: rfc
 key: RESET
 status: draft
+stage: review # only while the behavior waits on the maintainer
 ---
 
 # Password Reset RFC
@@ -43,16 +44,16 @@ Summary, Motivation, Behavior, and Open questions are the maintainer's half. Des
 
 ## Status
 
-| Status | Means |
-| :-- | :-- |
-| `draft` | An agent is writing or fixing the maintainer's half. Nobody else needs to read it |
-| `review` | The behavior pre-check came back clean, and the maintainer's half waits on the maintainer |
-| `accepted` | The maintainer merged the behavior. Design review can run, and the Behavior section changes only through a new `review` |
-| `implemented` | Every `MUST` behavior has shipped with a test |
-| `withdrawn` | Dropped before it shipped. The file stays, so its IDs are never reused |
-| `superseded` | Replaced. Add `superseded-by` with the new RFC's path |
+| Status | Stage | Means |
+| :-- | :-- | :-- |
+| `draft` | none | An agent is writing or fixing the maintainer's half. Nobody else needs to read it |
+| `draft` | `review` | The behavior pre-check came back clean, and the maintainer's half waits on the maintainer. The RFC stays a draft until the maintainer approves it |
+| `accepted` | none | The maintainer approved the behavior. Design review can run, and the Behavior section changes only through a new `draft` at `stage: review` |
+| `implemented` | none | Every `MUST` behavior has shipped with a test |
+| `withdrawn` | none | Dropped before it shipped. The file stays, so its IDs are never reused |
+| `superseded` | none | Replaced. Add `superseded-by` with the new RFC's path |
 
-A change to the Behavior section of an `accepted` or `implemented` RFC sets the status back to `review` in the same pull request, so the change reaches the maintainer. Fixing a typo is still a change. The maintainer approves it in that pull request by committing `accepted` after the last change to the behavior, and the behavior guard fails a pull request whose behavior changed after that commit. An amended `implemented` RFC returns to `accepted`, and moves to `implemented` again once its new `MUST` statements have tests.
+A change to the Behavior section of an `accepted` or `implemented` RFC sets the status back to `draft` with `stage: review` in the same pull request, so the change reaches the maintainer. Fixing a typo is still a change. The maintainer approves it in that pull request by committing `status: accepted` and removing `stage` after the last change to the behavior, and the behavior guard fails a pull request whose behavior changed after that commit. An amended `implemented` RFC returns to `accepted`, and moves to `implemented` again once its new `MUST` statements have tests.
 
 ## Summary
 
@@ -101,4 +102,4 @@ The agent's plan for delivering the Behavior section. Its reader is the agent th
 - **Decisions.** Each decision that had an alternative worth weighing: the choice, the alternatives, and why. Mark each decision that would cost a migration, a breaking change, or lost data to undo, and link its ADR. The maintainer reads this subsection.
 - **Out of scope.** What this RFC does not build, including anything a reader might expect from its title.
 
-When the design needs a behavior the Behavior section does not state, it does not settle it. It adds an open question and sets the status back to `review`.
+When the design needs a behavior the Behavior section does not state, it does not settle it. It adds an open question and sets `stage: review` again.
