@@ -33,7 +33,7 @@ Report three kinds of finding, and any kind `REVIEW.md` adds, and nothing else:
 | :-- | :-- |
 | Rule violation | The diff breaks a rule. Cite its ID, level, and status |
 | Defect | Code that does the wrong thing, which a test could show, such as a wrong branch, an unhandled error path, a race, a missing tenant or permission check, or data loss |
-| Untested behavior | The pull request claims a behavior, such as `RESET-3.2`, and no test in the diff or the repository names that ID |
+| Untested behavior | The pull request claims a behavior, such as `RESET-3.2`, and no test in the diff or the repository names that ID, in its title for a TypeScript test or as the snake_case prefix of its name for a Rust one (`fn reset_3_2_rejects_a_used_link()`), or in the doc comment above it (`/// Also covers RESET-3.3.`) |
 
 Style you would have written differently, naming you would change, and refactors the diff did not need are not findings. When you see a judgment call that keeps coming up and no rule covers it, list it once under "Rule candidates" at the end, with the evidence, and do not count it against the diff.
 
