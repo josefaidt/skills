@@ -101,4 +101,4 @@ Without a root `package.json`, the commands are `bun scripts/behavior-guard.ts -
 /CODING_STANDARDS.md   @<maintainer>
 ```
 
-Use the document paths settled with the user. `CODING_STANDARDS.md` is listed because only the maintainer changes a rule's status or a stack choice.
+Use the document paths settled with the user. `CODING_STANDARDS.md` is listed because only the maintainer changes a rule's status.

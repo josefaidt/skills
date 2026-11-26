@@ -1,6 +1,6 @@
 # Format
 
-`CODING_STANDARDS.md` sits at the repository root and holds the Stack section and one table of rules. Detail files live in `docs/coding-standards/`, one per area.
+`CODING_STANDARDS.md` sits at the repository root and holds one table. Detail files live in `docs/coding-standards/`, one per area.
 
 ## The root file
 
@@ -8,19 +8,6 @@
 # Coding standards
 
 The rules a reviewer enforces in this repository. Each finding cites a rule ID. A new rule starts as `advisory`, and only the maintainer moves a rule to `blocking` or `retired`. Mechanical rules live in the lint config, not here.
-
-## Stack
-
-This repository's pick for each default a skill names. A pick replaces the skill's default, and code that departs from it is a `MUST` violation at `blocking`. Only the maintainer changes a pick.
-
-| ID | Choice | This repository | Replaces |
-| :-- | :-- | :-- | :-- |
-| `stack/runtime` | Runtime and package manager | Bun workspaces | `monorepo` |
-| `stack/schema` | Schemas and config | Effect `Schema` to decode and Effect `Config` for env and config, from `effect`. Zod only as a third-party SDK's own types | `writing-typescript`, Parse at the boundary |
-| `stack/test-layout` | Test layout | Unit tests beside their modules in `lib/`, end-to-end suites and their helpers in `tests/e2e/` | `writing-typescript`, Suites in `tests/` |
-| `stack/test-runners` | Test runners | Vitest for unit tests, Playwright for end-to-end suites | `new-typescript-package` |
-
-## Rules
 
 | ID | Level | Status | Rule | Detail |
 | :-- | :-- | :-- | :-- | :-- |
@@ -33,10 +20,9 @@ This repository's pick for each default a skill names. A pick replaces the skill
 ```
 
 - Sort rows by ID, so a rule's area reads as a group.
-- A Stack row names the skill whose default it replaces in Replaces, and the skill rule too when there is one. Leave Replaces empty for a choice no skill names.
 - A row for a shared skill rule gives the rule's name from the skill in the Rule column and the skill's name in Detail.
 - A retired row keeps its ID and replaces its rule text with why it was retired or what replaced it.
-- Past roughly 100 rows, split the rules table into one table per area under an H3 for each, still under Rules in this one file, so the reviewer makes one read.
+- Past roughly 100 rows, split the table into one table per area under an H2 for each, still in this one file, so the reviewer makes one read.
 
 ## A detail file
 
