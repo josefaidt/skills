@@ -23,6 +23,10 @@ skills/
       comments.md
   answering-with-sources/   sourced answers with confidence levels
   writing-typescript/       file-level TypeScript conventions
+  styling-ui/               Tailwind CSS utilities instead of hand-written CSS
+    SKILL.md
+    references/
+      tailwind.md
   new-typescript-package/   workspace package scaffolding
   monorepo/                 workspace structure and dependency installs
     SKILL.md
@@ -67,7 +71,7 @@ The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.
 | :-- | :-- |
 | `writing` | `writing-prose`, `writing-code` |
 | `answering` | `answering-with-sources` |
-| `typescript` | `writing-typescript`, `new-typescript-package`, `monorepo`, `new-monorepo` |
+| `typescript` | `writing-typescript`, `styling-ui`, `new-typescript-package`, `monorepo`, `new-monorepo` |
 | `design` | `domain-modeling` |
 | `review` | `setup-docs-workflow`, `coding-standards`, `reviewing-behavior`, `reviewing-design`, `reviewing-code` |
 | `agents` | `reflect`, `wait-what`, `catch-me-up`, `milestone-report` |

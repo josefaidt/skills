@@ -8,6 +8,7 @@ Reusable skill definitions for agents. Each skill lives in its own directory wit
 | [`writing-code`](./writing-code/) | Writing | When a comment earns its place, in any language |
 | [`answering-with-sources`](./answering-with-sources/) | Answering | Sourced answers with confidence levels |
 | [`writing-typescript`](./writing-typescript/) | TypeScript | File-level conventions, typing, and layout |
+| [`styling-ui`](./styling-ui/) | TypeScript | Styling UI with Tailwind CSS utilities instead of hand-written CSS |
 | [`new-typescript-package`](./new-typescript-package/) | TypeScript | Scaffolding a workspace package or app |
 | [`monorepo`](./monorepo/) | TypeScript | Workspace structure and dependency installs |
 | [`new-monorepo`](./new-monorepo/) | TypeScript | Walking through a Bun monorepo's tooling and agent hooks |
@@ -58,18 +59,19 @@ The anti-pattern catalog draws on two open-source skills that document AI writin
 
 ## TypeScript skills
 
-Four skills cover working in a TypeScript workspace, layered by scope: source files, one package, the whole repo, and the tooling a repo starts with.
+Five skills cover working in a TypeScript workspace, layered by scope: source files and the UI they render, one package, the whole repo, and the tooling a repo starts with.
 
 | Skill | Covers |
 | :-- | :-- |
 | [`writing-typescript`](./writing-typescript/) | Source files: no `any`, parsing at the boundary, unions, branded IDs, exhaustive switches, import order and types first, comment syntax, class modifiers, kebab-case names, no barrels, one export per scoped package, no committed build output, and the `lib/`, `bin/`, `scripts/`, and `tests/` layout. |
-| [`new-typescript-package`](./new-typescript-package/) | A new package or app: scaffolding `package.json`, `tsconfig.json`, the entrypoint or a runnable app's `bin/` executable, and an optional rolldown build. |
+| [`styling-ui`](./styling-ui/) | UI: Tailwind CSS v4 utility classes in the markup, one CSS entry file with its `@theme` tokens, `@theme inline` for runtime variables such as MCP Apps host styles, the four things CSS still writes by hand, wiring through `@tailwindcss/vite`, and tests that never select by a styling class. |
+| [`new-typescript-package`](./new-typescript-package/) | A new package or app: scaffolding `package.json`, `tsconfig.json`, the entrypoint or a runnable app's `bin/` executable, an optional rolldown build, and Tailwind CSS for a workspace that renders UI. |
 | [`monorepo`](./monorepo/) | The repo: the `apps` and `packages` split, reaching another workspace only through its export, shared version pinning, and isolated `node_modules`. |
-| [`new-monorepo`](./new-monorepo/) | A new repo: Bun, TypeScript 7, oxfmt, type-aware oxlint, Vitest, commitlint, git hooks, Claude Code hooks, CI, `AGENTS.md`, and the skill plugins it enables. |
+| [`new-monorepo`](./new-monorepo/) | A new repo: Bun, TypeScript 7, oxfmt, type-aware oxlint, Vitest, Tailwind CSS in the catalog, commitlint, git hooks, Claude Code hooks, CI, `AGENTS.md`, and the skill plugins it enables. |
 
-`writing-typescript` sets `user-invocable: false`, so an agent loads it on its own when writing or reviewing TypeScript. `new-typescript-package` takes arguments, `<name>` and an optional `apps` or `packages` target directory that defaults to `packages`. `new-monorepo` takes an optional target directory and `--scope`.
+`writing-typescript` and `styling-ui` set `user-invocable: false`, so an agent loads them on its own when writing or reviewing TypeScript or styling UI. `new-typescript-package` takes arguments, `<name>` and an optional `apps` or `packages` target directory that defaults to `packages`. `new-monorepo` takes an optional target directory and `--scope`.
 
-They cross-reference each other rather than repeating rules, and the scope boundary decides ownership: `writing-typescript` owns what applies to source files and a package's internal layout, `new-typescript-package` owns the file set a new package starts with, `monorepo` owns everything above the package boundary, and `new-monorepo` owns the root files and tooling a repo starts with.
+They cross-reference each other rather than repeating rules, and the scope boundary decides ownership: `writing-typescript` owns what applies to source files and a package's internal layout, `styling-ui` owns how UI is styled and how a test finds an element, `new-typescript-package` owns the file set a new package starts with, `monorepo` owns everything above the package boundary, and `new-monorepo` owns the root files and tooling a repo starts with.
 
 `new-monorepo` walks through the setup one step at a time, and its reference files hold a working example of each root file for the agent to adapt, grouped by step. Change an example when the tooling it sets up changes, and check it by following the skill in an empty directory.
 

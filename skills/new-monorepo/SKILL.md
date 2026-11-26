@@ -1,6 +1,6 @@
 ---
 name: new-monorepo
-description: Walk through setting up a Bun and TypeScript monorepo with apps/ and packages/, or bringing an existing repository onto the same tooling, one piece at a time with a working example of each file. Covers Bun workspaces and a version catalog, a strict tsconfig, oxfmt, type-aware oxlint on its strict categories, Vitest, commitlint and git hooks, a setup script, Claude Code hooks that format each edit and check each turn, GitHub Actions, AGENTS.md, and the agent skills the repo works with. Use when asked to create, scaffold, or bootstrap a monorepo, workspace, or TypeScript project, or to add this tooling to an existing one.
+description: Walk through setting up a Bun and TypeScript monorepo with apps/ and packages/, or bringing an existing repository onto the same tooling, one piece at a time with a working example of each file. Covers Bun workspaces and a version catalog, a strict tsconfig, oxfmt, type-aware oxlint on its strict categories, Vitest, Tailwind CSS for each workspace that renders UI, commitlint and git hooks, a setup script, Claude Code hooks that format each edit and check each turn, GitHub Actions, AGENTS.md, and the agent skills the repo works with. Use when asked to create, scaffold, or bootstrap a monorepo, workspace, or TypeScript project, or to add this tooling to an existing one.
 argument-hint: "[directory] [--scope <scope>]"
 ---
 
@@ -8,7 +8,7 @@ argument-hint: "[directory] [--scope <scope>]"
 
 This skill walks through setting up a TypeScript monorepo on Bun workspaces: the tooling that keeps every package formatted, linted, type checked, and tested, and the agent configuration that runs those checks on each turn. Each step says what its files do and points at a working example in `references/`. Write each file from its example, adapted to the repository, rather than pasting it whole: use the repository's names, the current version of each tool, and only what the repository will use. A step the user does not want, such as the Claude Code hooks in a repository no agent works in, can be left out, and the steps after it still hold.
 
-Three skills cover the repo once it exists: `monorepo` decides where code goes and how dependencies resolve, `new-typescript-package` adds each package or app, and `writing-typescript` governs each source file. `setup-docs-workflow` sets up how the repository specifies features and gets them approved.
+Four skills cover the repo once it exists: `monorepo` decides where code goes and how dependencies resolve, `new-typescript-package` adds each package or app, `writing-typescript` governs each source file, and `styling-ui` governs how UI is styled. `setup-docs-workflow` sets up how the repository specifies features and gets them approved.
 
 ## The stack
 
@@ -19,6 +19,7 @@ Three skills cover the repo once it exists: `monorepo` decides where code goes a
 | oxfmt | Formatter, import order, and `package.json` key order | `.oxfmtrc.jsonc` |
 | oxlint with oxlint-tsgolint | Type-aware linter on its strict categories | `.oxlintrc.jsonc` |
 | Vitest | Each package's `test` script | Each package |
+| Tailwind CSS v4 | Utility classes for each workspace that renders UI, through `@tailwindcss/vite` | Each such workspace's `lib/styles.css` |
 | commitlint | Conventional Commits on every message | `.commitlintrc.json`, `.git-hooks/commit-msg` |
 | Git hooks | Format and lint check on staged files, and a reinstall after a rebase that changes a dependency | `.git-hooks/` |
 | Claude Code hooks | Setup on session start, format on each edit, and every static check before each turn ends | `.claude/` |
@@ -56,7 +57,7 @@ The base config is the strict baseline every package extends, and it names no am
 
 Write `.oxfmtrc.jsonc` and `.oxlintrc.jsonc` from `references/format-and-lint.md`. Then run `bun run fmt`, and again after each later step, so every file takes this repository's formatting rather than the example's.
 
-oxfmt formats code, sorts imports and `package.json` keys, and never wraps prose, so each paragraph of markdown stays on one line and a diff shows the sentence that changed.
+oxfmt formats code, sorts imports and `package.json` keys, and never wraps prose, so each paragraph of markdown stays on one line and a diff shows the sentence that changed. It also sorts Tailwind classes, through one `overrides` entry for each workspace that renders UI, which `new-typescript-package` adds with the workspace.
 
 oxlint runs type-aware through `oxlint-tsgolint`, which reads each package's `tsconfig.json`. Its categories do most of the configuration:
 
@@ -116,7 +117,7 @@ Add or drop a plugin only with the user's say, and keep `enabledPlugins`, the in
 
 ### 9. The first package
 
-Add the first package with `new-typescript-package` when the user has named what they are building. The root scripts fan out with `--if-present`, so every check also passes before any package exists.
+Add the first package with `new-typescript-package` when the user has named what they are building. When it renders UI, `new-typescript-package` also sets up Tailwind CSS in it, from the `tailwindcss` and `@tailwindcss/vite` catalog entries. The root scripts fan out with `--if-present`, so every check also passes before any package exists.
 
 ### 10. Verify
 
@@ -153,6 +154,7 @@ Each piece has one place to change, so the repo stays in step with itself.
 - **A TypeScript script in `scripts/`**: give `scripts/` a `tsconfig.json` that extends `../tsconfig.base.json` with `"types": ["bun"]`, and add `&& bun check -p scripts` to the root `typecheck` script.
 - **A new setup step**: add it to `scripts/setup.sh`, kept idempotent, and to the warm branch of `.claude/hooks/setup-workspace.sh` when a pull can make it stale, such as generated types.
 - **A rule that fits one package**: add an `overrides` entry to `.oxlintrc.jsonc` with that package's `files` glob, such as a framework's file naming.
+- **A workspace that renders UI**: style it with Tailwind CSS utility classes, never a hand-written stylesheet. `new-typescript-package` sets up its entry file, the Vite or Astro plugin, and its formatter override, and `styling-ui` holds the rules.
 - **A package that builds**: its `exports` map lists the `@<scope>/source` condition first, pointing at the TypeScript entrypoint, so the type checker and the tests read source while an app loads `dist/`. `new-typescript-package` covers it.
 - **A bundler that reads nothing outside its project root**, such as Next.js with Turbopack: set `globalStore = false` in `bunfig.toml` so packages install inside the repository.
 - **A file Claude Code worktrees need** but git ignores, such as an `.env.local`: add it to `.worktreeinclude`.
