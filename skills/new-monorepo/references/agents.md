@@ -312,7 +312,7 @@ FORMATTED='\.(ts|tsx|js|jsx|cjs|mjs|cts|mts|json|jsonc|yaml|yml|toml|css|scss|le
 LINTED='\.(ts|tsx|js|jsx|cjs|mjs|cts|mts|vue|svelte|astro)$'
 # A change to one of these can break a file that did not change, so it runs that check on the repo
 FORMATS_ALL='^\.oxfmtrc\.jsonc?$'
-LINTS_ALL='(^|/)\.oxlintrc\.jsonc?$|^packages/lint-rules/'
+LINTS_ALL='(^|/)\.oxlintrc\.jsonc?$'
 TYPECHECKS='\.(ts|tsx|cts|mts)$|(^|/)tsconfig[^/]*\.json$|(^|/)package\.json$|^bun\.lock$'
 
 session=default

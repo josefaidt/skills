@@ -1,6 +1,6 @@
 ---
 name: new-monorepo
-description: Walk through setting up a Bun and TypeScript monorepo with apps/ and packages/, or bringing an existing repository onto the same tooling, one piece at a time with a working example of each file. Covers Bun workspaces and a version catalog, a strict tsconfig, oxfmt, type-aware oxlint on its strict categories with a local plugin for the rules nothing upstream has, Vitest, commitlint and git hooks, a setup script, Claude Code hooks that format each edit and check each turn, GitHub Actions, AGENTS.md, and the agent skills the repo works with. Use when asked to create, scaffold, or bootstrap a monorepo, workspace, or TypeScript project, or to add this tooling to an existing one.
+description: Walk through setting up a Bun and TypeScript monorepo with apps/ and packages/, or bringing an existing repository onto the same tooling, one piece at a time with a working example of each file. Covers Bun workspaces and a version catalog, a strict tsconfig, oxfmt, type-aware oxlint on its strict categories, Vitest, commitlint and git hooks, a setup script, Claude Code hooks that format each edit and check each turn, GitHub Actions, AGENTS.md, and the agent skills the repo works with. Use when asked to create, scaffold, or bootstrap a monorepo, workspace, or TypeScript project, or to add this tooling to an existing one.
 argument-hint: "[directory] [--scope <scope>]"
 ---
 
@@ -18,7 +18,6 @@ Three skills cover the repo once it exists: `monorepo` decides where code goes a
 | TypeScript 7 | Strict compiler baseline every package extends | `tsconfig.base.json` |
 | oxfmt | Formatter, import order, and `package.json` key order | `.oxfmtrc.jsonc` |
 | oxlint with oxlint-tsgolint | Type-aware linter on its strict categories | `.oxlintrc.jsonc` |
-| `packages/lint-rules` | Local oxlint plugin for the `writing-typescript` rules no upstream plugin has | `.oxlintrc.jsonc` `jsPlugins` |
 | Vitest | Each package's `test` script | Each package |
 | commitlint | Conventional Commits on every message | `.commitlintrc.json`, `.git-hooks/commit-msg` |
 | Git hooks | Format and lint check on staged files, and a reinstall after a rebase that changes a dependency | `.git-hooks/` |
@@ -28,7 +27,7 @@ Three skills cover the repo once it exists: `monorepo` decides where code goes a
 
 ## Starting from the template
 
-[josefaidt/bun-oxc-monorepo-template](https://github.com/josefaidt/bun-oxc-monorepo-template) holds the result of these steps. For a new repository, `bun create josefaidt/bun-oxc-monorepo-template <directory>` copies it without its history, renames the root package to the directory name, and runs `git init` and `bun install`. It also attempts a first commit, which the `commit-msg` hook rejects, so the files stay staged. Then describe the project in `README.md` and `AGENTS.md`, rename the `@workspace` scope in `tsconfig.base.json` and `AGENTS.md` if the user wants another, and continue from step 8. Before that, check the template against steps 1 and 3: where its catalog pins `zod` rather than `effect`, or it lacks the `react` import group, `packages/lint-rules`, the `jsPlugins` entry, or the `bun --bun` lint scripts, bring it in line from those steps' examples.
+[josefaidt/bun-oxc-monorepo-template](https://github.com/josefaidt/bun-oxc-monorepo-template) holds the result of these steps. For a new repository, `bun create josefaidt/bun-oxc-monorepo-template <directory>` copies it without its history, renames the root package to the directory name, and runs `git init` and `bun install`. It also attempts a first commit, which the `commit-msg` hook rejects, so the files stay staged. Then describe the project in `README.md` and `AGENTS.md`, rename the `@workspace` scope in `tsconfig.base.json` and `AGENTS.md` if the user wants another, and continue from step 8. Before that, check the template against steps 1 and 3: where its catalog lacks `effect` or its `sortImports` lacks the `react` group, bring it in line from those steps' examples.
 
 ## Before you start
 
@@ -55,7 +54,7 @@ The base config is the strict baseline every package extends, and it names no am
 
 ### 3. Formatting and lint
 
-Write `.oxfmtrc.jsonc`, `.oxlintrc.jsonc`, and `packages/lint-rules/` from `references/format-and-lint.md`, add `"@<scope>/lint-rules": "workspace:*"` to the root `devDependencies`, and run `bun install`. Then run `bun run fmt`, and again after each later step, so every file takes this repository's formatting rather than the example's.
+Write `.oxfmtrc.jsonc` and `.oxlintrc.jsonc` from `references/format-and-lint.md`. Then run `bun run fmt`, and again after each later step, so every file takes this repository's formatting rather than the example's.
 
 oxfmt formats code, sorts `package.json` keys, and never wraps prose, so each paragraph of markdown stays on one line and a diff shows the sentence that changed. Its `sortImports` groups put type imports first, then built-ins, then a `react` custom group for the runtime imports of `react` and `react-dom`, then other packages, then relative imports: `["type", "builtin", "react", "external", ["parent", "sibling", "index"]]`.
 
@@ -65,8 +64,6 @@ oxlint runs type-aware through `oxlint-tsgolint`, which reads each package's `ts
 - `style` and `restriction` stay off, since they hold conventions to choose between rather than defects, and so does `nursery`, which holds rules still in development.
 - The `rules` block switches off the pedantic and perf rules that flag ordinary code far more often than a defect, such as size limits, `require-await`, and `strict-boolean-expressions`. When another fires across code that is correct, switch it off the same way, with a comment saying why.
 - The `rules` block turns on the style and restriction rules that enforce `writing-typescript`, such as no `any`, kebab-case filenames, and no barrel files.
-
-`packages/lint-rules` is an oxlint JavaScript plugin named `workspace` that holds the rules `writing-typescript` sets and no upstream plugin has: `workspace/types-first` orders a module's type imports, runtime imports, types, and runtime code, and `workspace/no-tests-in-lib` keeps end-to-end suites out of `lib/`. `.oxlintrc.jsonc` loads it through `jsPlugins`, and the root lint scripts run `bun --bun oxlint`, since Node cannot resolve the plugin's extensionless TypeScript imports. Add a rule there for the next fixed pattern a tool can match.
 
 `eslint/no-undef` stays off, since the type checker already reports a name it cannot resolve, so the root config covers every package and none needs its own. When a package uses React, add `react` and `jsx-a11y` to `plugins` and switch off `react/react-in-jsx-scope`, which the automatic JSX runtime made obsolete.
 
