@@ -22,11 +22,12 @@
     },
     {
       "name": "typescript",
-      "description": "TypeScript conventions, Bun monorepo structure and setup, and scaffolding for new workspace packages",
+      "description": "TypeScript conventions, styling UI with Tailwind CSS, Bun monorepo structure and setup, and scaffolding for new workspace packages",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/writing-typescript",
+        "./skills/styling-ui",
         "./skills/new-typescript-package",
         "./skills/monorepo",
         "./skills/new-monorepo"

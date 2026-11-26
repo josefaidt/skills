@@ -1,6 +1,6 @@
 ---
 name: new-typescript-package
-description: Scaffold a new TypeScript package or app in a Bun workspace, creating package.json, tsconfig.json, and the entrypoint, or a bin/ executable and start script for an app that runs a server or CLI, plus an optional rolldown build, with bun check for type checking and Vitest for tests. Use when asked to create a new package or app in a monorepo.
+description: Scaffold a new TypeScript package or app in a Bun workspace, creating package.json, tsconfig.json, and the entrypoint, or a bin/ executable and start script for an app that runs a server or CLI, plus an optional rolldown build and Tailwind CSS for a workspace that renders UI, with bun check for type checking and Vitest for tests. Use when asked to create a new package or app in a monorepo.
 argument-hint: <name> [apps|packages]
 ---
 
@@ -16,7 +16,7 @@ The first argument is the package name, such as `utils`. The second optional arg
 2. Determine the destination: `packages/<name>` or `apps/<name>`.
 3. For an app, decide whether it starts something, such as a server or a CLI. An app that does takes the files in "A runnable app" below in place of `<name>.ts`. An app with nothing to start takes the package files below without the `exports` field, since nothing takes a dependency on an app. The one exception is an app that deploys with the root infrastructure-as-code stack, such as a root `alchemy.run.ts`: it exports exactly one thing, `"./alchemy.stack": "./alchemy.stack.ts"`, described in "An app deployed by the root stack" below.
 4. Decide the runtime the code runs on, such as Bun, Node, a browser, or a worker. It sets the ambient types in `tsconfig.json`.
-5. Create the files below.
+5. Create the files below, and when the new workspace renders UI, the Tailwind setup in "A workspace that renders UI".
 
 ### `package.json`
 
@@ -178,6 +178,50 @@ export default defineConfig({
 })
 ```
 
+## A workspace that renders UI
+
+A package or app that renders UI, such as an MCP App View, an Astro site, or a web page, is styled with Tailwind CSS v4 utility classes in its markup, never with a hand-written stylesheet of selectors. Set Tailwind up while scaffolding, so the first component starts on utilities. `styling-ui` holds the rules for the markup and the entry file.
+
+1. Add `"tailwindcss": "catalog:"` and `"@tailwindcss/vite": "catalog:"` to `devDependencies`. When the root catalog lacks them, add both there first, at the latest release, `^4.3.5` or later.
+2. Write the CSS entry file, `lib/styles.css`, one for each build that renders UI. It imports Tailwind with automatic source detection off, names each folder that holds markup with `@source`, and starts the theme with only the project's own colors and radii:
+
+   ```css
+   @import "tailwindcss" source(none);
+   @source "./";
+
+   @theme {
+     --color-*: initial;
+     --radius-*: initial;
+   }
+   ```
+
+3. Add the plugin to the bundler's config. For Vite, in `vite.config.ts`:
+
+   ```typescript
+   import tailwindcss from "@tailwindcss/vite"
+   import { defineConfig } from "vite"
+
+   export default defineConfig({
+     plugins: [tailwindcss()],
+   })
+   ```
+
+   For Astro, put `tailwindcss()` in `vite.plugins` in `astro.config.ts`, and never add the `@astrojs/tailwind` integration, which is for Tailwind v3. Add no `tailwind.config.js` and no PostCSS config.
+
+4. Load `lib/styles.css` once, where the page loads, through a `<link rel="stylesheet">`. A View's HTML links it by its path. An Astro layout imports it as `../styles.css?url` and links that URL, since a bare `import "./styles.css"` trips oxlint's `import/no-unassigned-import`. Add `"vite/client"` to `types` in `tsconfig.json`, or `"astro/client"` for Astro, which declares the `?url` import.
+5. Add an `overrides` entry for the new workspace to the root `.oxfmtrc.jsonc`, so the formatter sorts its classes and knows its tokens:
+
+   ```jsonc
+   {
+     "files": ["<apps|packages>/<name>/**"],
+     "options": {
+       "sortTailwindcss": { "stylesheet": "./<apps|packages>/<name>/lib/styles.css" },
+     },
+   }
+   ```
+
+A package that only exports components for an app to render takes none of these steps. Each app that renders it styles it, and names the package's folder with `@source` in its own entry file.
+
 ## After scaffolding
 
 Run `bun install` from the repo root to link the new workspace package, then `bun run --filter @<scope>/<name> typecheck`.
@@ -192,3 +236,4 @@ Run `bun install` from the repo root to link the new workspace package, then `bu
 - Put every module the entrypoint or executable imports under `lib/`, never in a directory beside `package.json`. The `./**/*.ts` include already covers it.
 - Never use barrel files. Import directly from specific files.
 - Put build, codegen, and one-off scripts in `scripts/`, wired up through a `package.json` script, and widen the tsconfig `include` to cover them.
+- A workspace that renders UI has one CSS entry file for each build, such as `lib/styles.css`, and styles everything else with Tailwind utility classes in the markup.

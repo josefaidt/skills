@@ -35,6 +35,17 @@ Examples for the formatting and lint step.
 }
 ```
 
+When a workspace renders UI, `new-typescript-package` adds an entry to `overrides` that sorts its Tailwind classes. `stylesheet` points at the workspace's CSS entry file, relative to this config, so its own tokens sort with the built-in utilities:
+
+```jsonc
+{
+  "files": ["apps/<name>/**"],
+  "options": {
+    "sortTailwindcss": { "stylesheet": "./apps/<name>/lib/styles.css" },
+  },
+}
+```
+
 ## `.oxlintrc.jsonc`
 
 Four categories carry the config, and the `rules` block lists only where it departs from them. Every rule in a category the config turns on applies to each plugin in `plugins`, and a plugin with no matching code reports nothing.

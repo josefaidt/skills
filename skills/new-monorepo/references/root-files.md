@@ -17,6 +17,7 @@ Two scripts point at files that later steps write: `setup` runs `scripts/setup.s
     "catalog": {
       "@commitlint/cli": "^21.2.3",
       "@commitlint/config-conventional": "^21.2.3",
+      "@tailwindcss/vite": "^4.3.5",
       "@types/bun": "^1.4.2",
       "@types/node": "^26.6.4",
       "effect": "^4.1.6",
@@ -24,6 +25,7 @@ Two scripts point at files that later steps write: `setup` runs `scripts/setup.s
       "oxlint": "1.92.0",
       "oxlint-tsgolint": "^7.0.2003",
       "rolldown": "^1.2.12",
+      "tailwindcss": "^4.3.5",
       "typescript": "^7.0.2",
       "vitest": "^4.1.10"
     }
@@ -53,7 +55,7 @@ Two scripts point at files that later steps write: `setup` runs `scripts/setup.s
 }
 ```
 
-`--if-present` lets a fan-out skip a workspace without the script, and `--no-error-on-unmatched-pattern` lets `lint` pass with nothing to lint, so every check passes before the first package exists. `oxlint` is pinned exactly because `oxlint-tsgolint` releases in step with it.
+`--if-present` lets a fan-out skip a workspace without the script, and `--no-error-on-unmatched-pattern` lets `lint` pass with nothing to lint, so every check passes before the first package exists. `oxlint` is pinned exactly because `oxlint-tsgolint` releases in step with it. `tailwindcss` and `@tailwindcss/vite` release together too, so raise both at once, and drop them when no workspace will render UI.
 
 ## `bunfig.toml`
 

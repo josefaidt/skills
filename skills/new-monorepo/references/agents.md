@@ -39,6 +39,7 @@ Load the matching skill before starting the work it covers.
 | `typescript:writing-typescript` | Writing or reviewing any TypeScript |
 | `typescript:new-typescript-package` | Adding a workspace package or app |
 | `typescript:monorepo` | Deciding where code belongs, or adding or upgrading a dependency |
+| `typescript:styling-ui` | Styling any UI, or writing a test that finds an element |
 | `writing:writing-prose` | Writing any prose, such as a README, an issue, or a pull request body |
 | `design:domain-modeling` | Naming or renaming a domain concept, or editing `GLOSSARY.md` or an ADR |
 | `review:setup-docs-workflow` | Setting up or checking how features are specified and approved |
