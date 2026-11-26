@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: Keep a repository's CODING_STANDARDS.md, the one table of rules a code reviewer enforces, each with a stable ID, a level, and a status. Covers what earns a rule, the table and detail-file format, adopting a rule from a shared skill, and moving a rule from advisory to blocking to retired. Use when creating CODING_STANDARDS.md, adding, changing, promoting, or retiring a rule, deciding whether a correction becomes a rule or a lint check, or auditing a repository's checks.
+description: Keep a repository's CODING_STANDARDS.md, the one table of rules a code reviewer enforces, each with a stable ID, a level, and a status, and its Stack section, which records the repository's pick for each default a skill names, such as the schema library or the test layout. Covers what earns a rule, the table and detail-file format, adopting a rule from a shared skill, stack choices, and moving a rule from advisory to blocking to retired. Use when creating CODING_STANDARDS.md, adding, changing, promoting, or retiring a rule, recording or changing a stack choice, deciding whether a correction becomes a rule or a lint check, or auditing a repository's checks.
 ---
 
 # Coding standards
@@ -45,6 +45,17 @@ Only the user changes a status. An agent proposes the change with its evidence, 
 - **Promote** a rule to `blocking` once it has produced at least three findings the implementer fixed and none the user dismissed as wrong.
 - **Retire** a rule when the user dismissed two of its findings as wrong, when a lint rule now covers it, or when it produced no finding across three milestones. A rule with no findings may still shape what the implementer writes, so say which of these applies and let the user decide.
 - **Rewrite** a rule whose findings are right but keep needing a second read to judge. A rewritten rule gets a new ID and starts as `advisory`, and the old row is retired.
+
+## Stack choices
+
+Some skill rules name a default, such as the schema library `writing-typescript` names or its test layout. The Stack section of `CODING_STANDARDS.md` records the repository's pick for each, so a skill's default never wins because nobody wrote the choice down, and a later change to a skill's default leaves the repository as it was. Record a pick even when it matches the skill's default.
+
+- Give each pick an ID under `stack/`, such as `stack/schema`, and name the skill rule whose default it replaces.
+- Cover every default a skill the repository loads names: the schema and config library, the test layout, the test runners, the runtime and package manager, and anything else a skill states as "by default".
+- Only the maintainer adds or changes a pick. An agent proposes one with what the code uses today.
+- A reviewer reports code that departs from a pick as a `MUST` violation at `blocking`, citing the pick's ID. A pick skips the `advisory` trial, since the maintainer chose it directly.
+
+`setup-docs-workflow` writes the section when it sets up a repository. The format is in [references/format.md](references/format.md).
 
 ## Rules from shared skills
 

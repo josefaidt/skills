@@ -21,7 +21,7 @@ Read `REVIEW.md` at the repository root when it exists, along with each `REVIEW.
 
 ## Rules
 
-Read `CODING_STANDARDS.md` at the repository root when it exists, then the rules of the language skills that match the changed files, such as `writing-typescript` for `.ts` files. The table wins where the two disagree, and it sets each rule's level and status. A skill rule the table does not list is `SHOULD` and `advisory`.
+Read `CODING_STANDARDS.md` at the repository root when it exists, then the rules of the language skills that match the changed files, such as `writing-typescript` for `.ts` files. The table wins where the two disagree, and it sets each rule's level and status. A skill rule the table does not list is `SHOULD` and `advisory`. The file's Stack section replaces each default a skill names, such as the schema library, and code that departs from a pick is a `MUST` violation at `blocking` that cites the pick's ID, such as `stack/schema`.
 
 Skip a rule that a lint rule in the repository's config already enforces, and a rule whose status is `retired`. Open a rule's detail file only when its one-line text is not enough to judge the case in front of you.
 
