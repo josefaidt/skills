@@ -22,6 +22,10 @@ Reusable skill definitions for agents. Each skill lives in its own directory wit
 | [`catch-me-up`](./catch-me-up/) | Agents | What changed since your last message, and what waits on you |
 | [`milestone-report`](./milestone-report/) | Agents | The calls a milestone leaves for you, with their evidence |
 | [`learn-mcp-apps`](./learn-mcp-apps/) | Learn MCP Apps | Building and debugging MCP Apps, and what hosts actually do |
+| [`new-github-repo`](./new-github-repo/) | Issues | GitHub settings, labels that route work to a model, and the `AGENTS.md` section the issue skills read |
+| [`filing-issues`](./filing-issues/) | Issues | Issues a session with no memory can carry, sized by the reasoning they leave it |
+| [`addressing-issues`](./addressing-issues/) | Issues | Carrying one issue to a reviewed pull request and a report |
+| [`coordinating-sessions`](./coordinating-sessions/) | Issues | One coordinator running a milestone's sessions on the right models, wave after wave |
 
 ## Writing skills
 

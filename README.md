@@ -41,6 +41,13 @@ skills/
   reviewing-design/         design document review against its PRD
   reflect/                  route what a session taught to the file that should hold it
   milestone-report/         the report that closes a milestone
+  new-github-repo/          GitHub settings, the labels that route work to a model, and the AGENTS.md section
+  filing-issues/            issues sized for one session, their bar, and their relationships
+  addressing-issues/        carrying one issue to a reviewed pull request
+  coordinating-sessions/    one coordinator running a milestone's sessions, with tasklist and trial-merge scripts
+    SKILL.md
+    references/
+    scripts/
   learn-mcp-apps/           MCP Apps protocol, SDK, patterns, and host notes
     SKILL.md
     references/
@@ -65,6 +72,7 @@ The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.
 | `review` | `setup-docs-workflow`, `coding-standards`, `reviewing-behavior`, `reviewing-design`, `reviewing-code` |
 | `agents` | `reflect`, `wait-what`, `catch-me-up`, `milestone-report` |
 | `learn-mcp-apps` | `learn-mcp-apps` |
+| `issues` | `new-github-repo`, `filing-issues`, `addressing-issues`, `coordinating-sessions` |
 
 Install a plugin from inside Claude Code:
 
@@ -76,6 +84,7 @@ Install a plugin from inside Claude Code:
 /plugin install review --marketplace josefaidt/skills
 /plugin install agents --marketplace josefaidt/skills
 /plugin install learn-mcp-apps --marketplace josefaidt/skills
+/plugin install issues --marketplace josefaidt/skills
 ```
 
 A plugin's skills take its name as a prefix, so `new-monorepo` runs as `/typescript:new-monorepo`. A plugin carries no version of its own, so its version is the commit it was read from, and every push to `main` is a new version.
