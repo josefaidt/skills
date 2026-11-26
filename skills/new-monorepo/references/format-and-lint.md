@@ -9,7 +9,15 @@ Examples for the formatting and lint step.
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "semi": false,
   "sortImports": {
-    "groups": ["type", "builtin", "external", ["parent", "sibling", "index"]],
+    "groups": ["type", "builtin", "react", "external", ["parent", "sibling", "index"]],
+    // React's runtime imports sit between the built-ins and every other package
+    "customGroups": [
+      {
+        "groupName": "react",
+        "elementNamePattern": ["react", "react/**", "react-dom", "react-dom/**"],
+        "modifiers": ["value"],
+      },
+    ],
     "newlinesBetween": false,
   },
   "sortPackageJson": true,

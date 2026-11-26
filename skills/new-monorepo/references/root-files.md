@@ -19,13 +19,13 @@ Two scripts point at files that later steps write: `setup` runs `scripts/setup.s
       "@commitlint/config-conventional": "^21.2.3",
       "@types/bun": "^1.4.2",
       "@types/node": "^26.6.4",
+      "effect": "^4.1.6",
       "oxfmt": "^0.76.0",
       "oxlint": "1.92.0",
       "oxlint-tsgolint": "^7.0.2003",
       "rolldown": "^1.2.12",
       "typescript": "^7.0.2",
-      "vitest": "^4.1.10",
-      "zod": "^4.6.5"
+      "vitest": "^4.1.10"
     }
   },
   "type": "module",
