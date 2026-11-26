@@ -62,11 +62,7 @@ Match the `extends` depth to the actual location. Both `packages/<name>` and `ap
 
 ### `<name>.ts`
 
-The entrypoint, at the package root. Start with an empty export:
-
-```typescript
-export {}
-```
+The entrypoint, at the package root. Write the first export the package was created for, such as the function or schema the request named. When the request names nothing the package exports, ask the user what its first export is rather than writing a placeholder. The lint config that `new-monorepo` sets up rejects both placeholders: a file with no code fails `unicorn/no-empty-file`, and `export {}` fails `unicorn/require-module-specifiers`.
 
 ## A package with a build step
 
@@ -143,12 +139,13 @@ Use the package `tsconfig.json` above as is. Its `./**/*.ts` include covers `bin
 
 ### `bin/<name>.ts`
 
-The executable. Open it with a shebang so the `bin` link runs it under Bun, and start with an empty export:
+The executable. Open it with a shebang so the `bin` link runs it under Bun, and follow it with the program's first real code, such as the call that starts the server or parses the CLI's arguments:
 
 ```typescript
 #!/usr/bin/env bun
-export {}
 ```
+
+A file with only the shebang fails `unicorn/no-empty-file`, so the executable never ships as a placeholder. When the request does not say what the app runs, ask the user before writing it.
 
 Mark it executable with `chmod +x bin/<name>.ts`, so the file runs directly and git records the mode.
 
