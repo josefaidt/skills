@@ -166,6 +166,21 @@ An app that deploys to the cloud through the repository's root infrastructure-as
 
 `alchemy.stack.ts` exports functions that take bindings and return Worker or website props, with every path anchored to the file, so the stack resolves them wherever it runs: a folder, such as an Astro site's `rootDir`, as `import.meta.dirname`, and a file, such as a Worker's `main`, as `new URL("./lib/worker.ts", import.meta.url).href`. Never build a folder from `import.meta.url`, which `unicorn/prefer-import-meta-properties` rejects. The root `package.json` lists the app as a `workspace:*` dependency, the one place anything depends on an app, and the root stack imports `@<scope>/<name>/alchemy.stack` from each app and wires them together. Every other app still declares no `exports`.
 
+## End-to-end tests
+
+A package or app with an end-to-end or integration suite keeps it in `tests/` beside `package.json`, with end-to-end suites in `tests/e2e/`, together with the helpers only those suites use. Unit tests stay beside their modules in `lib/`. Name each end-to-end file `*.e2e.ts`, so Vitest's default include, which matches `*.test.*` and `*.spec.*`, never runs it. For Playwright, add `"e2e": "playwright test"` and `"@playwright/test": "catalog:"`, and point the config's `testDir` at `tests/e2e`:
+
+### `playwright.config.ts`
+
+```typescript
+import { defineConfig } from "@playwright/test"
+
+export default defineConfig({
+  testDir: "tests/e2e",
+  testMatch: "**/*.e2e.ts",
+})
+```
+
 ## After scaffolding
 
 Run `bun install` from the repo root to link the new workspace package, then `bun run --filter @<scope>/<name> typecheck`.
@@ -177,6 +192,7 @@ Run `bun install` from the repo root to link the new workspace package, then `bu
 - The entrypoint **must** be `<name>.ts` at the package root, never `src/index.ts`. A runnable app's executable **must** be `bin/<name>.ts` instead, declared in `bin` and run by `start`.
 - An app declares no `exports` field, whether or not it has something to start, except the single `"./alchemy.stack": "./alchemy.stack.ts"` subpath export of an app that the root infrastructure-as-code stack deploys. The rule that a scoped package exports only `"."` is for packages, not this export.
 - Nothing takes a dependency on an app, apart from that root stack. Never add an app as a dependency of a package, of another app, or of an example.
-- Put every module the entrypoint or executable imports under `lib/`, never in a directory beside `package.json`. The `./**/*.ts` include already covers it.
+- Put every module the entrypoint or executable imports under `lib/`, never in a directory beside `package.json`. `lib/` holds only that library code and its unit tests. The `./**/*.ts` include already covers it.
+- Put end-to-end and integration suites, and the helpers only they use, in `tests/` beside `package.json`, with end-to-end suites in `tests/e2e/`, never in `lib/`. A Playwright config's `testDir` is `tests/e2e`.
 - Never use barrel files. Import directly from specific files.
 - Put build, codegen, and one-off scripts in `scripts/`, wired up through a `package.json` script, and widen the tsconfig `include` to cover them.
