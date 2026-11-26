@@ -8,14 +8,14 @@ user-invocable: false
 
 Make the compiler reject what the code cannot handle, and make every package look the same so a reader finds things without searching.
 
-When the repository has a `CODING_STANDARDS.md`, read it first. Its rules win where they differ, it sets how strictly a review enforces each rule here, and its stack choices replace each default this skill names, such as the schema library or the test layout. This skill covers what it leaves out. Each rule's ID is `ts/` and its name in lowercase kebab case, with code font and punctuation dropped, such as `ts/no-any` and `ts/derive-dont-copy`, and a review cites that ID. Renaming a rule changes its ID, so rename one only when retiring the old ID is acceptable. To scaffold a package, load `new-typescript-package`, and for when a comment earns its place, `writing-code`. Examples for each rule are in [references/patterns.md](references/patterns.md).
+When the repository has a `CODING_STANDARDS.md`, read it first. Its rules win where they differ, and it sets how strictly a review enforces each rule here. This skill covers what it leaves out. Each rule's ID is `ts/` and its name in lowercase kebab case, with code font and punctuation dropped, such as `ts/no-any` and `ts/derive-dont-copy`, and a review cites that ID. Renaming a rule changes its ID, so rename one only when retiring the old ID is acceptable. To scaffold a package, load `new-typescript-package`, and for when a comment earns its place, `writing-code`. Examples for each rule are in [references/patterns.md](references/patterns.md).
 
 ## Types
 
 | Rule | Summary |
 | :-- | :-- |
 | No `any` | Write the real type. External data and caught errors are `unknown` until narrowed. |
-| Parse at the boundary | Decode data that crosses in, such as a response body, CLI args, a database row, or a file, with an Effect Schema through `Schema.decodeUnknown*`, and derive its type as `typeof UserSchema.Type`. Read env and config through Effect `Config`, never `process.env`. The one exception is a third-party SDK's own published schemas, such as the MCP SDK's Zod schemas, which you import for their types only. Never keep a schema, an interface, and a guard that can drift apart. |
+| Parse at the boundary | Run data that crosses in, such as a response body, env, CLI args, a database row, or a file, through a schema and derive its type from the schema. Use the schema library the repository already uses. A new project uses Effect Schema, and reads env and config through Effect `Config`. When a third-party SDK publishes Zod schemas, derive its types from them rather than copying them. Never keep a schema, an interface, and a guard that can drift apart. |
 | Trust types inside | Past the parse, never check the same data again. `Record<string, unknown>` ends at the parse, and transport or framework types stay out of a module's exports. |
 | No `as` on unchecked data | A cast asserts a shape nothing checked. Use `satisfies` to check a literal without widening it. To remove a cast, find why inference fails: a missing tag, a source type that is too wide, or an unparsed boundary. |
 | Narrowing order | Discriminant switch, then `in`, then `typeof` or `instanceof`, then a type guard, then `as` only after validation. |
@@ -26,7 +26,7 @@ When the repository has a `CODING_STANDARDS.md`, read it first. Its rules win wh
 | Brand IDs | When two values share a primitive but mean different things, such as a tenant ID and a user ID, brand them. Only a parse function creates a branded value. |
 | Build bad values out | Choose a shape where the bad value cannot be written, rather than a check every caller repeats: `[T, ...T[]]` for a non-empty list, `[T, T][]` for pairs, a start plus a duration for a range. |
 | Strengthen only to remove a lie | Keep `T[]` while every use works on an empty list. Switch to `NonEmpty<T>` when the loose type forces a `!`, a cast, or a "can't happen" throw. |
-| Derive, don't copy | Get types from their source: `typeof` a schema's `.Type`, `typeof` an `as const` value, `Pick`, `Omit`, `ReturnType`. |
+| Derive, don't copy | Get types from their source: the schema, as `typeof UserSchema.Type` in Effect or `z.infer` in Zod, `typeof` an `as const` value, `Pick`, `Omit`, `ReturnType`. |
 | `as const` for fixed data | Lookup tables and fixed lists are `as const`, which keeps literal types and blocks mutation. |
 
 ## Code
@@ -36,13 +36,13 @@ When the repository has a `CODING_STANDARDS.md`, read it first. Its rules win wh
 | Pure logic, thin shell | Business logic lives in pure functions with no framework imports. The handler, route, or command parses input, calls them, and writes the result. |
 | Stored and wire data | Persisted JSON carries a version and is parsed where it is read. A wire format ignores unknown fields, so an older reader survives a newer writer. |
 | Object arguments | Pass an object when a function takes more than two parameters or two of the same type, so a swap fails to compile. Skip on hot paths. |
-| Schema errors name the fix | A check's `message` names the field as its reader knows it, such as the env variable, and how to correct it, not the type that failed. |
-| Throw or return the failure | `Schema.decodeUnknownSync` where a bad value should stop the process. `Schema.decodeUnknownEffect`, or `Schema.decodeUnknownExit` outside an Effect, where the failure becomes a response. |
+| Schema errors name the fix | A validation message names the field as its reader knows it, such as the env variable, and how to correct it, not the type that failed. |
+| Throw or return the failure | Throw where a bad value should stop the process, as Effect's `Schema.decodeUnknownSync` or Zod's `parse` does. Return the failure where it becomes a response, as `Schema.decodeUnknownEffect` or Zod's `safeParse` does. |
 | Real tests | Never mock what you can run. Use the platform's real test runtime, and mock only a system you cannot run locally. |
 | Structured logs | Shipped code logs through a structured logger with the IDs needed to debug from a report, never a bare `console.log`. |
 | Long-form modifiers | `public`, `private`, and `protected` on every class member, never `#`. Members are `private` unless something outside calls them. |
 | Imports | `import type` for types. Order: types, `node:` and `bun:` built-ins, `react` and `react-dom`, other packages, relative. No blank lines between them, no file extensions, no barrel files. oxfmt's `sortImports` enforces the order. |
-| Types first | A module's top-level statements go in four tiers: type imports, runtime imports, types (type re-exports and type declarations, exported or not), then runtime code. A type export never sits among runtime exports. oxfmt sorts only imports, so a local lint rule enforces the rest, which `new-monorepo` sets up. |
+| Types first | A module's top-level statements go in four tiers: type imports, runtime imports, types (type re-exports and type declarations, exported or not), then runtime code. A type export never sits among runtime exports. oxfmt sorts only imports, so the rest is the author's and the reviewer's to keep, until a shared lint config enforces it. |
 | JSDoc on exported types | Every exported type and each of its properties gets a multiline `/** */` saying what the name cannot: units, formats, defaults, invariants. |
 | Comment syntax | Whether to comment at all is `writing-code`'s call. `//` for one line. A longer comment is a plain `/* */` block, never stacked `//` lines and never `/**`, which is for API docs. A lint or compiler directive stays a `//` line with its reason on the line above. |
 

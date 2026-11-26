@@ -4,7 +4,7 @@ One example for each rule in `SKILL.md` whose table row leaves room for doubt.
 
 ## Parse at the boundary
 
-The examples use Effect 4, where `Schema` and `Config` ship in the core `effect` package.
+The examples use Effect Schema, the default for a new project, from Effect 4, where `Schema` and `Config` ship in the core `effect` package. In a repository that uses Zod, the same schema is a `z.object` with its type from `z.infer`.
 
 ```typescript
 import { Schema } from "effect"
@@ -46,13 +46,13 @@ const program = Effect.gen(function* () {
 })
 ```
 
-A third-party SDK's own published schemas are the one exception, used for their types only, so no second schema library parses anything in the repository.
+When a third-party SDK publishes Zod schemas, derive its types from them, even in a repository that parses with Effect Schema, rather than copying the shape into a second schema.
 
 ```typescript
-import type { McpUiToolMetaSchema } from "@modelcontextprotocol/ext-apps"
+import type { WebhookEventSchema } from "@vendor/sdk"
 import type { z } from "zod"
 
-type ToolMeta = z.infer<typeof McpUiToolMetaSchema>
+type WebhookEvent = z.infer<typeof WebhookEventSchema>
 ```
 
 Caught errors are `unknown` too.
@@ -223,11 +223,11 @@ const EnvConfig = Config.all({
 const manifest = Schema.decodeUnknownSync(ManifestSchema)(JSON.parse(text))
 
 // a handler: the failure becomes a response
-const decodeBody = Schema.decodeUnknownEffect(MoveSchema)
+const decodeBody = Schema.decodeUnknownEffect(OrderSchema)
 
-const handleMove = (body: unknown) =>
+const handleOrder = (body: unknown) =>
   decodeBody(body).pipe(
-    Effect.map((move) => applyMove(move)),
+    Effect.map((order) => placeOrder(order)),
     Effect.catchTag("SchemaError", (error) => Effect.succeed(badRequest(error.message))),
   )
 ```
@@ -246,30 +246,30 @@ class Client {
 ## Imports
 
 ```typescript
-import type { Room } from "@workspace/game-room"
+import type { User } from "@<scope>/core"
 import type { Server } from "node:http"
 import { readFile } from "node:fs/promises"
 import { useState } from "react"
 import { Schema } from "effect"
-import { renderBoard } from "./render-board"
+import { renderOrder } from "./render-order"
 ```
 
 ## Types first
 
 ```typescript
-import type { Move } from "./move"
+import type { LineItem } from "./line-item"
 import { Schema } from "effect"
-export type { Move } from "./move"
-export type Board = typeof BoardSchema.Type
-interface Cursor {
-  board: Board
-  last: Move
+export type { LineItem } from "./line-item"
+export type Order = typeof OrderSchema.Type
+interface OrderSummary {
+  order: Order
+  largest: LineItem
 }
-export const BoardSchema = Schema.Struct({ cells: Schema.Array(Schema.String) })
-export { applyMove } from "./apply-move"
+export const OrderSchema = Schema.Struct({ items: Schema.Array(Schema.String) })
+export { placeOrder } from "./place-order"
 ```
 
-A type can name a runtime value through `typeof`, as `Board` does, since types are erased and their order costs nothing at runtime.
+A type can name a runtime value through `typeof`, as `Order` does, since types are erased and their order costs nothing at runtime.
 
 ## JSDoc on exported types
 
@@ -316,14 +316,14 @@ apps/<name>/
 ├── scripts/
 ├── tests/
 │   └── e2e/
-│       ├── play-a-game.e2e.ts
-│       └── game-server-client.ts
+│       ├── checkout.e2e.ts
+│       └── api-client.ts
 ├── package.json
 ├── playwright.config.ts
 └── tsconfig.json
 ```
 
-`routes.test.ts` is a unit test of `routes.ts`, so it sits beside it. `game-server-client.ts` serves only the end-to-end suite, so it sits in `tests/e2e/` with it, never in `lib/`.
+`routes.test.ts` is a unit test of `routes.ts`, so it sits beside it. `api-client.ts` serves only the end-to-end suite, so it sits in `tests/e2e/` with it, never in `lib/`.
 
 ```json
 {

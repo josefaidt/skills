@@ -58,7 +58,7 @@ Declare them even though the files sit right there in the repo. The manifest is 
 
 ## Reaching another workspace
 
-A workspace never reads another workspace's files by path, whether in an import, a build script, or a config. A path such as `../../packages/game-client/lib/push-worker/push-worker.ts` ties the consumer to that package's internal layout, hides the dependency from the manifest, so filtered builds and the dependency graph miss it, and breaks without a type error the day the package moves the file. Declare the package as a dependency and go through its export.
+A workspace never reads another workspace's files by path, whether in an import, a build script, or a config. A path such as `../../packages/<name>/lib/<module>.ts` ties the consumer to that package's internal layout, hides the dependency from the manifest, so filtered builds and the dependency graph miss it, and breaks without a type error the day the package moves the file. Declare the package as a dependency and go through its export.
 
 A package that ships a built asset, such as a service worker, builds the asset in its own `build` script and exports it from its entrypoint, such as the built file's path. The consumer's build copies the asset from there into its output, and never commits the copy, as `writing-typescript` describes for generated files. Root config that every workspace extends, such as `tsconfig.base.json`, belongs to no workspace, so a path to it is fine.
 
