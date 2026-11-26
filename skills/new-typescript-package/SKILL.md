@@ -168,7 +168,7 @@ An app that deploys to the cloud through the repository's root infrastructure-as
 
 ## End-to-end tests
 
-A package or app with an end-to-end or integration suite keeps it in `tests/` beside `package.json`, with end-to-end suites in `tests/e2e/`, together with the helpers only those suites use. Unit tests stay beside their modules in `lib/`. Name each end-to-end file `*.e2e.ts`, so Vitest's default include, which matches `*.test.*` and `*.spec.*`, never runs it. For Playwright, add `"e2e": "playwright test"` and `"@playwright/test": "catalog:"`, and point the config's `testDir` at `tests/e2e`:
+End-to-end suites go in `tests/e2e/`, as `writing-typescript` lays out. Name each end-to-end file `*.e2e.ts`, so Vitest's default include, which matches `*.test.*` and `*.spec.*`, never runs it. For Playwright, add `"e2e": "playwright test"` and `"@playwright/test": "catalog:"`, with this config:
 
 ### `playwright.config.ts`
 
@@ -192,7 +192,6 @@ Run `bun install` from the repo root to link the new workspace package, then `bu
 - The entrypoint **must** be `<name>.ts` at the package root, never `src/index.ts`. A runnable app's executable **must** be `bin/<name>.ts` instead, declared in `bin` and run by `start`.
 - An app declares no `exports` field, whether or not it has something to start, except the single `"./alchemy.stack": "./alchemy.stack.ts"` subpath export of an app that the root infrastructure-as-code stack deploys. The rule that a scoped package exports only `"."` is for packages, not this export.
 - Nothing takes a dependency on an app, apart from that root stack. Never add an app as a dependency of a package, of another app, or of an example.
-- Put every module the entrypoint or executable imports under `lib/`, never in a directory beside `package.json`. `lib/` holds only that library code and its unit tests. The `./**/*.ts` include already covers it.
-- Put end-to-end and integration suites, and the helpers only they use, in `tests/` beside `package.json`, with end-to-end suites in `tests/e2e/`, never in `lib/`. A Playwright config's `testDir` is `tests/e2e`.
+- Put every module the entrypoint or executable imports under `lib/`, never in a directory beside `package.json`. The `./**/*.ts` include already covers it.
 - Never use barrel files. Import directly from specific files.
 - Put build, codegen, and one-off scripts in `scripts/`, wired up through a `package.json` script, and widen the tsconfig `include` to cover them.

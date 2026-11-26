@@ -55,8 +55,6 @@ Two scripts point at files that later steps write: `setup` runs `scripts/setup.s
 
 `--if-present` lets a fan-out skip a workspace without the script, and `--no-error-on-unmatched-pattern` lets `lint` pass with nothing to lint, so every check passes before the first package exists. `oxlint` is pinned exactly because `oxlint-tsgolint` releases in step with it.
 
-`effect` is the schema and config library a new repository starts with, through `Schema` and `Config`, as `writing-typescript` describes.
-
 ## `bunfig.toml`
 
 ```toml

@@ -4,8 +4,6 @@ Examples for the formatting and lint step.
 
 ## `.oxfmtrc.jsonc`
 
-`sortImports` orders imports the way `writing-typescript` sets out: type imports, then `node:` and `bun:` built-ins, then the runtime imports of `react` and `react-dom`, then every other package, then relative imports. oxfmt has no built-in React group, so the `react` custom group defines one, and its `value` modifier leaves React's type imports in the type group.
-
 ```jsonc
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",

@@ -41,7 +41,7 @@ When the repository has a `CODING_STANDARDS.md`, read it first. Its rules win wh
 | Real tests | Never mock what you can run. Use the platform's real test runtime, and mock only a system you cannot run locally. |
 | Structured logs | Shipped code logs through a structured logger with the IDs needed to debug from a report, never a bare `console.log`. |
 | Long-form modifiers | `public`, `private`, and `protected` on every class member, never `#`. Members are `private` unless something outside calls them. |
-| Imports | `import type` for types. Order: types, `node:` and `bun:` built-ins, `react` and `react-dom`, other packages, relative. No blank lines between them, no file extensions, no barrel files. oxfmt's `sortImports` enforces the order. |
+| Imports | `import type` for types. Order: types, `node:` and `bun:` built-ins, `react` and `react-dom`, other packages, relative. No blank lines between them, no file extensions, no barrel files. |
 | Types first | A module's top-level statements go in four tiers: type imports, runtime imports, types (type re-exports and type declarations, exported or not), then runtime code. A type export never sits among runtime exports. oxfmt sorts only imports, so the rest is the author's and the reviewer's to keep, until a shared lint config enforces it. |
 | JSDoc on exported types | Every exported type and each of its properties gets a multiline `/** */` saying what the name cannot: units, formats, defaults, invariants. |
 | Comment syntax | Whether to comment at all is `writing-code`'s call. `//` for one line. A longer comment is a plain `/* */` block, never stacked `//` lines and never `/**`, which is for API docs. A lint or compiler directive stays a `//` line with its reason on the line above. |

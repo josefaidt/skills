@@ -27,7 +27,7 @@ Three skills cover the repo once it exists: `monorepo` decides where code goes a
 
 ## Starting from the template
 
-[josefaidt/bun-oxc-monorepo-template](https://github.com/josefaidt/bun-oxc-monorepo-template) holds the result of these steps. For a new repository, `bun create josefaidt/bun-oxc-monorepo-template <directory>` copies it without its history, renames the root package to the directory name, and runs `git init` and `bun install`. It also attempts a first commit, which the `commit-msg` hook rejects, so the files stay staged. Then describe the project in `README.md` and `AGENTS.md`, rename the `@workspace` scope in `tsconfig.base.json` and `AGENTS.md` if the user wants another, and continue from step 8. Before that, check the template against steps 1 and 3: where its catalog lacks `effect` or its `sortImports` lacks the `react` group, bring it in line from those steps' examples.
+[josefaidt/bun-oxc-monorepo-template](https://github.com/josefaidt/bun-oxc-monorepo-template) holds the result of these steps. For a new repository, `bun create josefaidt/bun-oxc-monorepo-template <directory>` copies it without its history, renames the root package to the directory name, and runs `git init` and `bun install`. It also attempts a first commit, which the `commit-msg` hook rejects, so the files stay staged. Then describe the project in `README.md` and `AGENTS.md`, rename the `@workspace` scope in `tsconfig.base.json` and `AGENTS.md` if the user wants another, and continue from step 8.
 
 ## Before you start
 
@@ -56,7 +56,7 @@ The base config is the strict baseline every package extends, and it names no am
 
 Write `.oxfmtrc.jsonc` and `.oxlintrc.jsonc` from `references/format-and-lint.md`. Then run `bun run fmt`, and again after each later step, so every file takes this repository's formatting rather than the example's.
 
-oxfmt formats code, sorts `package.json` keys, and never wraps prose, so each paragraph of markdown stays on one line and a diff shows the sentence that changed. Its `sortImports` groups put type imports first, then built-ins, then a `react` custom group for the runtime imports of `react` and `react-dom`, then other packages, then relative imports: `["type", "builtin", "react", "external", ["parent", "sibling", "index"]]`.
+oxfmt formats code, sorts imports and `package.json` keys, and never wraps prose, so each paragraph of markdown stays on one line and a diff shows the sentence that changed.
 
 oxlint runs type-aware through `oxlint-tsgolint`, which reads each package's `tsconfig.json`. Its categories do most of the configuration:
 
