@@ -19,13 +19,13 @@ Two scripts point at files that later steps write: `setup` runs `scripts/setup.s
       "@commitlint/config-conventional": "^21.2.3",
       "@types/bun": "^1.4.2",
       "@types/node": "^26.6.4",
+      "effect": "^4.1.6",
       "oxfmt": "^0.76.0",
       "oxlint": "1.92.0",
       "oxlint-tsgolint": "^7.0.2003",
       "rolldown": "^1.2.12",
       "typescript": "^7.0.2",
-      "vitest": "^4.1.10",
-      "zod": "^4.6.5"
+      "vitest": "^4.1.10"
     }
   },
   "type": "module",
@@ -37,8 +37,8 @@ Two scripts point at files that later steps write: `setup` runs `scripts/setup.s
     "typecheck": "bun run --filter '*' --if-present typecheck",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "lint": "oxlint --deny-warnings --no-error-on-unmatched-pattern",
-    "lint:fix": "oxlint --fix --no-error-on-unmatched-pattern"
+    "lint": "bun --bun oxlint --deny-warnings --no-error-on-unmatched-pattern",
+    "lint:fix": "bun --bun oxlint --fix --no-error-on-unmatched-pattern"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",
@@ -53,7 +53,9 @@ Two scripts point at files that later steps write: `setup` runs `scripts/setup.s
 }
 ```
 
-`--if-present` lets a fan-out skip a workspace without the script, and `--no-error-on-unmatched-pattern` lets `lint` pass with nothing to lint, so every check passes before the first package exists. `oxlint` is pinned exactly because `oxlint-tsgolint` releases in step with it.
+`--if-present` lets a fan-out skip a workspace without the script, and `--no-error-on-unmatched-pattern` lets `lint` pass with nothing to lint, so every check passes before the first package exists. `oxlint` is pinned exactly because `oxlint-tsgolint` releases in step with it. The lint scripts run oxlint under Bun with `bun --bun`, since oxlint otherwise loads its JavaScript plugins in Node, which cannot resolve the extensionless TypeScript imports in `packages/lint-rules`. The formatting and lint step writes that package and adds it to the root `devDependencies`, so oxlint can resolve it by name.
+
+`effect` is the schema and config library every package uses, through `Schema` and `Config`, as `writing-typescript` describes.
 
 ## `bunfig.toml`
 
