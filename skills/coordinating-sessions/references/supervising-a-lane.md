@@ -1,6 +1,8 @@
 # Supervising a lane
 
-A supervisor is an Opus session at `high` effort that runs one lane of a wave under the coordinator, so several tasks in that lane can run at once without their pull requests going stale against each other. It reads `main` once for the lane, settles in the briefs which task changes which part of each shared file, starts one session per task, and hands the coordinator one report once every pull request is ready and a trial merge of all of them passes. A lane that runs its tasks one at a time needs no supervisor.
+A supervisor is a Sonnet session at `high` effort that runs one lane of a wave under the coordinator, so several tasks in that lane can run at once without their pull requests going stale against each other. It reads `main` once for the lane, settles in the briefs which task changes which part of each shared file, starts one session per task, and hands the coordinator one report once every pull request is ready and a trial merge of all of them passes. A lane that runs its tasks one at a time needs no supervisor, and most lanes don't need one at all, since the coordinator can brief parallel tasks itself.
+
+Sonnet is enough because a supervisor's work is coordination: briefs, splitting shared files, follow-ups, a trial merge, and a report. It never merges, and the coordinator reads every pull request before it lands, so a supervisor's mistake costs a rebase. Start it on Opus at `high` only when its lane holds an Opus-sized task or splits a trust boundary, since a supervisor that briefs a task should be able to follow that task's design.
 
 ## What it owns
 

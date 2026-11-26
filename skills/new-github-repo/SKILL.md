@@ -54,14 +54,11 @@ Write this section into `AGENTS.md`, filling each value from the repository. Iss
 ## Issues and sessions
 
 - Repository: `<owner>/<repo>`. Issues use the labels in `new-github-repo`: `kind:`, `priority:`, `size:`, `status:needs-human`, and `area:<folder>` for <folders>.
-- Checks: `<each command a pull request must pass, in order, such as cargo fmt --check, cargo clippy --all-targets, cargo test>`.
+- Checks, in order: `<name>`: `<command>`, one per check a pull request must pass, such as `fmt`: `cargo fmt --check`. A coordinator runs each on a trial merge, and a lockfile it regenerates names its command too, such as `Cargo.lock`: `cargo update --workspace`.
 - CI: <runs these checks on each pull request | is off, so the coordinator runs them on a trial merge>.
-- Trial merge: `bun scripts/trial-merge.ts --check "<name>=<command>" ... <pr>...`.
 - Owner documents, which change only with the owner's word: <VISION.md, an RFC's Behavior and status, ADRs, GLOSSARY.md>.
 - Assignee for issues in flight: <a bot account, or none, in which case an open pull request alone marks an issue in flight>.
 ```
-
-Copy `scripts/tasklist.ts` and `scripts/trial-merge.ts` from the `coordinating-sessions` skill into the repository's `scripts/` when that skill is installed, since the section names them.
 
 ## Report
 

@@ -4,7 +4,7 @@ The tasklist turns a milestone's open issues into a worklist: what to start, in 
 
 ## Procedure
 
-1. Run `bun scripts/tasklist.ts [milestone]`, which prints one line per open issue. With no argument it takes the lowest-numbered open milestone that still has open issues.
+1. Run the `tasklist` script from this skill's folder, as "Scripts" in `SKILL.md` shows, which prints one line per open issue. With no argument it takes the lowest-numbered open milestone that still has open issues.
 2. Read the bucket each line starts with.
    - `in-flight` has an open pull request that closes it, or the repository's assignee. Leave it alone and list it.
    - `ready` is a task, bug, or security fix with no open blockers.

@@ -8,7 +8,7 @@
   lowest-numbered open milestone that still has open issues. An issue is in flight when an open pull
   request closes it, or when `--assignee` names an account assigned to it.
 
-  Usage: bun scripts/tasklist.ts [milestone] [--assignee <login>]
+  Usage: bun <coordinating-sessions skill folder>/scripts/tasklist.ts [milestone] [--assignee <login>]
 
   It depends on nothing but Bun and an authenticated `gh`.
 */

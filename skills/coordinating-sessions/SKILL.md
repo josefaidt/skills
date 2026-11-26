@@ -7,14 +7,22 @@ description: How one coordinator session runs an effort's work for the owner, so
 
 The coordinator is the one session the owner talks to, on Opus at the highest effort the harness offers. The owner sets direction and makes the calls only they can. The coordinator turns an effort into a sequence of tasks, starts a session for each on the model its size names, reads what each reports, merges what it may, and brings the owner only what is theirs. Task sessions write the code.
 
-Read the `Issues and sessions` section of `AGENTS.md` first. It names the repository, the checks, the trial-merge command, and the owner documents. When it is missing, run `new-github-repo` first, with the owner's word, since every step below relies on it.
+Read the `Issues and sessions` section of `AGENTS.md` first. It names the repository, the checks, and the owner documents. When it is missing, run `new-github-repo` first, with the owner's word, since every step below relies on it.
 
 ## Before the first wave
 
 1. **Check the repository.** `main` exists on GitHub and is the default branch, since GitHub reads `Closes #N` only on a pull request into the default branch. The labels exist. A repository that fails either gets `new-github-repo` first.
-2. **Install the scripts.** Copy [scripts/tasklist.ts](scripts/tasklist.ts) and [scripts/trial-merge.ts](scripts/trial-merge.ts) into the repository's `scripts/` when they are missing. Each runs on Bun with `gh` and git, and depends on nothing else.
-3. **Make a base branch at `origin/main`.** Fast-forward the coordinator's own branch to `origin/main`, or create one there, and pass it as every session's source branch. The owner's local `main` lags until they pull, and a session cut from it starts behind.
-4. **Plan the wave** with [references/tasklist.md](references/tasklist.md): sort the milestone, order the ready tasks, group them into lanes, and name each one's model and effort.
+2. **Make a base branch at `origin/main`.** Fast-forward the coordinator's own branch to `origin/main`, or create one there, and pass it as every session's source branch. The owner's local `main` lags until they pull, and a session cut from it starts behind.
+3. **Plan the wave** with [references/tasklist.md](references/tasklist.md): sort the milestone, order the ready tasks, group them into lanes, and name each one's model and effort.
+
+## Scripts
+
+The skill's two scripts run in place from this skill's folder, never copied into the repository, so they update with the skill and the repository carries no copies to drift. Each runs on Bun with `gh` and git, from the repository's root, and depends on nothing else.
+
+| Script | Run |
+| :-- | :-- |
+| [scripts/tasklist.ts](scripts/tasklist.ts) | `bun <this skill's folder>/scripts/tasklist.ts [milestone] [--assignee <login>]` |
+| [scripts/trial-merge.ts](scripts/trial-merge.ts) | `bun <this skill's folder>/scripts/trial-merge.ts --check "<name>=<command>"... [--lockfile "<file>=<command>"]... <pr>...`, with one `--check` for each check the `AGENTS.md` section lists, in its order |
 
 ## Models
 
@@ -92,4 +100,4 @@ When the last task merges, run `milestone-report` when it is installed, and hold
 
 ## Keeping track
 
-Keep a running list of what waits on whom, each open pull request with its session, and the owner's pending answers, in the session's memory when the harness has one, so the work survives a compaction. A lane that runs several tasks at once gets a supervisor, as [references/supervising-a-lane.md](references/supervising-a-lane.md) sets out.
+Keep a running list of what waits on whom, each open pull request with its session, and the owner's pending answers, in the session's memory when the harness has one, so the work survives a compaction. A lane rarely needs a supervisor: the coordinator briefs parallel tasks itself, giving each shared file to one session. A lane that needs several tasks at once, more than the coordinator can brief, gets one, as [references/supervising-a-lane.md](references/supervising-a-lane.md) sets out.

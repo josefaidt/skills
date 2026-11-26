@@ -5,7 +5,7 @@
   merges. One pull request can change a signature or a file another relies on where git reports no
   conflict, and only a run over the merged tree catches it.
 
-    bun scripts/trial-merge.ts --check <name>=<command>... [--setup <command>]
+    bun <coordinating-sessions skill folder>/scripts/trial-merge.ts --check <name>=<command>... [--setup <command>]
       [--lockfile <file>=<command>]... [--keep] <pr>...
 
   It merges each pull request's head in the order given, with git hooks off, since these commits
@@ -28,7 +28,7 @@ import { parseArgs } from "node:util"
 import { $ } from "bun"
 
 const USAGE =
-  "usage: bun scripts/trial-merge.ts --check <name>=<command>... [--setup <command>] [--lockfile <file>=<command>]... [--keep] <pr>..."
+  "usage: bun <coordinating-sessions skill folder>/scripts/trial-merge.ts --check <name>=<command>... [--setup <command>] [--lockfile <file>=<command>]... [--keep] <pr>..."
 
 function splitPair(value: string): [string, string] | undefined {
   const index = value.indexOf("=")
