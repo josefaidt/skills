@@ -183,12 +183,15 @@ export default defineConfig({
 A package or app that renders UI, such as an MCP App View, an Astro site, or a web page, is styled with Tailwind CSS v4 utility classes in its markup, never with a hand-written stylesheet of selectors. Set Tailwind up while scaffolding, so the first component starts on utilities. `styling-ui` holds the rules for the markup and the entry file.
 
 1. Add `"tailwindcss": "catalog:"` and `"@tailwindcss/vite": "catalog:"` to `devDependencies`. When the root catalog lacks them, add both there first, at the latest release, `^4.3.5` or later.
-2. Write the one CSS entry file, `lib/styles.css`. It imports Tailwind and holds the design tokens in `@theme`:
+2. Write the CSS entry file, `lib/styles.css`, one for each build that renders UI. It imports Tailwind with automatic source detection off, names each folder that holds markup with `@source`, and starts the theme with only the project's own colors and radii:
 
    ```css
-   @import "tailwindcss";
+   @import "tailwindcss" source(none);
+   @source "./";
 
    @theme {
+     --color-*: initial;
+     --radius-*: initial;
    }
    ```
 
@@ -205,7 +208,7 @@ A package or app that renders UI, such as an MCP App View, an Astro site, or a w
 
    For Astro, put `tailwindcss()` in `vite.plugins` in `astro.config.ts`, and never add the `@astrojs/tailwind` integration, which is for Tailwind v3. Add no `tailwind.config.js` and no PostCSS config.
 
-4. Import `lib/styles.css` once, where the page loads, such as from a layout or the View's HTML. When a TypeScript file imports it, add `"vite/client"` to `types` in `tsconfig.json`.
+4. Load `lib/styles.css` once, where the page loads, through a `<link rel="stylesheet">`. A View's HTML links it by its path. An Astro layout imports it as `../styles.css?url` and links that URL, since a bare `import "./styles.css"` trips oxlint's `import/no-unassigned-import`. Add `"vite/client"` to `types` in `tsconfig.json`, or `"astro/client"` for Astro, which declares the `?url` import.
 5. Add an `overrides` entry for the new workspace to the root `.oxfmtrc.jsonc`, so the formatter sorts its classes and knows its tokens:
 
    ```jsonc
@@ -217,7 +220,7 @@ A package or app that renders UI, such as an MCP App View, an Astro site, or a w
    }
    ```
 
-A package that only exports components for an app to render takes none of these steps. The app styles it, and names the package's folder with `@source` in its own entry file.
+A package that only exports components for an app to render takes none of these steps. Each app that renders it styles it, and names the package's folder with `@source` in its own entry file.
 
 ## After scaffolding
 
@@ -233,4 +236,4 @@ Run `bun install` from the repo root to link the new workspace package, then `bu
 - Put every module the entrypoint or executable imports under `lib/`, never in a directory beside `package.json`. The `./**/*.ts` include already covers it.
 - Never use barrel files. Import directly from specific files.
 - Put build, codegen, and one-off scripts in `scripts/`, wired up through a `package.json` script, and widen the tsconfig `include` to cover them.
-- A workspace that renders UI has one CSS file, `lib/styles.css`, and styles everything else with Tailwind utility classes in the markup.
+- A workspace that renders UI has one CSS entry file for each build, such as `lib/styles.css`, and styles everything else with Tailwind utility classes in the markup.
