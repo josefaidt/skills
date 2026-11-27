@@ -55,6 +55,9 @@ skills/
   learn-mcp-apps/           MCP Apps protocol, SDK, patterns, and host notes
     SKILL.md
     references/
+  deploying-with-alchemy/   Cloudflare deploys with Alchemy: the shared state store, tags, releases, and recovery
+    SKILL.md
+    references/
 ```
 
 See [`skills/README.md`](./skills/README.md) for what each skill covers.
@@ -77,6 +80,7 @@ The repo is a Claude Code plugin marketplace, `josefaidt-skills`, defined in [`.
 | `agents` | `reflect`, `wait-what`, `catch-me-up`, `milestone-report` |
 | `learn-mcp-apps` | `learn-mcp-apps` |
 | `issues` | `new-github-repo`, `filing-issues`, `addressing-issues`, `coordinating-sessions` |
+| `deploys` | `deploying-with-alchemy` |
 
 Install a plugin from inside Claude Code:
 
@@ -89,6 +93,7 @@ Install a plugin from inside Claude Code:
 /plugin install agents --marketplace josefaidt/skills
 /plugin install learn-mcp-apps --marketplace josefaidt/skills
 /plugin install issues --marketplace josefaidt/skills
+/plugin install deploys --marketplace josefaidt/skills
 ```
 
 A plugin's skills take its name as a prefix, so `new-monorepo` runs as `/typescript:new-monorepo`. A plugin carries no version of its own, so its version is the commit it was read from, and every push to `main` is a new version.

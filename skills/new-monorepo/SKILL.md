@@ -101,6 +101,8 @@ The hooks run the checks so an agent never spends a tool call on them:
 
 Write `.github/actions/setup/action.yml` and `.github/workflows/ci.yml` from `references/ci.md`. One job runs every check, and each step runs even after an earlier one fails, so a push reports every failure at once.
 
+A repository that deploys to Cloudflare with Alchemy also gets a release workflow, which runs this CI workflow before it deploys. `deploying-with-alchemy` has it, along with the state store and tagging setup the deploy needs.
+
 ### 8. Skills
 
 The skills come as Claude Code plugins from the `josefaidt-skills` marketplace. The `.claude/settings.json` example declares the marketplace and enables four plugins, `writing`, `typescript`, `design`, and `agents`, and the `AGENTS.md` example lists their skills under their plugin names, such as `typescript:writing-typescript`. Settings don't install a plugin, so install them for the user with the commands in the `AGENTS.md` example:

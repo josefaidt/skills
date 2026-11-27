@@ -163,6 +163,8 @@ An app that deploys to the cloud through the repository's root infrastructure-as
 
 `alchemy.stack.ts` exports functions that take bindings and return Worker or website props, with every path anchored to the file, so the stack resolves them wherever it runs: a folder, such as an Astro site's `rootDir`, as `import.meta.dirname`, and a file, such as a Worker's `main`, as `new URL("./lib/worker.ts", import.meta.url).href`. Never build a folder from `import.meta.url`, which `unicorn/prefer-import-meta-properties` rejects. The root `package.json` lists the app as a `workspace:*` dependency, the one place anything depends on an app, and the root stack imports `@<scope>/<name>/alchemy.stack` from each app and wires them together. Every other app still declares no `exports`.
 
+Give each Worker the app declares a `tags` entry naming the repository, such as `tags: ["repo:<owner>/<name>"]`, so other repositories deploying to the same Cloudflare account can tell it isn't theirs. `deploying-with-alchemy` covers the tag, the shared state store, and the release workflow.
+
 ## End-to-end tests
 
 End-to-end suites go in `tests/e2e/`, as `writing-typescript` lays out. Name each end-to-end file `*.e2e.ts`, so Vitest's default include, which matches `*.test.*` and `*.spec.*`, never runs it. For Playwright, add `"e2e": "playwright test"` and `"@playwright/test": "catalog:"`, with this config:

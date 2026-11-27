@@ -83,6 +83,13 @@
         "./skills/addressing-issues",
         "./skills/coordinating-sessions"
       ]
+    },
+    {
+      "name": "deploys",
+      "description": "Deploying a repository's Cloudflare resources with Alchemy from CI, with one shared state store per account, a repository tag on everything each repository owns, a release workflow that refuses to deploy a stage with no state, and rebuilding lost state",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/deploying-with-alchemy"]
     }
   ]
 }
