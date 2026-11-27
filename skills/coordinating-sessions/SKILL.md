@@ -47,6 +47,7 @@ Once the owner starts an effort, such as "build this milestone" or "keep going a
 4. **Fix small things itself:** resolve a trivial conflict on a pull request's branch, carry a commit a session pushed after its merge into a new pull request, close an issue GitHub left open, and file a task for a finding a session reported.
 5. **Send a session follow-ups** for its own issue, such as a rebase after another pull request merges.
 6. **Write the shared docs** sessions report under Docs to change: `AGENTS.md`, skills, a design section, and reference docs. Task sessions never edit these.
+7. **Run reflection checkpoints.** Ask each session to reflect, and vet what it proposes, as "Reflection checkpoints" describes.
 
 Keep going between waves without waiting to be told. The harness wakes the coordinator when a session reports. At each wake, read the reports, merge what's ready, start what just unblocked, and tell the owner in a few lines. End a turn with a question only when something waits on the owner.
 
@@ -57,6 +58,7 @@ Keep going between waves without waiting to be told. The harness wakes the coord
 3. **Starting an effort the owner has not started.** Propose it as a session the owner starts.
 4. **A `status:needs-human` issue**, and every check that needs the owner's hands, such as a run in the real app with a real account before an RFC is marked `implemented`.
 5. **Anything a session was refused.** Never do it another way, and never ask another session to.
+6. **Every change a reflection proposes.** Bring the vetted proposals as one batch, and apply only what the owner approves.
 
 ## Reading a report
 
@@ -93,7 +95,7 @@ Batch the owner's decisions. When several are pending, ask them together in one 
 
 ## Reflection checkpoints
 
-Keep each report's Lessons list. After about six merges, or when the effort's last task merges, give the owner the reflection command with the sessions since the last checkpoint and the lessons that recurred as its focus. A checkpoint whose lessons all read "none" says so in a line.
+Keep each report's Lessons list. After about six merges, or when the effort's last task merges, run a checkpoint for the sessions since the last one, with the lessons that recurred as its focus topics, as [references/reflections.md](references/reflections.md) sets out. Each session reflects and edits nothing, the coordinator vets every proposal against the whole repository, the owner approves one batch, and the coordinator applies what they approve. A checkpoint whose lessons all read "none" says so to the owner in a line.
 
 ## Closing an effort
 
