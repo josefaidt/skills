@@ -48,11 +48,13 @@ Size measures the reasoning an issue leaves its session, never the files or line
 
 | Label | Scope | Model |
 | :-- | :-- | :-- |
-| `size:sm` | The design settles every choice: a move, a rename, a store with a given shape, a setting with its default, a fix the finding spells out | Haiku |
-| `size:md` | The design bounds the approach, and the session reasons through edge cases, ordering, concurrency, or callers that change | Sonnet |
+| `size:sm` | Menial: the issue spells out the change, and nothing is left to decide or check beyond the repository's checks. A rename, a move, a version bump, a docs-only edit, a fix whose exact change the finding gives | Haiku |
+| `size:md` | The default. The design bounds the approach, and the session reasons through edge cases, ordering, concurrency, tests, or callers that change | Sonnet |
 | `size:lg` | Crosses modules, sets a trust boundary, or its shape depends on what the session finds, and still fits one reviewable pull request | Opus |
 
-Size down, not up. A task sized `md` because it "feels important" spends a stronger model on work a smaller one would carry, and a session that finds its task bigger than its label stops and says so, which costs less than a default to the bigger model. Work one session carries in one reviewable pull request is one issue. Split only where the split buys something: parts that need different models, a part that must land first, a part that needs the owner's hands, or a diff too large to read in one sitting. Work bigger than `size:lg` is a parent with sized sub-issues.
+Size `md` unless the task is plainly menial or plainly large. A task that asks its session to choose a test, read a caller, or weigh an edge case is not `sm`, since a small model then needs a longer brief and more follow-ups than the larger model it saved. Never size `lg` because a task feels important.
+
+Every issue costs the same overhead whatever its size: a brief, the session's reading before it starts, a review, a report, and a merge. So file fewer, larger issues. Work one session carries in one reviewable pull request is one issue, and small work in the files a task already changes joins that task rather than standing alone. Split only where the split buys something: a part that must land first, a part that needs a different model, a part that needs the owner's hands, or a diff too large to read in one sitting. Work bigger than `size:lg` is a parent with sized sub-issues.
 
 ## Relationships
 
@@ -82,7 +84,7 @@ Sort each finding the work turns up before writing it down anywhere, without ask
 
 1. Fix it in this pull request when the issue's statements or `Done when` need it, or when it sits in a file the pull request already changes and fits the task's size.
 2. When it shows that an RFC or the issue is wrong or silent, file one decision issue, with `status:needs-human` only when the answer is behavior. When the gap blocks the `Done when`, stop instead.
-3. File anything else outside the scope yourself, as its own task under the effort it belongs to, including a security fix a review turns up in merged code. Ask first only when it adds behavior no RFC asks for.
+3. File anything else outside the scope yourself, under the effort it belongs to, including a security fix a review turns up in merged code. When an open task that no session has started changes the same files, add the finding to that task's body rather than filing a new one. Ask first only when it adds behavior no RFC asks for.
 4. Drop a nit that changes no behavior.
 
 Search for an existing issue before filing. Writing "follow-up", "for later", or "TODO" in a pull request, a comment, or a doc is not a record, so link the issue from each place the gap is written.

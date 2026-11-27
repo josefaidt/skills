@@ -11,11 +11,12 @@ The tasklist turns a milestone's open issues into a worklist: what to start, in 
    - `needs-you` is a `status:needs-human` issue with no open blockers.
    - `blocked` waits on the issues in its `blockedBy` column. List what each waits on.
    - `tracker` and `parent` are containers, not work.
-3. Read the body of each ready task and check it against the bar in `filing-issues`. A task that fails goes to Opus at `xhigh`, and the note says why. Size any task that has no size label before going on, honestly and down when in doubt.
+3. Read the body of each ready task and check it against the bar in `filing-issues`. A task that fails goes to Opus at `xhigh`, and the note says why. Size any task that has no size label before going on, as `md` unless it is plainly menial or plainly large.
 4. Order the ready tasks by priority, then by how many issues each unblocks through chains in the blocked bucket, then smaller first.
 5. Group the ready tasks into lanes. Two tasks share a lane when they carry the same area label, or when both change the same files on `origin/main`, judged from the design sections each cites. Lanes run in parallel, and tasks inside a lane run one after another, unless a supervisor runs the lane. A blocked issue joins the lane of its blocker, after it. A small task that moves or deletes code goes before the tasks that would otherwise edit that code.
-6. Move `priority:3` tasks that unblock nothing into a tail list for spare capacity.
-7. Report in the format below.
+6. Fold small work into one task. When ready tasks in one lane are each `sm`, or an `sm` task changes the files of an `md` task beside it, move the smaller tasks' `Done when` items and links into the larger task's body, size the result again, and close each smaller task as superseded, naming the task it joined. Do this only for tasks no session has started. Each task folded saves a brief, a session's start-up reading, a review, and a report.
+7. Move `priority:3` tasks that unblock nothing into a tail list for spare capacity.
+8. Report in the format below.
 
 ## Report format
 

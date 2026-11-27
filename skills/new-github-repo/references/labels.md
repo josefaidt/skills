@@ -31,8 +31,8 @@ Exactly one on every task and decision that is not a parent. Size measures the r
 
 | Name | Color | Description |
 | :-- | :-- | :-- |
-| `size:sm` | `f5e2a8` | Small: the design settles every choice. Runs on Haiku |
-| `size:md` | `e5bd4f` | Medium: the design bounds the approach, the session reasons through edge cases. Runs on Sonnet |
+| `size:sm` | `f5e2a8` | Small: menial, the issue spells out the change. Runs on Haiku |
+| `size:md` | `e5bd4f` | Medium, the default: the design bounds the approach, the session reasons through edge cases. Runs on Sonnet |
 | `size:lg` | `b9860b` | Large: crosses modules or its shape depends on what the session finds, still one PR. Runs on Opus |
 
 ## Status

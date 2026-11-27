@@ -26,12 +26,12 @@ The skill's two scripts run in place from this skill's folder, never copied into
 
 ## Models
 
-A task runs on the model its size label names. Size measures the reasoning the issue leaves the session, never its line count, so size honestly and size down when in doubt. A task that turns out bigger stops and says so, which costs less than defaulting every task to a stronger model.
+A task runs on the model its size label names. Size measures the reasoning the issue leaves the session, never its line count. Sonnet is the default, and Haiku takes only menial work, since a small model that needs a longer brief and more follow-ups costs the coordinator more than it saves. A task that turns out bigger stops and says so.
 
 | Model | Effort | For |
 | :-- | :-- | :-- |
-| Haiku | `medium` | `size:sm`: the design settles every choice. A module move, a store with a given shape, a setting and its switch, a fix a finding spells out, a docs-only change |
-| Sonnet | `high` | `size:md`: the design bounds the approach and the session reasons through edge cases, concurrency, UI and keys, or callers that change |
+| Haiku | `medium` | `size:sm`: menial work the issue spells out, with nothing to decide. A rename, a module move, a version bump, a docs-only change, a fix whose exact change a finding gives |
+| Sonnet | `high` | `size:md`, the default: the design bounds the approach and the session reasons through edge cases, concurrency, UI and keys, tests, or callers that change |
 | Opus | `high` | `size:lg`: crosses modules, or its shape depends on what the session finds |
 | Opus | `xhigh` | Designs and their review, a recommendation for the owner, a new trust boundary such as authentication or certificate handling, a task that fails the bar in `filing-issues`, or splitting work bigger than `size:lg` |
 
