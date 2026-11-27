@@ -13,7 +13,8 @@ Read the `Issues and sessions` section of `AGENTS.md` first. It names the reposi
 
 1. **Check the repository.** `main` exists on GitHub and is the default branch, since GitHub reads `Closes #N` only on a pull request into the default branch. The labels exist. A repository that fails either gets `new-github-repo` first.
 2. **Make a base branch at `origin/main`.** Fast-forward the coordinator's own branch to `origin/main`, or create one there, and pass it as every session's source branch. The owner's local `main` lags until they pull, and a session cut from it starts behind.
-3. **Plan the wave** with [references/tasklist.md](references/tasklist.md): sort the milestone, order the ready tasks, group them into lanes, and name each one's model and effort.
+3. **Groom the milestone.** Audit it as `filing-issues` describes, so small tasks that change the same files are folded into one before any session starts. Each task folded saves a brief, a session's start-up reading, a review, and a report.
+4. **Plan the wave** with [references/tasklist.md](references/tasklist.md): sort the milestone, order the ready tasks, group them into lanes, and name each one's model and effort.
 
 ## Scripts
 
@@ -26,12 +27,12 @@ The skill's two scripts run in place from this skill's folder, never copied into
 
 ## Models
 
-A task runs on the model its size label names. Size measures the reasoning the issue leaves the session, never its line count, so size honestly and size down when in doubt. A task that turns out bigger stops and says so, which costs less than defaulting every task to a stronger model.
+A task runs on the model its size label names. Size measures the reasoning the issue leaves the session, never its line count. Sonnet is the default, and Haiku takes a task only when its design settles every choice, since a small model that needs a longer brief and more follow-ups costs the coordinator more than it saves. A task that turns out bigger stops and says so.
 
 | Model | Effort | For |
 | :-- | :-- | :-- |
 | Haiku | `medium` | `size:sm`: the design settles every choice. A module move, a store with a given shape, a setting and its switch, a fix a finding spells out, a docs-only change |
-| Sonnet | `high` | `size:md`: the design bounds the approach and the session reasons through edge cases, concurrency, UI and keys, or callers that change |
+| Sonnet | `high` | `size:md`, the default: the design bounds the approach and the session reasons through edge cases, concurrency, UI and keys, tests, or callers that change |
 | Opus | `high` | `size:lg`: crosses modules, or its shape depends on what the session finds |
 | Opus | `xhigh` | Designs and their review, a recommendation for the owner, a new trust boundary such as authentication or certificate handling, a task that fails the bar in `filing-issues`, or splitting work bigger than `size:lg` |
 
