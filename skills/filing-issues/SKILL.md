@@ -48,11 +48,11 @@ Size measures the reasoning an issue leaves its session, never the files or line
 
 | Label | Scope | Model |
 | :-- | :-- | :-- |
-| `size:sm` | Menial: the issue spells out the change, and nothing is left to decide or check beyond the repository's checks. A rename, a move, a version bump, a docs-only edit, a fix whose exact change the finding gives | Haiku |
+| `size:sm` | The design settles every choice: a move, a rename, a store with a given shape, a setting with its default, a fix the finding spells out | Haiku |
 | `size:md` | The default. The design bounds the approach, and the session reasons through edge cases, ordering, concurrency, tests, or callers that change | Sonnet |
 | `size:lg` | Crosses modules, sets a trust boundary, or its shape depends on what the session finds, and still fits one reviewable pull request | Opus |
 
-Size `md` unless the task is plainly menial or plainly large. A task that asks its session to choose a test, read a caller, or weigh an edge case is not `sm`, since a small model then needs a longer brief and more follow-ups than the larger model it saved. Never size `lg` because a task feels important.
+Size `md` unless the design settles every choice or the task is plainly large. A small model that needs a longer brief and more follow-ups costs more than the larger model it saved. Never size `lg` because a task feels important.
 
 Every issue costs the same overhead whatever its size: a brief, the session's reading before it starts, a review, a report, and a merge. So file fewer, larger issues. Work one session carries in one reviewable pull request is one issue, and small work in the files a task already changes joins that task rather than standing alone. Split only where the split buys something: a part that must land first, a part that needs a different model, a part that needs the owner's hands, or a diff too large to read in one sitting. Work bigger than `size:lg` is a parent with sized sub-issues.
 
@@ -93,10 +93,10 @@ Search for an existing issue before filing. Writing "follow-up", "for later", or
 
 **Filing.** Search with `gh issue list --state all --search` as its own command and read each hit, since same-day duplicates from parallel sessions are the most common clutter. Choose labels and milestone, check the design and decisions that already answer part of it, write the body to a scratch file, check it against the bar, create it, then add its relationships and sub-issue link and check priorities across every edge you added.
 
-**Cutting tasks from a design.** File one wave at a time, when it is ready to start, so each `Done when` is written against the tree that builds it. Check that the wave's tasks together cover every `MUST` statement they claim, each exactly once, and that their blocked-by edges match the order the design needs.
+**Cutting tasks from a design.** File one wave at a time, when it is ready to start, so each `Done when` is written against the tree that builds it. Cut as few tasks as reviewable pull requests allow, grouping the work by the files it changes, so small work rides with the task that touches the same code. Check that the wave's tasks together cover every `MUST` statement they claim, each exactly once, and that their blocked-by edges match the order the design needs.
 
 **Editing.** Fetch the body to a file right before editing, since other sessions edit the same issues. An open pull request that closes the issue builds against the copy its author read, so comment on it with what changed.
 
 **Closing.** A merged pull request closes its issue only when it targets the default branch. After a merge, check the issue closed, and close it yourself with a comment naming the pull request when it didn't. Otherwise close an issue yourself only as a duplicate, superseded, or a decision answered elsewhere, each with a comment saying why. Ask before closing for any other reason.
 
-**Auditing a milestone.** Run the audit query, record as relationships the dependencies bodies state in prose, check each issue against merged work since it was filed, look for duplicates, and check the gotchas under "Relationships" and for tasks missing a size or parent.
+**Auditing a milestone.** Run the audit query, record as relationships the dependencies bodies state in prose, check each issue against merged work since it was filed, look for duplicates, and check the gotchas under "Relationships" and for tasks missing a size or parent. Fold small tasks no session has started into the task that changes the same files: move their `Done when` items and links into its body, size it again, and close each as superseded, naming the task it joined.
