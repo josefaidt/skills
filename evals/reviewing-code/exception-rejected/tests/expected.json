@@ -1,0 +1,13 @@
+{
+  "verdict": "Request changes",
+  "findings": [
+    {
+      "kind": "tenancy/scoped-queries",
+      "section": "Blocking",
+      "file": "lib/support-lookup.ts",
+      "lines": [14, 15]
+    }
+  ],
+  "untested": [],
+  "exceptions": [{ "rule": "tenancy/scoped-queries", "accepted": false }]
+}

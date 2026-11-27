@@ -1,0 +1,13 @@
+{
+  "verdict": "Comment",
+  "findings": [
+    {
+      "kind": "api/error-envelope",
+      "section": "Advisory",
+      "file": "lib/check-reset-link.ts",
+      "lines": [13, 14, 15]
+    }
+  ],
+  "untested": [],
+  "exceptions": []
+}
