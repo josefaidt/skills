@@ -48,7 +48,7 @@ skills/
   new-github-repo/          GitHub settings, the labels that route work to a model, and the AGENTS.md section
   filing-issues/            issues sized for one session, their bar, and their relationships
   addressing-issues/        carrying one issue to a reviewed pull request
-  coordinating-sessions/    one coordinator running a milestone's sessions, with tasklist and trial-merge scripts
+  coordinating-sessions/    one coordinator running a milestone's sessions, with a tasklist script
     SKILL.md
     references/
     scripts/

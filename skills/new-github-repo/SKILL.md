@@ -1,6 +1,6 @@
 ---
 name: new-github-repo
-description: Set up a GitHub repository so agents can file, size, and merge work in it, or bring an existing repository's settings and labels into line. Covers pushing `main` and making it the default branch, squash-only merges with auto-merge and branch deletion, the `kind:`, `priority:`, `size:`, and `status:` labels that route work to a model, `area:` labels for busy folders, a first milestone, and the `Issues and sessions` section of `AGENTS.md` that issue and coordination skills read. Use when creating a GitHub repository, when a repository has no labels or milestones yet, before the first issue or the first coordinated milestone, or when pull requests merge without closing their issues.
+description: Set up a GitHub repository so agents can file, size, and merge work in it, or bring an existing repository's settings and labels into line. Covers pushing `main` and making it the default branch, squash-only merges with auto-merge and branch deletion, CI that runs every check with branch protection requiring it, the `kind:`, `priority:`, `size:`, and `status:` labels that route work to a model, `area:` labels for busy folders, a first milestone, and the `Issues and sessions` section of `AGENTS.md` that issue and coordination skills read. Use when creating a GitHub repository, when a repository has no labels or milestones yet, before the first issue or the first coordinated milestone, or when pull requests merge without closing their issues.
 argument-hint: "[owner/repo]"
 ---
 
@@ -34,19 +34,40 @@ gh api -X PATCH repos/<owner>/<repo> \
   -f squash_merge_commit_title=COMMIT_OR_PR_TITLE -f squash_merge_commit_message=COMMIT_MESSAGES
 ```
 
-A squash keeps one commit per pull request on `main`, which is what a reviewer and `git log` read. Auto-merge can then be turned on for a pull request, but GitHub only accepts it while something is pending, such as a required check or review. A repository with no branch protection merges a mergeable pull request at once, so `gh pr merge --squash` is the way to merge there. Tell the user so when they ask for auto-merge.
+A squash keeps one commit per pull request on `main`, which is what a reviewer and `git log` read. Auto-merge can then be turned on for a pull request, but GitHub only accepts it while something is pending, such as a required check or review. With the branch protection the next step sets, auto-merge waits for the required checks.
 
-### 3. Labels
+### 3. CI and branch protection
+
+Every check a pull request must pass runs in CI, and branch protection on `main` requires it, so no agent or person has to remember to run the checks before a merge. Write `.github/workflows/ci.yml` with one job that runs every check on each pull request and each push to `main`. Give each step after the first `if: ${{ !cancelled() }}`, so it runs even after an earlier one fails and one run reports every failure. A repository that already has CI keeps it, once it runs every check.
+
+Pick the runner for what the build needs. GitHub-hosted Linux suits most repositories. A build that needs macOS on a private repository costs ten times as many minutes on a GitHub-hosted runner, so offer the user a self-hosted runner on their own Mac, which also keeps the build warm between runs. A self-hosted runner runs every pull request's code on that machine, so use one only for a private repository that runs no workflows from forks.
+
+Once the job has run once, require it on `main`, on a branch that is up to date with `main`:
+
+```sh
+gh api -X PUT repos/<owner>/<repo>/branches/main/protection --input - <<'JSON'
+{
+  "required_status_checks": { "strict": true, "checks": [{ "context": "<job name>" }] },
+  "enforce_admins": false,
+  "required_pull_request_reviews": null,
+  "restrictions": null
+}
+JSON
+```
+
+`strict` makes GitHub refuse a merge until the branch has passed CI with the latest `main` in it, which catches two pull requests that pass alone but break together. `enforce_admins: false` lets the owner push or merge past a failing check, so ask the user whether they want that bypass. Branch protection on a private repository needs a paid GitHub plan, and GitHub answers 403 without one.
+
+### 4. Labels
 
 Create the label set in [references/labels.md](references/labels.md) with `gh label create --force`, which updates a label that already exists instead of failing. Leave every other label alone, and list any that overlap a label in the set, such as `bug` beside `kind:bug`, for the user to merge or delete.
 
 The labels do three jobs: `kind:` says what an issue is, `priority:` orders it, and `size:` says how much reasoning it leaves its session, which picks the model a coordinator starts it on. `status:needs-human` marks work an agent must not pick up. Add `area:` labels only for the busiest folders, one per folder, from what `git log --stat` shows changes most, and ask the user before adding more than a few.
 
-### 4. A first milestone
+### 5. A first milestone
 
 When the repository has no open milestone and the user has work in mind, create one named for what it delivers: `gh api repos/<owner>/<repo>/milestones -f title="<name>" -f description="<what it delivers>"`. Every open issue sits in exactly one milestone, so the issue skills need one to file into.
 
-### 5. The `Issues and sessions` section of `AGENTS.md`
+### 6. The `Issues and sessions` section of `AGENTS.md`
 
 Write this section into `AGENTS.md`, filling each value from the repository. Issue and coordination skills read it for everything that differs between repositories, so a value left out is one each session has to guess.
 
@@ -54,8 +75,8 @@ Write this section into `AGENTS.md`, filling each value from the repository. Iss
 ## Issues and sessions
 
 - Repository: `<owner>/<repo>`. Issues use the labels in `new-github-repo`: `kind:`, `priority:`, `size:`, `status:needs-human`, and `area:<folder>` for <folders>.
-- Checks, in order: `<name>`: `<command>`, one per check a pull request must pass, such as `fmt`: `cargo fmt --check`. A coordinator runs each on a trial merge, and a lockfile it regenerates names its command too, such as `Cargo.lock`: `cargo update --workspace`.
-- CI: <runs these checks on each pull request | is off, so the coordinator runs them on a trial merge>.
+- Checks, in order: `<name>`: `<command>`, one per check a pull request must pass, such as `fmt`: `cargo fmt --check`.
+- CI: the `<job name>` job in `.github/workflows/ci.yml` runs these checks on each pull request and push to `main`, and branch protection requires it on a branch that is up to date with `main`.
 - Owner documents, which change only with the owner's word: <VISION.md, an RFC's Behavior and status, ADRs, GLOSSARY.md>.
 - Assignee for issues in flight: <a bot account, or none, in which case an open pull request alone marks an issue in flight>.
 ```
