@@ -27,6 +27,7 @@ Reusable skill definitions for agents. Each skill lives in its own directory wit
 | [`filing-issues`](./filing-issues/) | Issues | Issues a session with no memory can carry, sized by the reasoning they leave it |
 | [`addressing-issues`](./addressing-issues/) | Issues | Carrying one issue to a reviewed pull request and a report |
 | [`coordinating-sessions`](./coordinating-sessions/) | Issues | One coordinator running a milestone's sessions on the right models, wave after wave |
+| [`deploying-with-alchemy`](./deploying-with-alchemy/) | Deploys | Cloudflare deploys with Alchemy: one shared state store, repository tags, guarded releases, and rebuilding lost state |
 
 ## Writing skills
 
@@ -122,3 +123,14 @@ The pipeline follows Cloudflare's [standards enforcement](https://blog.cloudflar
 | [`learn-mcp-apps/references/security.md`](./learn-mcp-apps/references/security.md) | What the host enforces and what the server and View must do |
 | [`learn-mcp-apps/references/auth.md`](./learn-mcp-apps/references/auth.md) | Whose token a View's calls carry, lazy sign-in, Enterprise-Managed Authorization and ID-JAG, and audit trails |
 | [`learn-mcp-apps/references/sources.md`](./learn-mcp-apps/references/sources.md) | Verified links to the spec, SDK, docs, examples, and tools |
+
+## Deploy skills
+
+[`deploying-with-alchemy`](./deploying-with-alchemy/) covers deploying a repository's Cloudflare resources with Alchemy when several repositories share one Cloudflare account. Every repository keeps its state in the account's one `alchemy-state-store`, tags each Worker it owns and the store with `repo:<owner>/<name>`, and deploys only from a release workflow that stops when the stage has no state. A deploy without state creates a second copy of every resource under new names, so the skill also says how to tell a resource another repository owns before deleting anything, and how to rebuild a stage's state from its live resources.
+
+### References
+
+| File | Covers |
+| :-- | :-- |
+| [`deploying-with-alchemy/references/release-workflow.md`](./deploying-with-alchemy/references/release-workflow.md) | The `release.yml` and `deploy.yml` workflows, their 1Password secrets, and what each guard catches |
+| [`deploying-with-alchemy/references/rebuilding-state.md`](./deploying-with-alchemy/references/rebuilding-state.md) | Decoding instance IDs from resource names, writing the records, a local dry-run, and copying them into the shared store |
