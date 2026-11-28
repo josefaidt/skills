@@ -41,4 +41,4 @@ Then list each proposal you or a session dropped, in a line each with its reason
 
 ## 4. Apply what the owner approves
 
-The coordinator makes the approved changes itself, since several sessions' proposals often touch one file. Changes to this repository go in one pull request, which merges after the trial merge like any other. A change to a shared skill goes in a pull request to the skill's source repository. Re-vendor the skill once that pull request merges. Approving the wording approves the merge.
+The coordinator makes the approved changes itself, since several sessions' proposals often touch one file. Changes to this repository go in one pull request, which merges once CI passes like any other. A change to a shared skill goes in a pull request to the skill's source repository. Re-vendor the skill once that pull request merges. Approving the wording approves the merge.

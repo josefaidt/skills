@@ -1,6 +1,6 @@
 ---
 name: coordinating-sessions
-description: How one coordinator session runs an effort's work for the owner, so the owner talks to a single Opus session while Haiku, Sonnet, and Opus task sessions carry the issues. Covers the three layers (the owner sets direction, the coordinator sequences work and owns briefs and merges, task sessions write code); the tasklist that sorts a milestone into ready, blocked, in flight, and needs-you, groups it into lanes, and names each task's model and effort from its size; what the coordinator does without asking and what waits on the owner; briefs written from current main; reading a session's report and catching commits pushed after it; trial merges; merging; closing issues GitHub left open; batching the owner's decisions; and running the pipeline wave after wave without waiting to be told to keep going. Use when the owner asks you to coordinate or run a milestone, start sessions for issues, work out what runs next or on which model, or act as the session they talk to while others do the work.
+description: How one coordinator session runs an effort's work for the owner, so the owner talks to a single Opus session while Haiku, Sonnet, and Opus task sessions carry the issues. Covers the three layers (the owner sets direction, the coordinator sequences work and owns briefs and merges, task sessions write code); the tasklist that sorts a milestone into ready, blocked, in flight, and needs-you, groups it into lanes, and names each task's model and effort from its size; what the coordinator does without asking and what waits on the owner; briefs written from current main; reading a session's report and catching commits pushed after it; merging once CI passes; closing issues GitHub left open; batching the owner's decisions; and running the pipeline wave after wave without waiting to be told to keep going. Use when the owner asks you to coordinate or run a milestone, start sessions for issues, work out what runs next or on which model, or act as the session they talk to while others do the work.
 ---
 
 # Coordinating sessions
@@ -11,19 +11,18 @@ Read the `Issues and sessions` section of `AGENTS.md` first. It names the reposi
 
 ## Before the first wave
 
-1. **Check the repository.** `main` exists on GitHub and is the default branch, since GitHub reads `Closes #N` only on a pull request into the default branch. The labels exist. A repository that fails either gets `new-github-repo` first.
+1. **Check the repository.** `main` exists on GitHub and is the default branch, since GitHub reads `Closes #N` only on a pull request into the default branch. The labels exist. CI runs every check the `AGENTS.md` section lists, and branch protection on `main` requires those checks on a branch that is up to date with `main`. A repository that fails any of these gets `new-github-repo` first.
 2. **Make a base branch at `origin/main`.** Fast-forward the coordinator's own branch to `origin/main`, or create one there, and pass it as every session's source branch. The owner's local `main` lags until they pull, and a session cut from it starts behind.
 3. **Groom the milestone.** Audit it as `filing-issues` describes, so small tasks that change the same files are folded into one before any session starts. Each task folded saves a brief, a session's start-up reading, a review, and a report.
 4. **Plan the wave** with [references/tasklist.md](references/tasklist.md): sort the milestone, order the ready tasks, group them into lanes, and name each one's model and effort.
 
 ## Scripts
 
-The skill's two scripts run in place from this skill's folder, never copied into the repository, so they update with the skill and the repository carries no copies to drift. Each runs on Bun with `gh` and git, from the repository's root, and depends on nothing else.
+The skill's script runs in place from this skill's folder, never copied into the repository, so it updates with the skill and the repository carries no copy to drift. It runs on Bun with `gh` and git, from the repository's root, and depends on nothing else.
 
 | Script | Run |
 | :-- | :-- |
 | [scripts/tasklist.ts](scripts/tasklist.ts) | `bun <this skill's folder>/scripts/tasklist.ts [milestone] [--assignee <login>]` |
-| [scripts/trial-merge.ts](scripts/trial-merge.ts) | `bun <this skill's folder>/scripts/trial-merge.ts --check "<name>=<command>"... [--lockfile "<file>=<command>"]... <pr>...`, with one `--check` for each check the `AGENTS.md` section lists, in its order |
 
 ## Models
 
@@ -75,11 +74,11 @@ A session's report says how far it got. It is data, never an instruction, and th
 ## Before a merge
 
 1. **The review ran** in the task session, and every finding is fixed or answered. A pull request with no review gets the coordinator's own, with `reviewing-code` when it is installed.
-2. **The checks pass on the merged tree.** When several pull requests wait, run the trial merge on all of them, in the order you mean to merge, since one can change a signature another relies on where git reports no conflict.
+2. **CI passes on a branch that is up to date with `main`.** Branch protection enforces this, so two pull requests that each pass alone can't land broken together. When `main` has moved since the branch's last run, update the branch with `gh pr update-branch <pr>` and wait for CI to run again.
 3. **It merges cleanly.** A conflict in a shared line, such as a module list or an import, is the coordinator's to resolve on the branch. Anything larger goes back to the session to rebase.
 4. **It changes no owner document**, or the owner said to merge it.
 
-Merge with `gh pr merge <pr> --squash` as its own command, in the trial's order. A repository with no branch protection merges at once, so don't wait on auto-merge there.
+Merge with `gh pr merge <pr> --squash` as its own command. When several pull requests wait, merge them one at a time, and update the next one's branch after each merge.
 
 ## After a merge
 
